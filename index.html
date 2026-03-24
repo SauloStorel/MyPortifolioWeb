@@ -16,6 +16,13 @@
 
     <title>Saulo Storel | Desenvolvedor Web</title>
     <link rel="stylesheet" href="style.css" />
+    <script>
+      (function() {
+        const t = localStorage.getItem('theme') ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -28,8 +35,23 @@
     />
   </head>
   <body>
-    <!-- Ambient Canvas -->
-    <canvas id="ambient-canvas"></canvas>
+    <!-- Loader -->
+    <div id="loader" aria-hidden="true">
+      <span class="loader-initial">SS</span>
+    </div>
+
+    <!-- Cursor -->
+    <div class="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" aria-hidden="true"></div>
+
+    <!-- Scroll Progress -->
+    <div id="scroll-progress"></div>
+
+    <!-- Toast -->
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Dust -->
+    <canvas id="dust-canvas" aria-hidden="true"></canvas>
 
     <!-- Navbar -->
     <nav id="navbar">
@@ -43,6 +65,9 @@
         <li><a href="#projects">Projetos</a></li>
         <li><a href="#contact">Contato</a></li>
       </ul>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Alternar tema">
+        <i class="fas fa-sun"></i>
+      </button>
       <button class="menu-toggle" aria-label="Abrir menu">
         <span></span>
         <span></span>
@@ -51,6 +76,7 @@
 
     <!-- Hero -->
     <section id="home" class="hero">
+      <div class="hero-inner">
       <div class="hero-photo">
         <div class="photo-frame">
           <picture>
@@ -78,8 +104,7 @@
             <span>Ver Projetos</span>
             <i class="fas fa-arrow-right"></i>
           </a>
-          <a href="#contact" class="btn btn-outline">Contato</a>
-          <a href="docs/curriculo.pdf" target="_blank" class="btn btn-ghost">
+          <a href="docs/curriculo.pdf" target="_blank" class="btn btn-outline">
             <i class="fas fa-file-arrow-down"></i>
             <span>Currículo</span>
           </a>
@@ -95,6 +120,7 @@
             <i class="fas fa-envelope"></i>
           </a>
         </div>
+      </div>
       </div>
     </section>
 
@@ -209,7 +235,7 @@
             <div class="project-index">01</div>
             <div class="project-info">
               <h3>Portfólio Pessoal</h3>
-              <p>Site responsivo construído do zero com animações e tema personalizado.</p>
+              <p>Site construído do zero, sem frameworks — exercício de domínio completo de HTML, CSS e JS vanilla com foco em performance e design.</p>
             </div>
             <div class="project-tags">
               <span>HTML</span>
@@ -217,15 +243,14 @@
               <span>JS</span>
             </div>
             <div class="project-links">
-              <a href="https://github.com/saulostorel" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-              <a href="#" aria-label="Live"><i class="fas fa-arrow-up-right-from-square"></i></a>
+              <a href="https://github.com/saulostorel/portifolio" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
             </div>
           </article>
           <article class="project-item">
             <div class="project-index">02</div>
             <div class="project-info">
               <h3>Automação de Dados</h3>
-              <p>Script Python para coleta, tratamento e inserção automática de dados em banco SQL.</p>
+              <p>Script Python que coleta, trata e insere dados automaticamente em banco SQL — eliminando processo manual repetitivo.</p>
             </div>
             <div class="project-tags">
               <span>Python</span>
@@ -239,7 +264,7 @@
             <div class="project-index">03</div>
             <div class="project-info">
               <h3>Landing Page Responsiva</h3>
-              <p>Página institucional com design mobile-first, formulário funcional e SEO otimizado.</p>
+              <p>Página institucional mobile-first com formulário funcional, SEO estruturado e tempo de carregamento otimizado.</p>
             </div>
             <div class="project-tags">
               <span>HTML</span>
@@ -248,7 +273,6 @@
             </div>
             <div class="project-links">
               <a href="https://github.com/saulostorel" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-              <a href="#" aria-label="Live"><i class="fas fa-arrow-up-right-from-square"></i></a>
             </div>
           </article>
         </div>
@@ -263,12 +287,36 @@
           <h2>Contato</h2>
         </div>
         <p class="contact-text">
-          Tem uma vaga, projeto ou ideia? Vamos conversar.
+          Prefiro resolver problemas reais. Se tiver um, me manda.
         </p>
-        <a href="mailto:saulostorell@gmail.com" class="btn btn-primary btn-lg">
-          <span>Enviar mensagem</span>
-          <i class="fas fa-arrow-right"></i>
-        </a>
+        <p class="local-time">
+          <span class="time-live-dot"></span>
+          Agora são <strong id="local-time-display">--:--</strong> em Teresina, PI
+        </p>
+        <form
+          class="contact-form"
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST"
+        >
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contact-name">Nome</label>
+              <input type="text" id="contact-name" name="name" placeholder="Seu nome" required />
+            </div>
+            <div class="form-group">
+              <label for="contact-email">Email</label>
+              <input type="email" id="contact-email" name="email" placeholder="seu@email.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contact-message">Mensagem</label>
+            <textarea id="contact-message" name="message" rows="5" placeholder="Descreva sua vaga, projeto ou ideia..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">
+            <span>Enviar mensagem</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </form>
         <div class="contact-links">
           <a href="https://github.com/saulostorel" target="_blank">GitHub</a>
           <span class="divider"></span>
@@ -285,7 +333,8 @@
         <a href="#home" class="logo">
           <span class="logo-text">Saulo Storel</span>
         </a>
-        <p>&copy; 2025 Saulo Storel</p>
+        <p>Teresina, PI &middot; Aberto a remoto</p>
+        <p>&copy; <span id="footer-year"></span> Saulo Storel</p>
       </div>
     </footer>
 

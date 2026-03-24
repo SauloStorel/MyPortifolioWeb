@@ -1,49 +1,165 @@
-// ===== Ambient Background =====
-const ambientCanvas = document.getElementById("ambient-canvas");
-const aCtx = ambientCanvas.getContext("2d");
+// ===== Spotlight + Cursor + Dust =====
+let mouseX = -2000, mouseY = -2000;
+let ringX = -2000, ringY = -2000;
 
-function resizeAmbient() {
-  ambientCanvas.width = window.innerWidth;
-  ambientCanvas.height = window.innerHeight;
+const cursorDot  = document.querySelector(".cursor-dot");
+const cursorRing = document.querySelector(".cursor-ring");
+
+document.addEventListener("mousemove", (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  cursorDot.style.left = e.clientX + "px";
+  cursorDot.style.top  = e.clientY + "px";
+  document.documentElement.style.setProperty("--mouse-x", e.clientX + "px");
+  document.documentElement.style.setProperty("--mouse-y", e.clientY + "px");
+});
+
+document.addEventListener("mouseleave", () => {
+  cursorDot.style.opacity  = "0";
+  cursorRing.style.opacity = "0";
+});
+document.addEventListener("mouseenter", () => {
+  cursorDot.style.opacity  = "1";
+  cursorRing.style.opacity = "1";
+});
+
+(function lerpRing() {
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  cursorRing.style.left = ringX + "px";
+  cursorRing.style.top  = ringY + "px";
+  requestAnimationFrame(lerpRing);
+})();
+
+document.querySelectorAll("a, button, .skill-item, .project-item, .learning-tag").forEach(el => {
+  el.addEventListener("mouseenter", () => document.body.classList.add("cursor-hover"));
+  el.addEventListener("mouseleave", () => document.body.classList.remove("cursor-hover"));
+});
+
+// Dust particles
+const dustCanvas = document.getElementById("dust-canvas");
+const dCtx = dustCanvas.getContext("2d");
+
+function resizeDust() {
+  dustCanvas.width = window.innerWidth;
+  dustCanvas.height = window.innerHeight;
 }
-resizeAmbient();
-window.addEventListener("resize", resizeAmbient);
+resizeDust();
+window.addEventListener("resize", resizeDust);
 
-// Subtle floating orbs (warm gold hue to match palette)
-const orbs = [];
-for (let i = 0; i < 3; i++) {
-  orbs.push({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-    r: 200 + Math.random() * 200,
-    vx: (Math.random() - 0.5) * 0.3,
-    vy: (Math.random() - 0.5) * 0.3,
-    hue: 32 + Math.random() * 12,
-  });
+class Particle {
+  constructor() { this.init(true); }
+
+  init(randomY = false) {
+    this.x = Math.random() * window.innerWidth;
+    this.y = randomY ? Math.random() * window.innerHeight : window.innerHeight + 5;
+    this.size = Math.random() * 1.2 + 0.4;
+    this.vx = (Math.random() - 0.5) * 0.15;
+    this.vy = -(Math.random() * 0.25 + 0.05);
+    this.opacity = Math.random() * 0.35 + 0.08;
+    this.life = randomY ? Math.random() : 0;
+    this.lifeSpeed = Math.random() * 0.0015 + 0.0008;
+  }
+
+  update() {
+    const dx = this.x - mouseX;
+    const dy = this.y - mouseY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 120 && dist > 0) {
+      const force = (120 - dist) / 120;
+      this.vx += (dx / dist) * force * 0.4;
+      this.vy += (dy / dist) * force * 0.4;
+    }
+
+    this.vx *= 0.97;
+    this.vy *= 0.97;
+    this.vy -= 0.008;
+
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life += this.lifeSpeed;
+
+    if (this.life >= 1 || this.y < -10) this.init();
+    if (this.x < -5) this.x = window.innerWidth + 5;
+    if (this.x > window.innerWidth + 5) this.x = -5;
+  }
+
+  draw() {
+    const alpha = Math.sin(this.life * Math.PI) * this.opacity;
+    dCtx.beginPath();
+    dCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    dCtx.fillStyle = `rgba(200, 169, 126, ${alpha})`;
+    dCtx.fill();
+  }
 }
 
-function drawAmbient() {
-  aCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+const particles = Array.from({ length: 70 }, () => new Particle());
 
-  orbs.forEach((orb) => {
-    orb.x += orb.vx;
-    orb.y += orb.vy;
-
-    if (orb.x < -orb.r) orb.x = ambientCanvas.width + orb.r;
-    if (orb.x > ambientCanvas.width + orb.r) orb.x = -orb.r;
-    if (orb.y < -orb.r) orb.y = ambientCanvas.height + orb.r;
-    if (orb.y > ambientCanvas.height + orb.r) orb.y = -orb.r;
-
-    const gradient = aCtx.createRadialGradient(orb.x, orb.y, 0, orb.x, orb.y, orb.r);
-    gradient.addColorStop(0, `hsla(${orb.hue}, 40%, 45%, 0.035)`);
-    gradient.addColorStop(1, "transparent");
-    aCtx.fillStyle = gradient;
-    aCtx.fillRect(0, 0, ambientCanvas.width, ambientCanvas.height);
-  });
-
-  requestAnimationFrame(drawAmbient);
+let dustRafId;
+function drawDust() {
+  dCtx.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  dustRafId = requestAnimationFrame(drawDust);
 }
-drawAmbient();
+drawDust();
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) cancelAnimationFrame(dustRafId);
+  else drawDust();
+});
+
+// ===== Typing Effect =====
+const typedName = document.getElementById("typed-name");
+const cursorEl = document.querySelector(".cursor-blink");
+
+const typeSequence = [
+  { action: "type",      text: "Saulo Xtorel" },
+  { action: "pause",     ms: 420 },
+  { action: "backspace", count: 6 },
+  { action: "pause",     ms: 180 },
+  { action: "type",      text: "Storel" },
+  { action: "done" },
+];
+
+function runType(steps, i = 0) {
+  if (i >= steps.length) return;
+  const step = steps[i];
+  const next = () => runType(steps, i + 1);
+
+  if (step.action === "type") {
+    let c = 0;
+    (function tick() {
+      if (c < step.text.length) {
+        typedName.textContent += step.text[c++];
+        setTimeout(tick, 75 + Math.random() * 55);
+      } else { next(); }
+    })();
+
+  } else if (step.action === "backspace") {
+    let c = 0;
+    (function tick() {
+      if (c < step.count) {
+        typedName.textContent = typedName.textContent.slice(0, -1);
+        c++;
+        setTimeout(tick, 55 + Math.random() * 30);
+      } else { next(); }
+    })();
+
+  } else if (step.action === "pause") {
+    setTimeout(next, step.ms);
+
+  } else if (step.action === "done") {
+    setTimeout(() => {
+      if (cursorEl) {
+        cursorEl.style.transition = "opacity 0.6s";
+        cursorEl.style.opacity = "0";
+        setTimeout(() => { cursorEl.style.animation = "none"; }, 600);
+      }
+    }, 2000);
+  }
+}
+
+setTimeout(() => runType(typeSequence), 800);
 
 // ===== Mobile Menu =====
 const menuToggle = document.querySelector(".menu-toggle");
@@ -61,20 +177,6 @@ navList.querySelectorAll("a").forEach((link) => {
   });
 });
 
-// ===== Typing Effect =====
-const typedName = document.getElementById("typed-name");
-const nameText = "Saulo Storel";
-let charIndex = 0;
-
-function typeEffect() {
-  if (charIndex < nameText.length) {
-    typedName.textContent += nameText.charAt(charIndex);
-    charIndex++;
-    setTimeout(typeEffect, 80 + Math.random() * 50);
-  }
-}
-setTimeout(typeEffect, 900);
-
 // ===== Scroll Reveal =====
 const revealObserver = new IntersectionObserver(
   (entries) => {
@@ -90,11 +192,23 @@ document.querySelectorAll(".section").forEach((el) => {
   revealObserver.observe(el);
 });
 
+// ===== Dynamic Year =====
+const yearEl = document.getElementById("footer-year");
+if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+// ===== Scroll Progress Bar =====
+const scrollProgress = document.getElementById("scroll-progress");
+
 // ===== Active Nav on Scroll =====
 const sections = document.querySelectorAll("section");
 const navLinks = document.querySelectorAll("#navbar ul a");
 
 window.addEventListener("scroll", () => {
+  // Progress bar
+  const scrolled = scrollY / (document.body.scrollHeight - window.innerHeight);
+  scrollProgress.style.width = Math.min(scrolled * 100, 100) + "%";
+
+  // Active nav
   let current = "";
   const nearBottom = window.innerHeight + scrollY >= document.body.offsetHeight - 80;
 
@@ -110,4 +224,127 @@ window.addEventListener("scroll", () => {
     link.classList.remove("active");
     if (link.getAttribute("href") === `#${current}`) link.classList.add("active");
   });
+});
+
+// ===== Toast =====
+const toast = document.getElementById("toast");
+let toastTimer;
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
+}
+
+// ===== Copy Email on Click =====
+document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
+  link.addEventListener("click", (e) => {
+    const email = link.getAttribute("href").replace("mailto:", "");
+    navigator.clipboard.writeText(email).then(() => {
+      showToast("Email copiado!");
+    });
+  });
+});
+
+// ===== Photo Tilt 3D =====
+const photoFrame = document.querySelector(".photo-frame");
+if (photoFrame) {
+  photoFrame.addEventListener("mousemove", (e) => {
+    const rect = photoFrame.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    photoFrame.style.transform = `perspective(800px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.02)`;
+  });
+
+  photoFrame.addEventListener("mouseleave", () => {
+    photoFrame.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+    photoFrame.style.transform = "perspective(800px) rotateY(0deg) rotateX(0deg) scale(1)";
+    setTimeout(() => { photoFrame.style.transition = ""; }, 600);
+  });
+}
+
+// ===== Magnetic Buttons =====
+document.querySelectorAll(".btn-primary").forEach((btn) => {
+  btn.addEventListener("mousemove", (e) => {
+    const rect = btn.getBoundingClientRect();
+    const x = (e.clientX - rect.left - rect.width / 2) * 0.25;
+    const y = (e.clientY - rect.top - rect.height / 2) * 0.25;
+    btn.style.transform = `translate(${x}px, ${y}px) translateY(-1px)`;
+  });
+
+  btn.addEventListener("mouseleave", () => {
+    btn.style.transform = "";
+  });
+});
+
+// ===== Theme Toggle =====
+const themeToggleBtn = document.getElementById("theme-toggle");
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
+  const icon = themeToggleBtn.querySelector("i");
+  icon.className = theme === "dark" ? "fas fa-sun" : "fas fa-moon";
+}
+
+// Sync icon on load
+applyTheme(document.documentElement.getAttribute("data-theme") || "dark");
+
+themeToggleBtn.addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme");
+  applyTheme(current === "dark" ? "light" : "dark");
+});
+
+// ===== Project Preview =====
+const previewCard = document.createElement("div");
+previewCard.className = "project-preview";
+document.body.appendChild(previewCard);
+
+document.querySelectorAll(".project-item").forEach((item) => {
+  const title = item.querySelector("h3").textContent;
+  const tags  = [...item.querySelectorAll(".project-tags span")].map(s => s.textContent);
+  const index = item.querySelector(".project-index")?.textContent || "";
+
+  item.addEventListener("mouseenter", () => {
+    previewCard.innerHTML = `
+      <div class="preview-label">Projeto ${index}</div>
+      <div class="preview-title">${title}</div>
+      <div class="preview-tags">${tags.map(t => `<span>${t}</span>`).join("")}</div>
+    `;
+    previewCard.classList.add("visible");
+  });
+
+  item.addEventListener("mousemove", (e) => {
+    const x = e.clientX + 28;
+    const y = e.clientY - 60;
+    const maxX = window.innerWidth - 250;
+    previewCard.style.left = Math.min(x, maxX) + "px";
+    previewCard.style.top  = Math.max(y, 10) + "px";
+  });
+
+  item.addEventListener("mouseleave", () => {
+    previewCard.classList.remove("visible");
+  });
+});
+
+// ===== Local Time =====
+const localTimeEl = document.getElementById("local-time-display");
+
+function updateLocalTime() {
+  if (!localTimeEl) return;
+  localTimeEl.textContent = new Date().toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "America/Fortaleza",
+  });
+}
+updateLocalTime();
+setInterval(updateLocalTime, 1000);
+
+// ===== Loader =====
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("loader").classList.add("out");
+  }, 600);
 });
