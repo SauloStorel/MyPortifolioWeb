@@ -35,14 +35,12 @@
     />
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Pular para conteúdo</a>
+
     <!-- Loader -->
     <div id="loader" aria-hidden="true">
       <span class="loader-initial">SS</span>
     </div>
-
-    <!-- Cursor -->
-    <div class="cursor-dot" aria-hidden="true"></div>
-    <div class="cursor-ring" aria-hidden="true"></div>
 
     <!-- Scroll Progress -->
     <div id="scroll-progress"></div>
@@ -74,6 +72,9 @@
       </button>
     </nav>
 
+    <!-- Main Content -->
+    <main id="main-content">
+
     <!-- Hero -->
     <section id="home" class="hero">
       <div class="hero-inner">
@@ -93,7 +94,10 @@
         </div>
         <h1>
           <span class="greeting">Olá, eu sou</span>
-          <span class="name" id="typed-name"></span><span class="cursor-blink">|</span>
+          <span aria-hidden="true">
+            <span class="name" id="typed-name"></span><span class="cursor-blink">|</span>
+          </span>
+          <span class="sr-only">Saulo Storel</span>
         </h1>
         <p class="hero-desc">
           Desenvolvedor Web Back-End &amp; estudante de ADS, focado em construir
@@ -104,16 +108,16 @@
             <span>Ver Projetos</span>
             <i class="fas fa-arrow-right"></i>
           </a>
-          <a href="docs/curriculo.pdf" target="_blank" class="btn btn-outline">
+          <a href="docs/curriculo.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
             <i class="fas fa-file-arrow-down"></i>
             <span>Currículo</span>
           </a>
         </div>
         <div class="hero-links">
-          <a href="https://github.com/saulostorel" target="_blank" aria-label="GitHub">
+          <a href="https://github.com/saulostorel" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
             <i class="fab fa-github"></i>
           </a>
-          <a href="https://www.linkedin.com/in/saulo-storel-235037399" target="_blank" aria-label="LinkedIn">
+          <a href="https://www.linkedin.com/in/saulo-storel-235037399" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
             <i class="fab fa-linkedin-in"></i>
           </a>
           <a href="mailto:saulostorell@gmail.com" aria-label="Email">
@@ -230,51 +234,12 @@
           <span class="section-number">03</span>
           <h2>Projetos</h2>
         </div>
-        <div class="projects-list">
-          <article class="project-item">
-            <div class="project-index">01</div>
-            <div class="project-info">
-              <h3>Portfólio Pessoal</h3>
-              <p>Site construído do zero, sem frameworks — exercício de domínio completo de HTML, CSS e JS vanilla com foco em performance e design.</p>
-            </div>
-            <div class="project-tags">
-              <span>HTML</span>
-              <span>CSS</span>
-              <span>JS</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/SauloStorel/MyPortifolioWeb" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            </div>
-          </article>
-          <article class="project-item">
-            <div class="project-index">02</div>
-            <div class="project-info">
-              <h3>Automação de Dados</h3>
-              <p>Script Python que coleta, trata e insere dados automaticamente em banco SQL — eliminando processo manual repetitivo.</p>
-            </div>
-            <div class="project-tags">
-              <span>Python</span>
-              <span>SQL</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/saulostorel" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            </div>
-          </article>
-          <article class="project-item">
-            <div class="project-index">03</div>
-            <div class="project-info">
-              <h3>Landing Page Responsiva</h3>
-              <p>Página institucional mobile-first com formulário funcional, SEO estruturado e tempo de carregamento otimizado.</p>
-            </div>
-            <div class="project-tags">
-              <span>HTML</span>
-              <span>CSS</span>
-              <span>JS</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/saulostorel" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            </div>
-          </article>
+        <div class="projects-list" id="projects-list">
+          <div class="projects-loading" aria-live="polite">
+            <span class="projects-loading-dot"></span>
+            <span class="projects-loading-dot"></span>
+            <span class="projects-loading-dot"></span>
+          </div>
         </div>
       </div>
     </section>
@@ -293,6 +258,7 @@
           <span class="time-live-dot"></span>
           Agora são <strong id="local-time-display">--:--</strong> em Teresina, PI
         </p>
+        <!-- TODO: criar conta em formspree.io, criar form e substituir YOUR_FORM_ID pelo ID gerado -->
         <form
           class="contact-form"
           action="https://formspree.io/f/YOUR_FORM_ID"
@@ -318,14 +284,16 @@
           </button>
         </form>
         <div class="contact-links">
-          <a href="https://github.com/saulostorel" target="_blank">GitHub</a>
+          <a href="https://github.com/saulostorel" target="_blank" rel="noopener noreferrer">GitHub</a>
           <span class="divider"></span>
-          <a href="https://www.linkedin.com/in/saulo-storel-235037399" target="_blank">LinkedIn</a>
+          <a href="https://www.linkedin.com/in/saulo-storel-235037399" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <span class="divider"></span>
           <a href="mailto:saulostorell@gmail.com">Email</a>
         </div>
       </div>
     </section>
+
+    </main><!-- /#main-content -->
 
     <!-- Footer -->
     <footer>

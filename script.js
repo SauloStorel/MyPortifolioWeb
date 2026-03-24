@@ -213,9 +213,9 @@ function showToast(msg) {
 document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
   link.addEventListener("click", (e) => {
     const email = link.getAttribute("href").replace("mailto:", "");
-    navigator.clipboard.writeText(email).then(() => {
-      showToast("Email copiado!");
-    });
+    navigator.clipboard.writeText(email)
+      .then(() => showToast("Email copiado!"))
+      .catch(() => showToast("Abrindo cliente de email..."));
   });
 });
 
@@ -273,32 +273,123 @@ const previewCard = document.createElement("div");
 previewCard.className = "project-preview";
 document.body.appendChild(previewCard);
 
-document.querySelectorAll(".project-item").forEach((item) => {
-  const title = item.querySelector("h3").textContent;
-  const tags  = [...item.querySelectorAll(".project-tags span")].map(s => s.textContent);
-  const index = item.querySelector(".project-index")?.textContent || "";
+function attachProjectPreviews() {
+  document.querySelectorAll(".project-item").forEach((item) => {
+    const titleEl = item.querySelector("h3");
+    const tags    = [...item.querySelectorAll(".project-tags span")].map(s => s.textContent);
+    const index   = item.querySelector(".project-index")?.textContent || "";
+    if (!titleEl) return;
 
-  item.addEventListener("mouseenter", () => {
-    previewCard.innerHTML = `
-      <div class="preview-label">Projeto ${index}</div>
-      <div class="preview-title">${title}</div>
-      <div class="preview-tags">${tags.map(t => `<span>${t}</span>`).join("")}</div>
+    item.addEventListener("mouseenter", () => {
+      previewCard.innerHTML = `
+        <div class="preview-label">Projeto ${escHtml(index)}</div>
+        <div class="preview-title">${escHtml(titleEl.textContent)}</div>
+        <div class="preview-tags">${tags.map(t => `<span>${escHtml(t)}</span>`).join("")}</div>
+      `;
+      previewCard.classList.add("visible");
+    });
+
+    item.addEventListener("mousemove", (e) => {
+      const x = e.clientX + 28;
+      const y = e.clientY - 60;
+      const maxX = window.innerWidth - 250;
+      previewCard.style.left = Math.min(x, maxX) + "px";
+      previewCard.style.top  = Math.max(y, 10) + "px";
+    });
+
+    item.addEventListener("mouseleave", () => {
+      previewCard.classList.remove("visible");
+    });
+  });
+}
+
+attachProjectPreviews();
+
+// ===== GitHub Projects =====
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function formatRepoName(name) {
+  return name.replace(/[-_]/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+}
+
+async function fetchGithubProjects() {
+  const list = document.getElementById("projects-list");
+  if (!list) return;
+
+  try {
+    const res = await fetch(
+      "https://api.github.com/users/saulostorel/repos?sort=updated&direction=desc&per_page=100&type=owner"
+    );
+    if (!res.ok) throw new Error(`GitHub API: ${res.status}`);
+
+    const repos = await res.json();
+    const nonForks = repos.filter(r => !r.fork);
+
+    // Prioriza repos marcados com o tópico "portfolio"
+    const pinned  = nonForks.filter(r => r.topics?.includes("portfolio"));
+    const toShow  = (pinned.length > 0 ? pinned : nonForks).slice(0, 6);
+
+    if (toShow.length === 0) throw new Error("Nenhum repo encontrado");
+
+    list.innerHTML = toShow.map((repo, i) => {
+      const index = String(i + 1).padStart(2, "0");
+      const title = formatRepoName(repo.name);
+      const desc  = repo.description || "Sem descrição.";
+      const tags  = (repo.topics?.length > 0 ? repo.topics.slice(0, 3) : (repo.language ? [repo.language] : []));
+      const live  = repo.homepage
+        ? `<a href="${escHtml(repo.homepage)}" target="_blank" rel="noopener noreferrer" aria-label="Demo"><i class="fas fa-up-right-from-square"></i></a>`
+        : "";
+
+      return `
+        <article class="project-item">
+          <div class="project-index">${escHtml(index)}</div>
+          <div class="project-info">
+            <h3>${escHtml(title)}</h3>
+            <p>${escHtml(desc)}</p>
+          </div>
+          <div class="project-tags">
+            ${tags.map(t => `<span>${escHtml(t)}</span>`).join("")}
+          </div>
+          <div class="project-links">
+            <a href="${escHtml(repo.html_url)}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+            ${live}
+          </div>
+        </article>
+      `;
+    }).join("");
+
+    attachProjectPreviews();
+
+  } catch (err) {
+    console.warn("GitHub API indisponível, exibindo projetos estáticos.", err);
+    list.innerHTML = `
+      <article class="project-item">
+        <div class="project-index">01</div>
+        <div class="project-info">
+          <h3>Portfólio Pessoal</h3>
+          <p>Site construído do zero, sem frameworks — exercício de domínio completo de HTML, CSS e JS vanilla.</p>
+        </div>
+        <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
+        <div class="project-links">
+          <a href="https://github.com/SauloStorel/MyPortifolioWeb" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+      </article>
     `;
-    previewCard.classList.add("visible");
-  });
+    attachProjectPreviews();
+  }
+}
 
-  item.addEventListener("mousemove", (e) => {
-    const x = e.clientX + 28;
-    const y = e.clientY - 60;
-    const maxX = window.innerWidth - 250;
-    previewCard.style.left = Math.min(x, maxX) + "px";
-    previewCard.style.top  = Math.max(y, 10) + "px";
-  });
-
-  item.addEventListener("mouseleave", () => {
-    previewCard.classList.remove("visible");
-  });
-});
+fetchGithubProjects();
 
 // ===== Local Time =====
 const localTimeEl = document.getElementById("local-time-display");
