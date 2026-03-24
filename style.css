@@ -17,10 +17,10 @@
   --accent-glow: rgba(200, 169, 126, 0.14);
   --accent-soft: rgba(200, 169, 126, 0.06);
   --white: #f2f0ec;
-  --gray: #9a9894;
-  --gray-light: #bbbab6;
-  --gray-dark: #555550;
-  --text: #d0ceca;
+  --gray: #b8b6b2;
+  --gray-light: #d0ceca;
+  --gray-dark: #888682;
+  --text: #d8d6d2;
 }
 
 html {
@@ -273,7 +273,7 @@ ul { list-style: none; }
   color: var(--gray);
   margin-bottom: 2.5rem;
   line-height: 1.8;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .hero-actions {
@@ -408,7 +408,7 @@ ul { list-style: none; }
   font-size: 1.08rem;
   margin-bottom: 1rem;
   line-height: 1.9;
-  font-weight: 300;
+  font-weight: 400;
   max-width: 600px;
 }
 
@@ -459,8 +459,8 @@ ul { list-style: none; }
 }
 
 .highlight span {
-  font-size: 0.8rem;
-  color: var(--gray-dark);
+  font-size: 0.82rem;
+  color: var(--gray);
   letter-spacing: 0.5px;
 }
 
@@ -625,9 +625,9 @@ ul { list-style: none; }
 .project-item:hover .project-info h3 { color: var(--white); }
 
 .project-info p {
-  font-size: 0.92rem;
-  color: var(--gray-dark);
-  margin-top: 2px;
+  font-size: 0.95rem;
+  color: var(--gray);
+  margin-top: 4px;
 }
 
 .project-tags {
@@ -682,7 +682,7 @@ ul { list-style: none; }
   font-size: 1.15rem;
   color: var(--gray);
   margin-bottom: 2rem;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .contact .btn { margin-bottom: 2.5rem; }

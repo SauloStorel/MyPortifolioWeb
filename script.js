@@ -96,9 +96,16 @@ const navLinks = document.querySelectorAll("#navbar ul a");
 
 window.addEventListener("scroll", () => {
   let current = "";
-  sections.forEach((section) => {
-    if (scrollY >= section.offsetTop - 120) current = section.getAttribute("id");
-  });
+  const nearBottom = window.innerHeight + scrollY >= document.body.offsetHeight - 80;
+
+  if (nearBottom) {
+    current = sections[sections.length - 1].getAttribute("id");
+  } else {
+    sections.forEach((section) => {
+      if (scrollY >= section.offsetTop - 120) current = section.getAttribute("id");
+    });
+  }
+
   navLinks.forEach((link) => {
     link.classList.remove("active");
     if (link.getAttribute("href") === `#${current}`) link.classList.add("active");
