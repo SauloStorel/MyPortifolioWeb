@@ -1244,6 +1244,15 @@ footer p {
   .skills-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* ===== Easter Egg: Matrix ===== */
+#matrix-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  cursor: pointer;
+  background: #000;
+}
+
 /* ===== Accessibility: Reduced Motion ===== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

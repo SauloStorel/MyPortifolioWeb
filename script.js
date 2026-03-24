@@ -500,3 +500,71 @@ window.addEventListener("load", () => {
     document.getElementById("loader").classList.add("out");
   }, 600);
 });
+
+// ===== Easter Egg: Matrix Mode (333) =====
+const MATRIX_CHARS = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let matrixActive = false;
+let matrixRafId  = null;
+let eggBuffer    = "";
+
+document.addEventListener("keydown", (e) => {
+  if (matrixActive) { exitMatrix(); return; }
+
+  eggBuffer += e.key;
+  if (eggBuffer.length > 3) eggBuffer = eggBuffer.slice(-3);
+  if (eggBuffer === "333") { eggBuffer = ""; enterMatrix(); }
+});
+
+function enterMatrix() {
+  matrixActive = true;
+
+  const canvas = document.createElement("canvas");
+  canvas.id = "matrix-overlay";
+  document.body.appendChild(canvas);
+
+  const ctx    = canvas.getContext("2d");
+  const FS     = 14;
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const cols  = () => Math.floor(canvas.width / FS);
+  let drops   = Array.from({ length: cols() }, () => Math.random() * -100);
+
+  showToast("MATRIX MODE — pressione qualquer tecla para sair");
+
+  function draw() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    drops.forEach((y, i) => {
+      const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+      ctx.font      = `${FS}px monospace`;
+      ctx.fillStyle = y < 2 ? "#ccffcc" : "#00ff41";
+      ctx.fillText(char, i * FS, y * FS);
+
+      if (y * FS > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i] += 0.5 + Math.random() * 0.5;
+    });
+
+    // Ajusta colunas se a tela for redimensionada
+    const c = cols();
+    if (drops.length !== c) drops = Array.from({ length: c }, () => Math.random() * -100);
+
+    matrixRafId = requestAnimationFrame(draw);
+  }
+
+  draw();
+  canvas.addEventListener("click", exitMatrix);
+}
+
+function exitMatrix() {
+  matrixActive = false;
+  cancelAnimationFrame(matrixRafId);
+  const overlay = document.getElementById("matrix-overlay");
+  if (overlay) overlay.remove();
+}
