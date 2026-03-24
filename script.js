@@ -501,9 +501,37 @@ window.addEventListener("load", () => {
   }, 600);
 });
 
-// ===== Easter Egg: Matue Mode (333) =====
-const MATUE_CHARS = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン★☽◈◉✦✧⟡0123456789";
-const MATUE_COLORS = ["#b347d9", "#9b30c8", "#c86cdf", "#7b2fbe", "#e040fb"];
+// ===== Easter Egg: Matue Albums (333 / 666 / 777) =====
+const MATUE_MODES = {
+  "333": {
+    label:     "333 — MATUE MODE",
+    overlayBg: "#080012",
+    trailBg:   "rgba(8, 0, 18, 0.08)",
+    colors:    ["#b347d9", "#9b30c8", "#c86cdf", "#7b2fbe", "#e040fb"],
+    headColor: "#ffaaff",
+    headGlow:  "#ff69b4",
+    chars:     "アイウエオカキクケコサシスセソタチツテトナニヌネノ★☽◈◉✦✧⟡0123456789",
+  },
+  "777": {
+    label:     "777 — MODO CÓSMICO",
+    overlayBg: "#080600",
+    trailBg:   "rgba(12, 9, 0, 0.07)",
+    colors:    ["#ffd700", "#ffaa00", "#ffe066", "#ffcc44", "#ff9900"],
+    headColor: "#ffffff",
+    headGlow:  "#ffd700",
+    chars:     "★✦✧⟡◈☆✴✵✶✷✸✹7770123456789アイウエオカキクケコ",
+  },
+  "666": {
+    label:     "666 — MODO SOMBRIO",
+    overlayBg: "#0f0000",
+    trailBg:   "rgba(18, 0, 0, 0.07)",
+    colors:    ["#ff0033", "#cc0022", "#ff4455", "#990011", "#ff2244"],
+    headColor: "#ffcccc",
+    headGlow:  "#ff0000",
+    chars:     "アイウエオカキクケコサシスセソ⟡◈✦☽★6660123456789",
+  },
+};
+
 let matueActive = false;
 let matueRafId  = null;
 let eggBuffer   = "";
@@ -513,14 +541,20 @@ document.addEventListener("keydown", (e) => {
 
   eggBuffer += e.key;
   if (eggBuffer.length > 3) eggBuffer = eggBuffer.slice(-3);
-  if (eggBuffer === "333") { eggBuffer = ""; enterMatue(); }
+
+  if (MATUE_MODES[eggBuffer]) {
+    const mode = MATUE_MODES[eggBuffer];
+    eggBuffer = "";
+    enterMatue(mode);
+  }
 });
 
-function enterMatue() {
+function enterMatue(mode) {
   matueActive = true;
 
   const canvas = document.createElement("canvas");
   canvas.id = "matrix-overlay";
+  canvas.style.background = mode.overlayBg;
   document.body.appendChild(canvas);
 
   const ctx = canvas.getContext("2d");
@@ -535,28 +569,23 @@ function enterMatue() {
 
   const cols = () => Math.floor(canvas.width / FS);
   let drops  = Array.from({ length: cols() }, () => Math.random() * -120);
-  let hue    = 270; // começa no roxo
 
-  showToast("MATUE MODE — pressione qualquer tecla para sair");
+  showToast(`${mode.label} — pressione qualquer tecla para sair`);
 
   function draw() {
-    // fundo escuro com leve rastro psicodélico
-    ctx.fillStyle = "rgba(8, 0, 18, 0.08)";
+    ctx.fillStyle = mode.trailBg;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    hue = (hue + 0.4) % 360;
-
     drops.forEach((y, i) => {
-      const char  = MATUE_CHARS[Math.floor(Math.random() * MATUE_CHARS.length)];
-      const color = MATUE_COLORS[Math.floor(Math.random() * MATUE_COLORS.length)];
+      const char  = mode.chars[Math.floor(Math.random() * mode.chars.length)];
+      const color = mode.colors[Math.floor(Math.random() * mode.colors.length)];
 
       ctx.font = `${FS}px monospace`;
 
-      // cabeça da coluna brilha em branco/rosa
       if (y > 0 && y < 2) {
-        ctx.shadowBlur  = 12;
-        ctx.shadowColor = "#ff69b4";
-        ctx.fillStyle   = "#ffaaff";
+        ctx.shadowBlur  = 14;
+        ctx.shadowColor = mode.headGlow;
+        ctx.fillStyle   = mode.headColor;
       } else {
         ctx.shadowBlur  = 6;
         ctx.shadowColor = color;
