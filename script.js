@@ -501,29 +501,30 @@ window.addEventListener("load", () => {
   }, 600);
 });
 
-// ===== Easter Egg: Matrix Mode (333) =====
-const MATRIX_CHARS = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-let matrixActive = false;
-let matrixRafId  = null;
-let eggBuffer    = "";
+// ===== Easter Egg: Matue Mode (333) =====
+const MATUE_CHARS = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン★☽◈◉✦✧⟡0123456789";
+const MATUE_COLORS = ["#b347d9", "#9b30c8", "#c86cdf", "#7b2fbe", "#e040fb"];
+let matueActive = false;
+let matueRafId  = null;
+let eggBuffer   = "";
 
 document.addEventListener("keydown", (e) => {
-  if (matrixActive) { exitMatrix(); return; }
+  if (matueActive) { exitMatue(); return; }
 
   eggBuffer += e.key;
   if (eggBuffer.length > 3) eggBuffer = eggBuffer.slice(-3);
-  if (eggBuffer === "333") { eggBuffer = ""; enterMatrix(); }
+  if (eggBuffer === "333") { eggBuffer = ""; enterMatue(); }
 });
 
-function enterMatrix() {
-  matrixActive = true;
+function enterMatue() {
+  matueActive = true;
 
   const canvas = document.createElement("canvas");
   canvas.id = "matrix-overlay";
   document.body.appendChild(canvas);
 
-  const ctx    = canvas.getContext("2d");
-  const FS     = 14;
+  const ctx = canvas.getContext("2d");
+  const FS  = 15;
 
   function resize() {
     canvas.width  = window.innerWidth;
@@ -532,39 +533,55 @@ function enterMatrix() {
   resize();
   window.addEventListener("resize", resize);
 
-  const cols  = () => Math.floor(canvas.width / FS);
-  let drops   = Array.from({ length: cols() }, () => Math.random() * -100);
+  const cols = () => Math.floor(canvas.width / FS);
+  let drops  = Array.from({ length: cols() }, () => Math.random() * -120);
+  let hue    = 270; // começa no roxo
 
-  showToast("MATRIX MODE — pressione qualquer tecla para sair");
+  showToast("MATUE MODE — pressione qualquer tecla para sair");
 
   function draw() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    // fundo escuro com leve rastro psicodélico
+    ctx.fillStyle = "rgba(8, 0, 18, 0.08)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    drops.forEach((y, i) => {
-      const char = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
-      ctx.font      = `${FS}px monospace`;
-      ctx.fillStyle = y < 2 ? "#ccffcc" : "#00ff41";
-      ctx.fillText(char, i * FS, y * FS);
+    hue = (hue + 0.4) % 360;
 
-      if (y * FS > canvas.height && Math.random() > 0.975) drops[i] = 0;
-      drops[i] += 0.5 + Math.random() * 0.5;
+    drops.forEach((y, i) => {
+      const char  = MATUE_CHARS[Math.floor(Math.random() * MATUE_CHARS.length)];
+      const color = MATUE_COLORS[Math.floor(Math.random() * MATUE_COLORS.length)];
+
+      ctx.font = `${FS}px monospace`;
+
+      // cabeça da coluna brilha em branco/rosa
+      if (y > 0 && y < 2) {
+        ctx.shadowBlur  = 12;
+        ctx.shadowColor = "#ff69b4";
+        ctx.fillStyle   = "#ffaaff";
+      } else {
+        ctx.shadowBlur  = 6;
+        ctx.shadowColor = color;
+        ctx.fillStyle   = color;
+      }
+
+      ctx.fillText(char, i * FS, y * FS);
+      ctx.shadowBlur = 0;
+
+      if (y * FS > canvas.height && Math.random() > 0.97) drops[i] = 0;
+      drops[i] += 0.4 + Math.random() * 0.6;
     });
 
-    // Ajusta colunas se a tela for redimensionada
     const c = cols();
-    if (drops.length !== c) drops = Array.from({ length: c }, () => Math.random() * -100);
+    if (drops.length !== c) drops = Array.from({ length: c }, () => Math.random() * -120);
 
-    matrixRafId = requestAnimationFrame(draw);
+    matueRafId = requestAnimationFrame(draw);
   }
 
   draw();
-  canvas.addEventListener("click", exitMatrix);
+  canvas.addEventListener("click", exitMatue);
 }
 
-function exitMatrix() {
-  matrixActive = false;
-  cancelAnimationFrame(matrixRafId);
-  const overlay = document.getElementById("matrix-overlay");
-  if (overlay) overlay.remove();
+function exitMatue() {
+  matueActive = false;
+  cancelAnimationFrame(matueRafId);
+  document.getElementById("matrix-overlay")?.remove();
 }
