@@ -17,6 +17,9 @@
     />
   </head>
   <body>
+    <!-- Particle Canvas -->
+    <canvas id="particles"></canvas>
+
     <!-- Navbar -->
     <nav id="navbar">
       <a href="#home" class="logo">&lt;S/&gt;</a>
@@ -25,6 +28,7 @@
         <li><a href="#about">Sobre</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projetos</a></li>
+        <li><a href="#game">Minigame</a></li>
         <li><a href="#contact">Contato</a></li>
       </ul>
       <button class="menu-toggle" aria-label="Abrir menu">
@@ -34,33 +38,41 @@
       </button>
     </nav>
 
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
     <!-- Hero -->
     <section id="home" class="hero">
       <div class="hero-content">
         <div class="hero-tag">Desenvolvedor Web</div>
         <h1>
           Olá, eu sou<br />
-          <span class="name">Saulo Storel</span>
+          <span class="name" id="typed-name"></span><span class="typed-cursor">|</span>
         </h1>
         <p class="hero-description">
           Estudante de Análise e Desenvolvimento de Sistemas,
           construindo experiências digitais com código limpo e design minimalista.
         </p>
         <div class="hero-buttons">
-          <a href="#projects" class="btn btn-primary">
+          <a href="#projects" class="btn btn-primary magnetic">
             <span>Projetos</span>
             <i class="fas fa-arrow-right"></i>
           </a>
-          <a href="#contact" class="btn btn-ghost">Fale comigo</a>
+          <a href="#contact" class="btn btn-ghost magnetic">Fale comigo</a>
+          <a href="#game" class="btn btn-game magnetic">
+            <i class="fas fa-gamepad"></i>
+            <span>Jogar</span>
+          </a>
         </div>
         <div class="hero-social">
-          <a href="https://github.com/" target="_blank" aria-label="GitHub">
+          <a href="https://github.com/" target="_blank" aria-label="GitHub" class="magnetic">
             <i class="fab fa-github"></i>
           </a>
-          <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn">
+          <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn" class="magnetic">
             <i class="fab fa-linkedin-in"></i>
           </a>
-          <a href="mailto:seu@email.com" aria-label="Email">
+          <a href="mailto:seu@email.com" aria-label="Email" class="magnetic">
             <i class="fas fa-envelope"></i>
           </a>
         </div>
@@ -92,11 +104,11 @@
           </div>
           <div class="about-stats">
             <div class="stat">
-              <span class="stat-number">5+</span>
+              <span class="stat-number" data-target="5">0</span>
               <span class="stat-label">Projetos</span>
             </div>
             <div class="stat">
-              <span class="stat-number">3+</span>
+              <span class="stat-number" data-target="3">0</span>
               <span class="stat-label">Tecnologias</span>
             </div>
           </div>
@@ -110,39 +122,47 @@
         <span class="section-label">Ferramentas</span>
         <h2 class="section-title">Skills</h2>
         <div class="skills-grid">
-          <div class="skill-card">
+          <div class="skill-card tilt-card" data-level="90">
             <i class="fab fa-html5"></i>
             <span>HTML5</span>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
           </div>
-          <div class="skill-card">
+          <div class="skill-card tilt-card" data-level="85">
             <i class="fab fa-css3-alt"></i>
             <span>CSS3</span>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
           </div>
-          <div class="skill-card">
+          <div class="skill-card tilt-card" data-level="75">
             <i class="fab fa-js"></i>
             <span>JavaScript</span>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
           </div>
-          <div class="skill-card">
+          <div class="skill-card tilt-card" data-level="70">
             <i class="fab fa-python"></i>
             <span>Python</span>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
           </div>
-          <div class="skill-card">
+          <div class="skill-card tilt-card" data-level="80">
             <i class="fab fa-git-alt"></i>
             <span>Git</span>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
           </div>
-          <div class="skill-card">
+          <div class="skill-card tilt-card" data-level="65">
             <i class="fas fa-database"></i>
             <span>SQL</span>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
           </div>
-          <div class="skill-card">
+          <div class="skill-card tilt-card" data-level="85">
             <svg class="claude-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M16.604 2.985a1.69 1.69 0 0 0-2.239.676l-5.074 9.065-2.183-3.85a1.69 1.69 0 0 0-2.93 0L.136 16.267a1.69 1.69 0 0 0 1.465 2.535h5.22a1.69 1.69 0 0 0 1.466-.847l3.005-5.283 2.107 3.716a1.69 1.69 0 0 0 1.465.847h5.22c1.287 0 2.089-1.398 1.465-2.535l-2.183-3.85a1.69 1.69 0 0 0-2.93 0l-.924 1.628-2.183-3.85-.015-.028 1.913-3.376a1.69 1.69 0 0 0-.623-2.24Z" fill="currentColor"/>
             </svg>
             <span>Claude Code</span>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
           </div>
-          <div class="skill-card">
+          <div class="skill-card tilt-card" data-level="80">
             <i class="fab fa-linux"></i>
             <span>Linux</span>
+            <div class="skill-bar"><div class="skill-fill"></div></div>
           </div>
         </div>
       </div>
@@ -154,7 +174,7 @@
         <span class="section-label">Trabalhos</span>
         <h2 class="section-title">Projetos</h2>
         <div class="projects-grid">
-          <article class="project-card">
+          <article class="project-card tilt-card">
             <div class="project-number">01</div>
             <h3>Projeto 01</h3>
             <p>Descrição breve do projeto e tecnologias utilizadas.</p>
@@ -168,7 +188,7 @@
               <a href="#" aria-label="Live"><i class="fas fa-arrow-up-right-from-square"></i></a>
             </div>
           </article>
-          <article class="project-card">
+          <article class="project-card tilt-card">
             <div class="project-number">02</div>
             <h3>Projeto 02</h3>
             <p>Descrição breve do projeto e tecnologias utilizadas.</p>
@@ -181,7 +201,7 @@
               <a href="#" aria-label="Live"><i class="fas fa-arrow-up-right-from-square"></i></a>
             </div>
           </article>
-          <article class="project-card">
+          <article class="project-card tilt-card">
             <div class="project-number">03</div>
             <h3>Projeto 03</h3>
             <p>Descrição breve do projeto e tecnologias utilizadas.</p>
@@ -198,6 +218,42 @@
       </div>
     </section>
 
+    <!-- Snake Game -->
+    <section id="game" class="game-section">
+      <div class="container">
+        <span class="section-label">Diversão</span>
+        <h2 class="section-title">Snake Game</h2>
+        <p class="game-subtitle">Use as setas do teclado ou deslize na tela para jogar!</p>
+        <div class="game-wrapper">
+          <div class="game-hud">
+            <div class="hud-item">
+              <i class="fas fa-star"></i>
+              <span>Score: <strong id="score">0</strong></span>
+            </div>
+            <div class="hud-item">
+              <i class="fas fa-trophy"></i>
+              <span>Record: <strong id="highscore">0</strong></span>
+            </div>
+          </div>
+          <canvas id="snake-canvas"></canvas>
+          <div class="game-overlay" id="game-overlay">
+            <div class="game-overlay-content">
+              <i class="fas fa-gamepad game-overlay-icon"></i>
+              <p>Pressione <kbd>Space</kbd> ou clique para jogar</p>
+            </div>
+          </div>
+          <div class="game-controls-mobile">
+            <button class="game-btn" id="btn-up"><i class="fas fa-chevron-up"></i></button>
+            <div class="game-btn-row">
+              <button class="game-btn" id="btn-left"><i class="fas fa-chevron-left"></i></button>
+              <button class="game-btn" id="btn-down"><i class="fas fa-chevron-down"></i></button>
+              <button class="game-btn" id="btn-right"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Contact -->
     <section id="contact" class="contact">
       <div class="container">
@@ -206,7 +262,7 @@
         <p class="contact-subtitle">
           Tem um projeto em mente? Adoraria ouvir sobre ele.
         </p>
-        <a href="mailto:seu@email.com" class="btn btn-primary btn-lg">
+        <a href="mailto:seu@email.com" class="btn btn-primary btn-lg magnetic">
           <span>Enviar mensagem</span>
           <i class="fas fa-arrow-right"></i>
         </a>
@@ -225,8 +281,12 @@
       <div class="footer-content">
         <a href="#home" class="logo">&lt;S/&gt;</a>
         <p>Feito por Saulo Storel &copy; 2025</p>
+        <p class="easter-egg-hint">Tente o Konami Code ;)</p>
       </div>
     </footer>
+
+    <!-- Matrix Rain Canvas (Easter Egg) -->
+    <canvas id="matrix-canvas"></canvas>
 
     <script src="script.js"></script>
   </body>

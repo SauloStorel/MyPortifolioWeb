@@ -34,11 +34,17 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: none;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+  cursor: none;
+}
+
+button {
+  cursor: none;
 }
 
 ul {
@@ -48,6 +54,48 @@ ul {
 .container {
   max-width: 900px;
   margin: 0 auto;
+}
+
+/* ===== Custom Cursor ===== */
+.cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10001;
+  transition: transform 0.1s ease;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid rgba(0, 232, 123, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-ring.hover {
+  width: 50px;
+  height: 50px;
+  border-color: var(--green);
+}
+
+/* ===== Particle Canvas ===== */
+#particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* ===== Navbar ===== */
@@ -87,6 +135,23 @@ ul {
   color: var(--gray);
   transition: color 0.3s;
   letter-spacing: 0.5px;
+  position: relative;
+}
+
+#navbar ul li a::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--green);
+  transition: width 0.3s ease;
+}
+
+#navbar ul li a:hover::after,
+#navbar ul li a.active::after {
+  width: 100%;
 }
 
 #navbar ul li a:hover {
@@ -166,6 +231,17 @@ ul {
   font-weight: 700;
 }
 
+.typed-cursor {
+  color: var(--green);
+  font-weight: 300;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .hero-description {
   font-size: 1.15rem;
   color: var(--gray);
@@ -179,6 +255,7 @@ ul {
   align-items: center;
   gap: 1.5rem;
   margin-bottom: 3rem;
+  flex-wrap: wrap;
 }
 
 /* Buttons */
@@ -226,6 +303,25 @@ ul {
   color: var(--white);
 }
 
+.btn-game {
+  padding: 13px 24px;
+  background: none;
+  color: var(--green);
+  border: 1px solid rgba(0, 232, 123, 0.3);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.btn-game:hover {
+  background: var(--green-soft);
+  border-color: var(--green);
+  box-shadow: 0 0 20px var(--green-glow);
+}
+
+.btn-game i {
+  font-size: 0.85rem;
+}
+
 .btn-lg {
   padding: 16px 36px;
   font-size: 0.9rem;
@@ -260,6 +356,11 @@ ul {
   overflow: hidden;
   border: 2px solid var(--border);
   position: relative;
+  transition: transform 0.3s ease;
+}
+
+.image-wrapper:hover {
+  transform: scale(1.02);
 }
 
 .image-wrapper::after {
@@ -376,11 +477,14 @@ section {
 
 .skill-card {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
-  padding: 28px 32px;
+  gap: 10px;
+  padding: 28px 20px;
   background: var(--bg);
   transition: all 0.35s ease;
+  transform-style: preserve-3d;
+  perspective: 500px;
 }
 
 .skill-card:hover {
@@ -388,23 +492,49 @@ section {
 }
 
 .skill-card i {
-  font-size: 1.6rem;
+  font-size: 2rem;
   color: var(--green);
-  width: 28px;
-  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.skill-card:hover i,
+.skill-card:hover .claude-icon {
+  transform: scale(1.2) translateZ(10px);
 }
 
 .skill-card .claude-icon {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   color: var(--green);
   flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
 
 .skill-card span {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: var(--gray-light);
+}
+
+.skill-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--surface);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.skill-fill {
+  height: 100%;
+  width: 0;
+  background: var(--green);
+  border-radius: 3px;
+  transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-card.visible .skill-fill {
+  width: var(--level);
 }
 
 /* ===== Projects ===== */
@@ -430,6 +560,7 @@ section {
   padding: 32px 36px;
   background: var(--bg);
   transition: all 0.35s ease;
+  transform-style: preserve-3d;
 }
 
 .project-card:hover {
@@ -481,6 +612,146 @@ section {
 
 .project-links a:hover {
   color: var(--green);
+}
+
+/* ===== Snake Game ===== */
+.game-section {
+  border-top: 1px solid var(--border);
+}
+
+.game-subtitle {
+  color: var(--gray);
+  font-size: 1rem;
+  margin-top: -2rem;
+  margin-bottom: 2rem;
+}
+
+.game-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.game-hud {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.hud-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: var(--gray);
+}
+
+.hud-item i {
+  color: var(--green);
+}
+
+.hud-item strong {
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+#snake-canvas {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-alt);
+  display: block;
+  max-width: 100%;
+}
+
+.game-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26, 26, 26, 0.85);
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+  z-index: 5;
+  pointer-events: all;
+  cursor: none;
+  transition: opacity 0.3s ease;
+}
+
+.game-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.game-overlay-content {
+  text-align: center;
+}
+
+.game-overlay-icon {
+  font-size: 3rem;
+  color: var(--green);
+  margin-bottom: 1rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+}
+
+.game-overlay p {
+  color: var(--gray);
+  font-size: 1rem;
+}
+
+.game-overlay kbd {
+  display: inline-block;
+  padding: 3px 10px;
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+  color: var(--green);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.game-controls-mobile {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 1rem;
+}
+
+.game-btn-row {
+  display: flex;
+  gap: 4px;
+}
+
+.game-btn {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--green);
+  font-size: 1.1rem;
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.game-btn:active {
+  background: var(--green-soft);
+  transform: scale(0.95);
 }
 
 /* ===== Contact ===== */
@@ -547,6 +818,29 @@ footer p {
   color: var(--gray-dark);
 }
 
+.easter-egg-hint {
+  font-size: 0.65rem !important;
+  opacity: 0.3;
+  font-style: italic;
+}
+
+/* ===== Matrix Canvas (Easter Egg) ===== */
+#matrix-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+#matrix-canvas.active {
+  opacity: 1;
+}
+
 /* ===== Animations ===== */
 .reveal {
   opacity: 0;
@@ -588,8 +882,43 @@ footer p {
   }
 }
 
+/* Magnetic button effect */
+.magnetic {
+  transition: transform 0.3s ease;
+}
+
+/* ===== Ripple effect ===== */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 232, 123, 0.3);
+  transform: scale(0);
+  animation: ripple-anim 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple-anim {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+  body {
+    cursor: auto;
+  }
+
+  a, button {
+    cursor: auto;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+
   .hero {
     flex-direction: column;
     text-align: center;
@@ -689,6 +1018,10 @@ footer p {
 
   section {
     padding: 80px 6%;
+  }
+
+  .game-controls-mobile {
+    display: flex;
   }
 }
 
