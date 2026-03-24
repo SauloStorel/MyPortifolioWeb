@@ -391,6 +391,92 @@ async function fetchGithubProjects() {
 
 fetchGithubProjects();
 
+// ===== Contact Form Validation =====
+const contactForm = document.getElementById("contact-form");
+
+function setError(inputId, errorId, msg) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(errorId);
+  if (!input || !error) return;
+  input.classList.add("invalid");
+  error.textContent = msg;
+  error.classList.add("visible");
+}
+
+function clearError(inputId, errorId) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(errorId);
+  if (!input || !error) return;
+  input.classList.remove("invalid");
+  error.classList.remove("visible");
+}
+
+if (contactForm) {
+  // Limpa erro enquanto o usuário digita
+  ["contact-name", "contact-email", "contact-message"].forEach((id, i) => {
+    const errorIds = ["error-name", "error-email", "error-message"];
+    document.getElementById(id)?.addEventListener("input", () => clearError(id, errorIds[i]));
+  });
+
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name    = document.getElementById("contact-name");
+    const email   = document.getElementById("contact-email");
+    const message = document.getElementById("contact-message");
+    const btn     = document.getElementById("form-submit");
+    let valid = true;
+
+    clearError("contact-name",    "error-name");
+    clearError("contact-email",   "error-email");
+    clearError("contact-message", "error-message");
+
+    if (!name.value.trim()) {
+      setError("contact-name", "error-name", "Informe seu nome.");
+      valid = false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.value.trim()) {
+      setError("contact-email", "error-email", "Informe seu email.");
+      valid = false;
+    } else if (!emailRegex.test(email.value.trim())) {
+      setError("contact-email", "error-email", "Email inválido.");
+      valid = false;
+    }
+
+    if (!message.value.trim()) {
+      setError("contact-message", "error-message", "Escreva sua mensagem.");
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    btn.classList.add("btn-loading");
+    btn.querySelector("span").textContent = "Enviando...";
+
+    try {
+      const res = await fetch(contactForm.action, {
+        method: "POST",
+        headers: { "Accept": "application/json" },
+        body: new FormData(contactForm),
+      });
+
+      if (res.ok) {
+        showToast("Mensagem enviada!");
+        contactForm.reset();
+      } else {
+        showToast("Erro ao enviar. Tente novamente.");
+      }
+    } catch {
+      showToast("Erro de conexão. Tente novamente.");
+    } finally {
+      btn.classList.remove("btn-loading");
+      btn.querySelector("span").textContent = "Enviar mensagem";
+    }
+  });
+}
+
 // ===== Local Time =====
 const localTimeEl = document.getElementById("local-time-display");
 
