@@ -1,3 +1,6 @@
+// Sempre volta ao topo ao recarregar
+history.scrollRestoration = "manual";
+
 // ===== Spotlight + Cursor + Dust =====
 let mouseX = -2000, mouseY = -2000;
 
