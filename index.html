@@ -3,12 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Saulo Storel | Portfólio</title>
+    <meta name="description" content="Portfólio de Saulo Storel — Desenvolvedor Web focado em experiências digitais com código limpo e design minimalista." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Saulo Storel | Desenvolvedor Web" />
+    <meta property="og:description" content="Desenvolvedor Web & estudante de ADS. Interfaces limpas, responsivas e com atenção aos detalhes." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="images/foto.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230c0c0c'/%3E%3Ctext x='50' y='68' font-family='Inter,system-ui,sans-serif' font-size='52' font-weight='800' fill='%23c8a97e' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
+
+    <title>Saulo Storel | Desenvolvedor Web</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
     <link
@@ -17,99 +28,116 @@
     />
   </head>
   <body>
-    <!-- Particle Canvas -->
-    <canvas id="particles"></canvas>
+    <!-- Ambient Canvas -->
+    <canvas id="ambient-canvas"></canvas>
 
     <!-- Navbar -->
     <nav id="navbar">
-      <a href="#home" class="logo">&lt;S/&gt;</a>
+      <a href="#home" class="logo">
+        <span class="logo-text">Saulo Storel</span>
+      </a>
       <ul>
-        <li><a href="#home">Inicio</a></li>
+        <li><a href="#home">Início</a></li>
         <li><a href="#about">Sobre</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projetos</a></li>
-        <li><a href="#game">Minigame</a></li>
         <li><a href="#contact">Contato</a></li>
       </ul>
       <button class="menu-toggle" aria-label="Abrir menu">
         <span></span>
         <span></span>
-        <span></span>
       </button>
     </nav>
 
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
-
     <!-- Hero -->
     <section id="home" class="hero">
-      <div class="hero-content">
-        <div class="hero-tag">Desenvolvedor Web</div>
-        <h1>
-          Olá, eu sou<br />
-          <span class="name" id="typed-name"></span><span class="typed-cursor">|</span>
-        </h1>
-        <p class="hero-description">
-          Estudante de Análise e Desenvolvimento de Sistemas,
-          construindo experiências digitais com código limpo e design minimalista.
-        </p>
-        <div class="hero-buttons">
-          <a href="#projects" class="btn btn-primary magnetic">
-            <span>Projetos</span>
-            <i class="fas fa-arrow-right"></i>
-          </a>
-          <a href="#contact" class="btn btn-ghost magnetic">Fale comigo</a>
-          <a href="#game" class="btn btn-game magnetic">
-            <i class="fas fa-gamepad"></i>
-            <span>Jogar</span>
-          </a>
-        </div>
-        <div class="hero-social">
-          <a href="https://github.com/" target="_blank" aria-label="GitHub" class="magnetic">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="https://linkedin.com/" target="_blank" aria-label="LinkedIn" class="magnetic">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a href="mailto:seu@email.com" aria-label="Email" class="magnetic">
-            <i class="fas fa-envelope"></i>
-          </a>
+      <div class="hero-photo">
+        <div class="photo-frame">
+          <picture>
+            <source srcset="images/foto.webp" type="image/webp" />
+            <img src="images/foto.png" alt="Saulo Storel — Desenvolvedor Web" />
+          </picture>
+          <div class="photo-overlay"></div>
         </div>
       </div>
-      <div class="hero-image">
-        <div class="image-wrapper">
-          <img src="images/foto.png" alt="Foto de Saulo Storel" />
+      <div class="hero-content">
+        <div class="hero-status">
+          <span class="status-dot"></span>
+          Disponível para oportunidades
+        </div>
+        <h1>
+          <span class="greeting">Olá, eu sou</span>
+          <span class="name" id="typed-name"></span><span class="cursor-blink">|</span>
+        </h1>
+        <p class="hero-desc">
+          Desenvolvedor Web &amp; estudante de ADS, transformando ideias em
+          interfaces limpas, responsivas e com atenção aos detalhes.
+        </p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">
+            <span>Ver Projetos</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+          <a href="#contact" class="btn btn-outline">Contato</a>
+          <a href="docs/curriculo.pdf" target="_blank" class="btn btn-ghost">
+            <i class="fas fa-file-arrow-down"></i>
+            <span>Currículo</span>
+          </a>
+        </div>
+        <div class="hero-links">
+          <a href="https://github.com/saulostorel" target="_blank" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/saulo-storel-235037399" target="_blank" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="mailto:saulostorell@gmail.com" aria-label="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
         </div>
       </div>
     </section>
 
     <!-- About -->
-    <section id="about" class="about">
+    <section id="about" class="about section">
       <div class="container">
-        <span class="section-label">Conheça</span>
-        <h2 class="section-title">Sobre Mim</h2>
-        <div class="about-grid">
-          <div class="about-text">
-            <p>
-              Sou estudante de Análise e Desenvolvimento de Sistemas, apaixonado
-              por tecnologia e desenvolvimento web. Busco constantemente aprender
-              novas tecnologias e aprimorar minhas habilidades para criar soluções
-              eficientes e elegantes.
-            </p>
-            <p>
-              Meu objetivo é me tornar um desenvolvedor completo, capaz de
-              transformar ideias em produtos digitais que fazem a diferença.
-            </p>
-          </div>
-          <div class="about-stats">
-            <div class="stat">
-              <span class="stat-number" data-target="5">0</span>
-              <span class="stat-label">Projetos</span>
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2>Sobre Mim</h2>
+        </div>
+        <div class="about-content">
+          <p>
+            Sou estudante de <strong>Análise e Desenvolvimento de Sistemas</strong>,
+            focado em desenvolvimento web front-end. Gosto de resolver problemas
+            com código limpo e criar interfaces que sejam bonitas e funcionais ao
+            mesmo tempo.
+          </p>
+          <p>
+            Tenho experiência prática com HTML, CSS, JavaScript e Python — e estou
+            sempre explorando novas ferramentas. Este portfólio, por exemplo, foi
+            construído do zero, sem frameworks, com foco em performance e design.
+          </p>
+          <div class="about-highlights">
+            <div class="highlight">
+              <i class="fas fa-graduation-cap"></i>
+              <div>
+                <strong>Análise e Desenvolvimento de Sistemas</strong>
+                <span>Em andamento</span>
+              </div>
             </div>
-            <div class="stat">
-              <span class="stat-number" data-target="3">0</span>
-              <span class="stat-label">Tecnologias</span>
+            <div class="highlight">
+              <i class="fas fa-map-marker-alt"></i>
+              <div>
+                <strong>Brasil</strong>
+                <span>Disponível remoto</span>
+              </div>
+            </div>
+            <div class="highlight">
+              <i class="fas fa-code"></i>
+              <div>
+                <strong>Front-end & Automação</strong>
+                <span>Foco principal</span>
+              </div>
             </div>
           </div>
         </div>
@@ -117,176 +145,150 @@
     </section>
 
     <!-- Skills -->
-    <section id="skills" class="skills">
+    <section id="skills" class="skills section">
       <div class="container">
-        <span class="section-label">Ferramentas</span>
-        <h2 class="section-title">Skills</h2>
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2>Skills</h2>
+        </div>
+        <p class="skills-subtitle">Tecnologias que uso no dia a dia</p>
         <div class="skills-grid">
-          <div class="skill-card tilt-card" data-level="90">
+          <div class="skill-item" style="--brand: #E34F26">
             <i class="fab fa-html5"></i>
-            <span>HTML5</span>
-            <div class="skill-bar"><div class="skill-fill"></div></div>
+            <span class="skill-name">HTML5</span>
           </div>
-          <div class="skill-card tilt-card" data-level="85">
+          <div class="skill-item" style="--brand: #1572B6">
             <i class="fab fa-css3-alt"></i>
-            <span>CSS3</span>
-            <div class="skill-bar"><div class="skill-fill"></div></div>
+            <span class="skill-name">CSS3</span>
           </div>
-          <div class="skill-card tilt-card" data-level="75">
+          <div class="skill-item" style="--brand: #F7DF1E">
             <i class="fab fa-js"></i>
-            <span>JavaScript</span>
-            <div class="skill-bar"><div class="skill-fill"></div></div>
+            <span class="skill-name">JavaScript</span>
           </div>
-          <div class="skill-card tilt-card" data-level="70">
+          <div class="skill-item" style="--brand: #3776AB">
             <i class="fab fa-python"></i>
-            <span>Python</span>
-            <div class="skill-bar"><div class="skill-fill"></div></div>
+            <span class="skill-name">Python</span>
           </div>
-          <div class="skill-card tilt-card" data-level="80">
+          <div class="skill-item" style="--brand: #F05032">
             <i class="fab fa-git-alt"></i>
-            <span>Git</span>
-            <div class="skill-bar"><div class="skill-fill"></div></div>
+            <span class="skill-name">Git</span>
           </div>
-          <div class="skill-card tilt-card" data-level="65">
+          <div class="skill-item" style="--brand: #00758F">
             <i class="fas fa-database"></i>
-            <span>SQL</span>
-            <div class="skill-bar"><div class="skill-fill"></div></div>
+            <span class="skill-name">SQL</span>
           </div>
-          <div class="skill-card tilt-card" data-level="85">
-            <svg class="claude-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16.604 2.985a1.69 1.69 0 0 0-2.239.676l-5.074 9.065-2.183-3.85a1.69 1.69 0 0 0-2.93 0L.136 16.267a1.69 1.69 0 0 0 1.465 2.535h5.22a1.69 1.69 0 0 0 1.466-.847l3.005-5.283 2.107 3.716a1.69 1.69 0 0 0 1.465.847h5.22c1.287 0 2.089-1.398 1.465-2.535l-2.183-3.85a1.69 1.69 0 0 0-2.93 0l-.924 1.628-2.183-3.85-.015-.028 1.913-3.376a1.69 1.69 0 0 0-.623-2.24Z" fill="currentColor"/>
+          <div class="skill-item" style="--brand: #D97757">
+            <svg class="skill-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.596 4.395 8.09 19h2.538l1.178-3.168h5.19L18.174 19h2.537L15.2 4.395ZM12.6 13.77l1.8-4.847 1.8 4.847Z" fill="currentColor"/>
             </svg>
-            <span>Claude Code</span>
-            <div class="skill-bar"><div class="skill-fill"></div></div>
+            <span class="skill-name">Claude</span>
           </div>
-          <div class="skill-card tilt-card" data-level="80">
+          <div class="skill-item" style="--brand: #FCC624">
             <i class="fab fa-linux"></i>
-            <span>Linux</span>
-            <div class="skill-bar"><div class="skill-fill"></div></div>
+            <span class="skill-name">Linux</span>
           </div>
+        </div>
+        <p class="skills-learning-label">Aprendendo agora</p>
+        <div class="skills-learning">
+          <span class="learning-tag"><i class="fab fa-react"></i> React</span>
+          <span class="learning-tag"><i class="fab fa-js"></i> TypeScript</span>
+          <span class="learning-tag"><i class="fab fa-docker"></i> Docker</span>
+          <span class="learning-tag"><i class="fab fa-node-js"></i> Node.js</span>
         </div>
       </div>
     </section>
 
     <!-- Projects -->
-    <section id="projects" class="projects">
+    <section id="projects" class="projects section">
       <div class="container">
-        <span class="section-label">Trabalhos</span>
-        <h2 class="section-title">Projetos</h2>
-        <div class="projects-grid">
-          <article class="project-card tilt-card">
-            <div class="project-number">01</div>
-            <h3>Projeto 01</h3>
-            <p>Descrição breve do projeto e tecnologias utilizadas.</p>
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2>Projetos</h2>
+        </div>
+        <div class="projects-list">
+          <article class="project-item">
+            <div class="project-index">01</div>
+            <div class="project-info">
+              <h3>Portfólio Pessoal</h3>
+              <p>Site responsivo construído do zero com animações e tema personalizado.</p>
+            </div>
             <div class="project-tags">
               <span>HTML</span>
               <span>CSS</span>
               <span>JS</span>
             </div>
             <div class="project-links">
-              <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+              <a href="https://github.com/saulostorel" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
               <a href="#" aria-label="Live"><i class="fas fa-arrow-up-right-from-square"></i></a>
             </div>
           </article>
-          <article class="project-card tilt-card">
-            <div class="project-number">02</div>
-            <h3>Projeto 02</h3>
-            <p>Descrição breve do projeto e tecnologias utilizadas.</p>
+          <article class="project-item">
+            <div class="project-index">02</div>
+            <div class="project-info">
+              <h3>Automação de Dados</h3>
+              <p>Script Python para coleta, tratamento e inserção automática de dados em banco SQL.</p>
+            </div>
             <div class="project-tags">
               <span>Python</span>
               <span>SQL</span>
             </div>
             <div class="project-links">
-              <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
-              <a href="#" aria-label="Live"><i class="fas fa-arrow-up-right-from-square"></i></a>
+              <a href="https://github.com/saulostorel" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
             </div>
           </article>
-          <article class="project-card tilt-card">
-            <div class="project-number">03</div>
-            <h3>Projeto 03</h3>
-            <p>Descrição breve do projeto e tecnologias utilizadas.</p>
+          <article class="project-item">
+            <div class="project-index">03</div>
+            <div class="project-info">
+              <h3>Landing Page Responsiva</h3>
+              <p>Página institucional com design mobile-first, formulário funcional e SEO otimizado.</p>
+            </div>
             <div class="project-tags">
               <span>HTML</span>
               <span>CSS</span>
+              <span>JS</span>
             </div>
             <div class="project-links">
-              <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+              <a href="https://github.com/saulostorel" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
               <a href="#" aria-label="Live"><i class="fas fa-arrow-up-right-from-square"></i></a>
             </div>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Snake Game -->
-    <section id="game" class="game-section">
-      <div class="container">
-        <span class="section-label">Diversão</span>
-        <h2 class="section-title">Snake Game</h2>
-        <p class="game-subtitle">Use as setas do teclado ou deslize na tela para jogar!</p>
-        <div class="game-wrapper">
-          <div class="game-hud">
-            <div class="hud-item">
-              <i class="fas fa-star"></i>
-              <span>Score: <strong id="score">0</strong></span>
-            </div>
-            <div class="hud-item">
-              <i class="fas fa-trophy"></i>
-              <span>Record: <strong id="highscore">0</strong></span>
-            </div>
-          </div>
-          <canvas id="snake-canvas"></canvas>
-          <div class="game-overlay" id="game-overlay">
-            <div class="game-overlay-content">
-              <i class="fas fa-gamepad game-overlay-icon"></i>
-              <p>Pressione <kbd>Space</kbd> ou clique para jogar</p>
-            </div>
-          </div>
-          <div class="game-controls-mobile">
-            <button class="game-btn" id="btn-up"><i class="fas fa-chevron-up"></i></button>
-            <div class="game-btn-row">
-              <button class="game-btn" id="btn-left"><i class="fas fa-chevron-left"></i></button>
-              <button class="game-btn" id="btn-down"><i class="fas fa-chevron-down"></i></button>
-              <button class="game-btn" id="btn-right"><i class="fas fa-chevron-right"></i></button>
-            </div>
-          </div>
         </div>
       </div>
     </section>
 
     <!-- Contact -->
-    <section id="contact" class="contact">
+    <section id="contact" class="contact section">
       <div class="container">
-        <span class="section-label">Vamos conversar</span>
-        <h2 class="section-title">Contato</h2>
-        <p class="contact-subtitle">
-          Tem um projeto em mente? Adoraria ouvir sobre ele.
+        <div class="section-header center">
+          <span class="section-number">04</span>
+          <h2>Contato</h2>
+        </div>
+        <p class="contact-text">
+          Tem uma vaga, projeto ou ideia? Vamos conversar.
         </p>
-        <a href="mailto:seu@email.com" class="btn btn-primary btn-lg magnetic">
+        <a href="mailto:saulostorell@gmail.com" class="btn btn-primary btn-lg">
           <span>Enviar mensagem</span>
           <i class="fas fa-arrow-right"></i>
         </a>
-        <div class="contact-footer-links">
-          <a href="https://github.com/" target="_blank">GitHub</a>
-          <span class="dot"></span>
-          <a href="https://linkedin.com/" target="_blank">LinkedIn</a>
-          <span class="dot"></span>
-          <a href="mailto:seu@email.com">Email</a>
+        <div class="contact-links">
+          <a href="https://github.com/saulostorel" target="_blank">GitHub</a>
+          <span class="divider"></span>
+          <a href="https://www.linkedin.com/in/saulo-storel-235037399" target="_blank">LinkedIn</a>
+          <span class="divider"></span>
+          <a href="mailto:saulostorell@gmail.com">Email</a>
         </div>
       </div>
     </section>
 
     <!-- Footer -->
     <footer>
-      <div class="footer-content">
-        <a href="#home" class="logo">&lt;S/&gt;</a>
-        <p>Feito por Saulo Storel &copy; 2025</p>
-        <p class="easter-egg-hint">Tente o Konami Code ;)</p>
+      <div class="footer-inner">
+        <a href="#home" class="logo">
+          <span class="logo-text">Saulo Storel</span>
+        </a>
+        <p>&copy; 2025 Saulo Storel</p>
       </div>
     </footer>
-
-    <!-- Matrix Rain Canvas (Easter Egg) -->
-    <canvas id="matrix-canvas"></canvas>
 
     <script src="script.js"></script>
   </body>
