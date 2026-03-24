@@ -1,39 +1,11 @@
 // ===== Spotlight + Cursor + Dust =====
 let mouseX = -2000, mouseY = -2000;
-let ringX = -2000, ringY = -2000;
-
-const cursorDot  = document.querySelector(".cursor-dot");
-const cursorRing = document.querySelector(".cursor-ring");
 
 document.addEventListener("mousemove", (e) => {
   mouseX = e.clientX;
   mouseY = e.clientY;
-  cursorDot.style.left = e.clientX + "px";
-  cursorDot.style.top  = e.clientY + "px";
   document.documentElement.style.setProperty("--mouse-x", e.clientX + "px");
   document.documentElement.style.setProperty("--mouse-y", e.clientY + "px");
-});
-
-document.addEventListener("mouseleave", () => {
-  cursorDot.style.opacity  = "0";
-  cursorRing.style.opacity = "0";
-});
-document.addEventListener("mouseenter", () => {
-  cursorDot.style.opacity  = "1";
-  cursorRing.style.opacity = "1";
-});
-
-(function lerpRing() {
-  ringX += (mouseX - ringX) * 0.12;
-  ringY += (mouseY - ringY) * 0.12;
-  cursorRing.style.left = ringX + "px";
-  cursorRing.style.top  = ringY + "px";
-  requestAnimationFrame(lerpRing);
-})();
-
-document.querySelectorAll("a, button, .skill-item, .project-item, .learning-tag").forEach(el => {
-  el.addEventListener("mouseenter", () => document.body.classList.add("cursor-hover"));
-  el.addEventListener("mouseleave", () => document.body.classList.remove("cursor-hover"));
 });
 
 // Dust particles

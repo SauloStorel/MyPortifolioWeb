@@ -59,47 +59,18 @@
 
 /* ===== Custom Cursor ===== */
 @media (hover: hover) {
-  body { cursor: none; }
-  a, button, .skill-item, .project-item, .learning-tag, .highlight { cursor: none; }
+  body,
+  a, button, .skill-item, .project-item, .learning-tag, .highlight {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='20' viewBox='0 0 16 20'%3E%3Cfilter id='s'%3E%3CfeDropShadow dx='0' dy='1' stdDeviation='1' flood-opacity='0.4'/%3E%3C/filter%3E%3Cpath d='M2 1 L2 15.5 L5.5 12 L8 18 L10.5 17 L8 11.5 L13 11.5 Z' fill='white' filter='url(%23s)' stroke='%231a1a1a' stroke-width='0.8' stroke-linejoin='round'/%3E%3C/svg%3E") 2 1, auto;
+  }
+  a, button, .skill-item, .project-item, .learning-tag, .highlight {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='20' viewBox='0 0 16 20'%3E%3Cfilter id='s'%3E%3CfeDropShadow dx='0' dy='1' stdDeviation='1' flood-opacity='0.4'/%3E%3C/filter%3E%3Cpath d='M2 1 L2 15.5 L5.5 12 L8 18 L10.5 17 L8 11.5 L13 11.5 Z' fill='white' filter='url(%23s)' stroke='%231a1a1a' stroke-width='0.8' stroke-linejoin='round'/%3E%3C/svg%3E") 2 1, pointer;
+  }
 }
 
-.cursor-dot {
-  position: fixed;
-  width: 5px;
-  height: 5px;
-  background: var(--accent);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  left: -20px;
-  top: -20px;
-  transform: translate(-50%, -50%);
-  transition: transform 0.15s, opacity 0.3s;
-}
+.cursor-dot { display: none; }
 
-.cursor-ring {
-  position: fixed;
-  width: 28px;
-  height: 28px;
-  border: 1px solid rgba(200, 169, 126, 0.45);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  left: -40px;
-  top: -40px;
-  transform: translate(-50%, -50%);
-  transition: width 0.25s, height 0.25s, border-color 0.25s, opacity 0.3s;
-}
-
-body.cursor-hover .cursor-ring {
-  width: 44px;
-  height: 44px;
-  border-color: var(--accent);
-}
-
-body.cursor-hover .cursor-dot {
-  transform: translate(-50%, -50%) scale(0);
-}
+.cursor-ring { display: none; }
 
 @media (hover: none) {
   .cursor-dot, .cursor-ring { display: none; }
