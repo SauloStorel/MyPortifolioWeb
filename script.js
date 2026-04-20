@@ -146,9 +146,13 @@ menuToggle.addEventListener("click", () => {
 });
 
 navList.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
     menuToggle.classList.remove("active");
     navList.classList.remove("active");
+    const target = document.querySelector(link.getAttribute("href"));
+    if (target) target.scrollIntoView({ behavior: "smooth" });
+    history.replaceState(null, "", location.pathname);
   });
 });
 

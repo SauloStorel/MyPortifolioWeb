@@ -411,13 +411,13 @@ body::before {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #7dba8c;
+  background: #5b9bd5;
   animation: pulse-dot 2s ease-in-out infinite;
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(125, 186, 140, 0.4); }
-  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(125, 186, 140, 0); }
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(91, 155, 213, 0.4); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(91, 155, 213, 0); }
 }
 
 .hero-content h1 {
