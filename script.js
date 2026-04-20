@@ -1,87 +1,4 @@
-// Sempre volta ao topo ao recarregar
 history.scrollRestoration = "manual";
-
-// ===== Spotlight + Cursor + Dust =====
-let mouseX = -2000, mouseY = -2000;
-
-document.addEventListener("mousemove", (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  document.documentElement.style.setProperty("--mouse-x", e.clientX + "px");
-  document.documentElement.style.setProperty("--mouse-y", e.clientY + "px");
-});
-
-// Dust particles
-const dustCanvas = document.getElementById("dust-canvas");
-const dCtx = dustCanvas.getContext("2d");
-
-function resizeDust() {
-  dustCanvas.width = window.innerWidth;
-  dustCanvas.height = window.innerHeight;
-}
-resizeDust();
-window.addEventListener("resize", resizeDust);
-
-class Particle {
-  constructor() { this.init(true); }
-
-  init(randomY = false) {
-    this.x = Math.random() * window.innerWidth;
-    this.y = randomY ? Math.random() * window.innerHeight : window.innerHeight + 5;
-    this.size = Math.random() * 1.2 + 0.4;
-    this.vx = (Math.random() - 0.5) * 0.15;
-    this.vy = -(Math.random() * 0.25 + 0.05);
-    this.opacity = Math.random() * 0.35 + 0.08;
-    this.life = randomY ? Math.random() : 0;
-    this.lifeSpeed = Math.random() * 0.0015 + 0.0008;
-  }
-
-  update() {
-    const dx = this.x - mouseX;
-    const dy = this.y - mouseY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < 120 && dist > 0) {
-      const force = (120 - dist) / 120;
-      this.vx += (dx / dist) * force * 0.4;
-      this.vy += (dy / dist) * force * 0.4;
-    }
-
-    this.vx *= 0.97;
-    this.vy *= 0.97;
-    this.vy -= 0.008;
-
-    this.x += this.vx;
-    this.y += this.vy;
-    this.life += this.lifeSpeed;
-
-    if (this.life >= 1 || this.y < -10) this.init();
-    if (this.x < -5) this.x = window.innerWidth + 5;
-    if (this.x > window.innerWidth + 5) this.x = -5;
-  }
-
-  draw() {
-    const alpha = Math.sin(this.life * Math.PI) * this.opacity;
-    dCtx.beginPath();
-    dCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    dCtx.fillStyle = `rgba(200, 169, 126, ${alpha})`;
-    dCtx.fill();
-  }
-}
-
-const particles = Array.from({ length: 70 }, () => new Particle());
-
-let dustRafId;
-function drawDust() {
-  dCtx.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
-  particles.forEach(p => { p.update(); p.draw(); });
-  dustRafId = requestAnimationFrame(drawDust);
-}
-drawDust();
-
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) cancelAnimationFrame(dustRafId);
-  else drawDust();
-});
 
 // ===== Typing Effect =====
 const typedName = document.getElementById("typed-name");
@@ -109,7 +26,6 @@ function runType(steps, i = 0) {
         setTimeout(tick, 75 + Math.random() * 55);
       } else { next(); }
     })();
-
   } else if (step.action === "backspace") {
     let c = 0;
     (function tick() {
@@ -119,10 +35,8 @@ function runType(steps, i = 0) {
         setTimeout(tick, 55 + Math.random() * 30);
       } else { next(); }
     })();
-
   } else if (step.action === "pause") {
     setTimeout(next, step.ms);
-
   } else if (step.action === "done") {
     setTimeout(() => {
       if (cursorEl) {
@@ -163,7 +77,7 @@ const revealObserver = new IntersectionObserver(
       if (entry.isIntersecting) entry.target.classList.add("visible");
     });
   },
-  { threshold: 0.12 }
+  { threshold: 0.1 }
 );
 
 document.querySelectorAll(".section").forEach((el) => {
@@ -175,19 +89,15 @@ document.querySelectorAll(".section").forEach((el) => {
 const yearEl = document.getElementById("footer-year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// ===== Scroll Progress Bar =====
+// ===== Scroll Progress + Active Nav =====
 const scrollProgress = document.getElementById("scroll-progress");
-
-// ===== Active Nav on Scroll =====
 const sections = document.querySelectorAll("section");
 const navLinks = document.querySelectorAll("#navbar ul a");
 
 window.addEventListener("scroll", () => {
-  // Progress bar
   const scrolled = scrollY / (document.body.scrollHeight - window.innerHeight);
   scrollProgress.style.width = Math.min(scrolled * 100, 100) + "%";
 
-  // Active nav
   let current = "";
   const nearBottom = window.innerHeight + scrollY >= document.body.offsetHeight - 80;
 
@@ -216,44 +126,13 @@ function showToast(msg) {
   toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
 }
 
-// ===== Copy Email on Click =====
+// ===== Copy Email =====
 document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
-  link.addEventListener("click", (e) => {
+  link.addEventListener("click", () => {
     const email = link.getAttribute("href").replace("mailto:", "");
     navigator.clipboard.writeText(email)
       .then(() => showToast("Email copiado!"))
       .catch(() => showToast("Abrindo cliente de email..."));
-  });
-});
-
-// ===== Photo Tilt 3D =====
-const photoFrame = document.querySelector(".photo-frame");
-if (photoFrame) {
-  photoFrame.addEventListener("mousemove", (e) => {
-    const rect = photoFrame.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    photoFrame.style.transform = `perspective(800px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) scale(1.02)`;
-  });
-
-  photoFrame.addEventListener("mouseleave", () => {
-    photoFrame.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
-    photoFrame.style.transform = "perspective(800px) rotateY(0deg) rotateX(0deg) scale(1)";
-    setTimeout(() => { photoFrame.style.transition = ""; }, 600);
-  });
-}
-
-// ===== Magnetic Buttons =====
-document.querySelectorAll(".btn-primary").forEach((btn) => {
-  btn.addEventListener("mousemove", (e) => {
-    const rect = btn.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) * 0.25;
-    const y = (e.clientY - rect.top - rect.height / 2) * 0.25;
-    btn.style.transform = `translate(${x}px, ${y}px) translateY(-1px)`;
-  });
-
-  btn.addEventListener("mouseleave", () => {
-    btn.style.transform = "";
   });
 });
 
@@ -263,54 +142,15 @@ const themeToggleBtn = document.getElementById("theme-toggle");
 function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
   localStorage.setItem("theme", theme);
-  const icon = themeToggleBtn.querySelector("i");
-  icon.className = theme === "dark" ? "fas fa-sun" : "fas fa-moon";
+  themeToggleBtn.querySelector("i").className =
+    theme === "dark" ? "fas fa-sun" : "fas fa-moon";
 }
 
-// Sync icon on load
 applyTheme(document.documentElement.getAttribute("data-theme") || "dark");
 
 themeToggleBtn.addEventListener("click", () => {
-  const current = document.documentElement.getAttribute("data-theme");
-  applyTheme(current === "dark" ? "light" : "dark");
+  applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
 });
-
-// ===== Project Preview =====
-const previewCard = document.createElement("div");
-previewCard.className = "project-preview";
-document.body.appendChild(previewCard);
-
-function attachProjectPreviews() {
-  document.querySelectorAll(".project-item").forEach((item) => {
-    const titleEl = item.querySelector("h3");
-    const tags    = [...item.querySelectorAll(".project-tags span")].map(s => s.textContent);
-    const index   = item.querySelector(".project-index")?.textContent || "";
-    if (!titleEl) return;
-
-    item.addEventListener("mouseenter", () => {
-      previewCard.innerHTML = `
-        <div class="preview-label">Projeto ${escHtml(index)}</div>
-        <div class="preview-title">${escHtml(titleEl.textContent)}</div>
-        <div class="preview-tags">${tags.map(t => `<span>${escHtml(t)}</span>`).join("")}</div>
-      `;
-      previewCard.classList.add("visible");
-    });
-
-    item.addEventListener("mousemove", (e) => {
-      const x = e.clientX + 28;
-      const y = e.clientY - 60;
-      const maxX = window.innerWidth - 250;
-      previewCard.style.left = Math.min(x, maxX) + "px";
-      previewCard.style.top  = Math.max(y, 10) + "px";
-    });
-
-    item.addEventListener("mouseleave", () => {
-      previewCard.classList.remove("visible");
-    });
-  });
-}
-
-attachProjectPreviews();
 
 // ===== GitHub Projects =====
 function escHtml(str) {
@@ -337,10 +177,8 @@ async function fetchGithubProjects() {
 
     const repos = await res.json();
     const nonForks = repos.filter(r => !r.fork);
-
-    // Prioriza repos marcados com o tópico "portfolio"
-    const pinned  = nonForks.filter(r => r.topics?.includes("portfolio"));
-    const toShow  = (pinned.length > 0 ? pinned : nonForks).slice(0, 6);
+    const pinned = nonForks.filter(r => r.topics?.includes("portfolio"));
+    const toShow = (pinned.length > 0 ? pinned : nonForks).slice(0, 6);
 
     if (toShow.length === 0) throw new Error("Nenhum repo encontrado");
 
@@ -348,8 +186,10 @@ async function fetchGithubProjects() {
       const index = String(i + 1).padStart(2, "0");
       const title = formatRepoName(repo.name);
       const desc  = repo.description || "Sem descrição.";
-      const tags  = (repo.topics?.length > 0 ? repo.topics.slice(0, 3) : (repo.language ? [repo.language] : []));
-      const live  = repo.homepage
+      const tags  = repo.topics?.length > 0
+        ? repo.topics.slice(0, 3)
+        : (repo.language ? [repo.language] : []);
+      const live = repo.homepage
         ? `<a href="${escHtml(repo.homepage)}" target="_blank" rel="noopener noreferrer" aria-label="Demo"><i class="fas fa-up-right-from-square"></i></a>`
         : "";
 
@@ -373,10 +213,8 @@ async function fetchGithubProjects() {
       `;
     }).join("");
 
-    attachProjectPreviews();
-
   } catch (err) {
-    console.warn("GitHub API indisponível, exibindo projetos estáticos.", err);
+    console.warn("GitHub API indisponível.", err);
     list.innerHTML = `
       <article class="project-item">
         <div class="project-index">01</div>
@@ -392,13 +230,12 @@ async function fetchGithubProjects() {
         </div>
       </article>
     `;
-    attachProjectPreviews();
   }
 }
 
 fetchGithubProjects();
 
-// ===== Contact Form Validation =====
+// ===== Contact Form =====
 const contactForm = document.getElementById("contact-form");
 
 function setError(inputId, errorId, msg) {
@@ -419,7 +256,6 @@ function clearError(inputId, errorId) {
 }
 
 if (contactForm) {
-  // Limpa erro enquanto o usuário digita
   ["contact-name", "contact-email", "contact-message"].forEach((id, i) => {
     const errorIds = ["error-name", "error-email", "error-message"];
     document.getElementById(id)?.addEventListener("input", () => clearError(id, errorIds[i]));
@@ -502,6 +338,5 @@ setInterval(updateLocalTime, 1000);
 window.addEventListener("load", () => {
   setTimeout(() => {
     document.getElementById("loader").classList.add("out");
-  }, 600);
+  }, 500);
 });
-
