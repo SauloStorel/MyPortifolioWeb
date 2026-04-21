@@ -72,6 +72,20 @@
   border: 0;
 }
 
+/* ===== Inline SVG Icons ===== */
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex-shrink: 0;
+}
+
+/* Theme toggle: show only the icon for the opposite theme */
+[data-theme="dark"] .icon-moon,
+[data-theme="light"] .icon-sun {
+  display: none;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
@@ -235,6 +249,8 @@ ul { list-style: none; }
   color: var(--accent);
   border-color: var(--accent);
 }
+
+.theme-toggle .icon { font-size: 1rem; }
 
 .menu-toggle {
   display: none;
@@ -427,12 +443,14 @@ ul { list-style: none; }
 
 .btn-primary:hover { background: #d4b88a; }
 
-.btn-primary i {
-  font-size: 0.65rem;
+.btn-primary .icon {
+  font-size: 0.8rem;
   transition: transform 0.2s;
 }
 
-.btn-primary:hover i { transform: translateX(3px); }
+.btn-primary:hover .icon { transform: translateX(3px); }
+
+.btn-outline .icon { font-size: 0.9rem; }
 
 .btn-outline {
   padding: 12px 28px;
@@ -522,13 +540,11 @@ ul { list-style: none; }
 
 .highlight:first-child { border-top: 1px solid var(--border); }
 
-.highlight i {
-  font-size: 0.85rem;
+.highlight .icon {
+  font-size: 1rem;
   color: var(--accent);
-  width: 16px;
-  text-align: center;
   flex-shrink: 0;
-  opacity: 0.65;
+  opacity: 0.75;
 }
 
 .highlight div {
@@ -634,8 +650,6 @@ ul { list-style: none; }
   letter-spacing: 0.4px;
   transition: color 0.2s, border-color 0.2s, border-style 0.2s;
 }
-
-.learning-tag i { font-size: 0.7rem; }
 
 .learning-tag:hover {
   border-color: var(--accent);
