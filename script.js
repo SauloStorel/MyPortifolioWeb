@@ -65,13 +65,16 @@ if (menuToggle && navList) {
 
   navList.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", (e) => {
-      e.preventDefault();
+      const href = link.getAttribute("href");
       menuToggle.classList.remove("active");
       navList.classList.remove("active");
       menuToggle.setAttribute("aria-expanded", "false");
-      const target = document.querySelector(link.getAttribute("href"));
-      if (target) target.scrollIntoView({ behavior: "smooth" });
-      history.replaceState(null, "", location.pathname);
+      if (href && href.startsWith("#")) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: "smooth" });
+        history.replaceState(null, "", location.pathname);
+      }
     });
   });
 }
@@ -210,6 +213,15 @@ const ICON_GITHUB = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" a
 
 const ICON_EXTERNAL = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>';
 
+const ICON_STAR = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+
+const LANG_COLORS = {
+  JavaScript: "#F7DF1E", TypeScript: "#3178C6", Ruby: "#CC342D",
+  Python: "#3776AB", HTML: "#E34F26", CSS: "#1572B6",
+  Shell: "#89E051", Go: "#00ADD8", Rust: "#DEA584",
+  "C#": "#239120", Java: "#b07219", PHP: "#4F5D95",
+};
+
 function readGithubCache() {
   try {
     const raw = localStorage.getItem(GH_CACHE_KEY);
@@ -249,32 +261,42 @@ function renderProjects(list, repos) {
 
   if (toShow.length === 0) return false;
 
-  list.innerHTML = toShow.map((repo, i) => {
-    const index = String(i + 1).padStart(2, "0");
+  list.className = "projects-grid";
+  list.innerHTML = toShow.map((repo) => {
     const title = formatRepoName(repo.name);
     const desc  = repo.description || "Sem descrição.";
-    const tags  = repo.topics?.length > 0
-      ? repo.topics.slice(0, 3)
-      : (repo.language ? [repo.language] : []);
+    const lang  = repo.language || "";
+    const langColor = LANG_COLORS[lang] || "var(--gray-dark)";
+    const tags  = (repo.topics?.filter(t => t !== "portfolio") || []).slice(0, 3);
+    const stars = repo.stargazers_count > 0
+      ? `<span class="card-stars">${ICON_STAR} ${repo.stargazers_count}</span>`
+      : "";
     const live = repo.homepage
-      ? `<a href="${escHtml(repo.homepage)}" target="_blank" rel="noopener noreferrer" aria-label="Demo">${ICON_EXTERNAL}</a>`
+      ? `<a href="${escHtml(repo.homepage)}" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Demo ao vivo">${ICON_EXTERNAL}</a>`
+      : "";
+    const slug = repo.name.toLowerCase();
+    const manualData = typeof PROJECTS_DATA !== "undefined"
+      ? PROJECTS_DATA.find(p => p.slug === slug)
+      : null;
+    const detailsLink = manualData
+      ? `<a href="project.html?slug=${encodeURIComponent(slug)}" class="card-details">Ver detalhes →</a>`
       : "";
 
     return `
-      <article class="project-item">
-        <div class="project-index">${escHtml(index)}</div>
-        <div class="project-info">
-          <h3>${escHtml(title)}</h3>
-          <p>${escHtml(desc)}</p>
+      <article class="project-card">
+        <div class="card-top">
+          ${lang ? `<span class="card-lang"><span class="lang-dot" style="background:${langColor}"></span>${escHtml(lang)}</span>` : "<span></span>"}
+          <div class="card-actions">
+            <a href="${escHtml(repo.html_url)}" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Ver no GitHub">${ICON_GITHUB}</a>
+            ${live}
+          </div>
         </div>
-        <div class="project-tags">
-          ${tags.map(t => `<span>${escHtml(t)}</span>`).join("")}
-        </div>
-        <div class="project-links">
-          <a href="${escHtml(repo.html_url)}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-            ${ICON_GITHUB}
-          </a>
-          ${live}
+        <h3 class="card-title">${escHtml(title)}</h3>
+        <p class="card-desc">${escHtml(desc)}</p>
+        <div class="card-bottom">
+          <div class="card-tags">${tags.map(t => `<span>${escHtml(t)}</span>`).join("")}</div>
+          ${stars}
+          ${detailsLink}
         </div>
       </article>
     `;
@@ -302,18 +324,20 @@ async function fetchGithubProjects() {
 
   } catch (err) {
     console.warn("GitHub API indisponível.", err);
+    list.className = "projects-grid";
     list.innerHTML = `
-      <article class="project-item">
-        <div class="project-index">01</div>
-        <div class="project-info">
-          <h3>Portfólio Pessoal</h3>
-          <p>Site construído do zero, sem frameworks — exercício de domínio completo de HTML, CSS e JS vanilla.</p>
+      <article class="project-card">
+        <div class="card-top">
+          <span class="card-lang"><span class="lang-dot" style="background:#E34F26"></span>HTML</span>
+          <div class="card-actions">
+            <a href="https://github.com/SauloStorel/MyPortifolioWeb" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Ver no GitHub">${ICON_GITHUB}</a>
+            <a href="https://storel.space" target="_blank" rel="noopener noreferrer" class="card-link" aria-label="Demo ao vivo">${ICON_EXTERNAL}</a>
+          </div>
         </div>
-        <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
-        <div class="project-links">
-          <a href="https://github.com/SauloStorel/MyPortifolioWeb" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-            ${ICON_GITHUB}
-          </a>
+        <h3 class="card-title">Portfólio Pessoal</h3>
+        <p class="card-desc">Site construído do zero, sem frameworks — exercício de domínio completo de HTML, CSS e JS vanilla.</p>
+        <div class="card-bottom">
+          <div class="card-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
         </div>
       </article>
     `;
