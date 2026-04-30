@@ -55,12 +55,11 @@ const menuToggle = document.querySelector(".menu-toggle");
 const navList = document.querySelector("#navbar ul");
 
 if (menuToggle && navList) {
-  menuToggle.setAttribute("aria-expanded", "false");
-
   menuToggle.addEventListener("click", () => {
     const open = menuToggle.classList.toggle("active");
     navList.classList.toggle("active");
     menuToggle.setAttribute("aria-expanded", String(open));
+    menuToggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
   });
 
   navList.querySelectorAll("a").forEach((link) => {
@@ -69,6 +68,7 @@ if (menuToggle && navList) {
       menuToggle.classList.remove("active");
       navList.classList.remove("active");
       menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "Abrir menu");
       if (href && href.startsWith("#")) {
         e.preventDefault();
         const target = document.querySelector(href);
@@ -81,9 +81,12 @@ if (menuToggle && navList) {
 
 // ===== Scroll Reveal =====
 const revealObserver = new IntersectionObserver(
-  (entries) => {
+  (entries, observer) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) entry.target.classList.add("visible");
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
     });
   },
   { threshold: 0.1 }
@@ -142,6 +145,7 @@ const toast = document.getElementById("toast");
 let toastTimer;
 
 function showToast(msg) {
+  if (!toast) return;
   toast.textContent = msg;
   toast.classList.add("show");
   clearTimeout(toastTimer);
@@ -161,7 +165,8 @@ function copyToClipboard(text) {
     document.body.appendChild(ta);
     ta.select();
     try {
-      document.execCommand("copy") ? resolve() : reject();
+      const ok = document.execCommand("copy");
+      ok ? resolve() : reject(new Error("execCommand copy failed"));
     } catch (err) {
       reject(err);
     } finally {
@@ -186,9 +191,9 @@ document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
 // ===== Theme Toggle =====
 const themeToggleBtn = document.getElementById("theme-toggle");
 
-function applyTheme(theme) {
+function applyTheme(theme, persist = true) {
   document.documentElement.setAttribute("data-theme", theme);
-  localStorage.setItem("theme", theme);
+  if (persist) localStorage.setItem("theme", theme);
   if (themeToggleBtn) {
     themeToggleBtn.setAttribute(
       "aria-label",
@@ -197,7 +202,7 @@ function applyTheme(theme) {
   }
 }
 
-applyTheme(document.documentElement.getAttribute("data-theme") || "dark");
+applyTheme(document.documentElement.getAttribute("data-theme") || "dark", false);
 
 if (themeToggleBtn) {
   themeToggleBtn.addEventListener("click", () => {
@@ -354,6 +359,7 @@ function setError(inputId, errorId, msg) {
   const error = document.getElementById(errorId);
   if (!input || !error) return;
   input.classList.add("invalid");
+  input.setAttribute("aria-invalid", "true");
   error.textContent = msg;
   error.classList.add("visible");
 }
@@ -363,6 +369,7 @@ function clearError(inputId, errorId) {
   const error = document.getElementById(errorId);
   if (!input || !error) return;
   input.classList.remove("invalid");
+  input.removeAttribute("aria-invalid");
   error.classList.remove("visible");
 }
 
@@ -443,11 +450,36 @@ function updateLocalTime() {
   });
 }
 updateLocalTime();
-setInterval(updateLocalTime, 1000);
+// Display has minute precision — refresh every 30s instead of every second.
+setInterval(updateLocalTime, 30000);
 
 // ===== Loader =====
+function hideLoader() {
+  const loader = document.getElementById("loader");
+  if (loader) loader.classList.add("out");
+}
+
+const loaderBoot = document.getElementById("loader-boot");
+const bootSteps = ["> initializing...", "> loading assets...", "> ready."];
+
+function runBootSequence(cb) {
+  if (!loaderBoot) { cb(); return; }
+  let i = 0;
+  function nextStep() {
+    if (i >= bootSteps.length) { cb(); return; }
+    loaderBoot.classList.remove("visible");
+    setTimeout(() => {
+      loaderBoot.textContent = bootSteps[i++];
+      loaderBoot.classList.add("visible");
+      setTimeout(nextStep, i < bootSteps.length ? 360 : 220);
+    }, 100);
+  }
+  nextStep();
+}
+
+const loaderSafetyTimer = setTimeout(hideLoader, 3500);
+
 window.addEventListener("load", () => {
-  setTimeout(() => {
-    document.getElementById("loader").classList.add("out");
-  }, 500);
+  clearTimeout(loaderSafetyTimer);
+  runBootSequence(() => setTimeout(hideLoader, 400));
 });

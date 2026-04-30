@@ -1,0 +1,18 @@
+# Claude Code
+.claude/
+
+# Skills lock (gerado automaticamente)
+skills-lock.json
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log

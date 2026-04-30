@@ -62,7 +62,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230c0c0c'/%3E%3Ctext x='50' y='68' font-family='Inter,system-ui,sans-serif' font-size='52' font-weight='800' fill='%23c8a97e' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
 
-    <title>Saulo Storel | Desenvolvedor Web</title>
+    <title>Saulo Storel | Desenvolvedor Back-End</title>
     <link rel="stylesheet" href="style.css" />
     <script>
       (function() {
@@ -71,10 +71,10 @@
         document.documentElement.setAttribute('data-theme', t);
       })();
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -84,31 +84,33 @@
     <!-- Loader -->
     <div id="loader" aria-hidden="true">
       <span class="loader-initial">SS</span>
+      <div class="loader-bar"></div>
+      <span class="loader-boot" id="loader-boot"></span>
     </div>
 
     <!-- Scroll Progress -->
-    <div id="scroll-progress"></div>
+    <div id="scroll-progress" aria-hidden="true"></div>
 
     <!-- Toast -->
     <div id="toast" role="status" aria-live="polite"></div>
 
     <!-- Navbar -->
-    <nav id="navbar">
+    <nav id="navbar" aria-label="Navegação principal">
       <a href="/" class="logo">
         <span class="logo-text">Saulo Storel</span>
       </a>
-      <ul>
+      <ul id="nav-list">
         <li><a href="#home">Início</a></li>
         <li><a href="#about">Sobre</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#projects">Projetos</a></li>
         <li><a href="#contact">Contato</a></li>
       </ul>
-      <button class="theme-toggle" id="theme-toggle" aria-label="Alternar tema">
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Alternar tema">
         <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
         <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
-      <button class="menu-toggle" aria-label="Abrir menu">
+      <button type="button" class="menu-toggle" aria-label="Abrir menu" aria-controls="nav-list" aria-expanded="false">
         <span></span>
         <span></span>
       </button>
@@ -341,19 +343,19 @@
           <div class="form-row">
             <div class="form-group">
               <label for="contact-name">Nome</label>
-              <input type="text" id="contact-name" name="name" placeholder="Seu nome" />
-              <span class="field-error" id="error-name"></span>
+              <input type="text" id="contact-name" name="name" placeholder="Seu nome" autocomplete="name" required aria-describedby="error-name" />
+              <span class="field-error" id="error-name" role="alert"></span>
             </div>
             <div class="form-group">
               <label for="contact-email">Email</label>
-              <input type="email" id="contact-email" name="email" placeholder="seu@email.com" />
-              <span class="field-error" id="error-email"></span>
+              <input type="email" id="contact-email" name="email" placeholder="seu@email.com" autocomplete="email" required aria-describedby="error-email" />
+              <span class="field-error" id="error-email" role="alert"></span>
             </div>
           </div>
           <div class="form-group">
             <label for="contact-message">Mensagem</label>
-            <textarea id="contact-message" name="message" rows="5" placeholder="Descreva seu projeto, ideia ou proposta..."></textarea>
-            <span class="field-error" id="error-message"></span>
+            <textarea id="contact-message" name="message" rows="5" placeholder="Descreva seu projeto, ideia ou proposta..." required aria-describedby="error-message"></textarea>
+            <span class="field-error" id="error-message" role="alert"></span>
           </div>
           <button type="submit" class="btn btn-primary btn-lg" id="form-submit">
             <span>Enviar mensagem</span>
@@ -378,7 +380,7 @@
         <a href="/" class="logo">
           <span class="logo-text">Saulo Storel</span>
         </a>
-        <p>Teresina, PI &middot; Estagiário na FMS</p>
+        <p class="footer-prompt">exit 0</p>
         <p>&copy; <span id="footer-year"></span> Saulo Storel</p>
       </div>
     </footer>
