@@ -18,18 +18,4 @@
 //   live        — URL do deploy (deixe "" se não houver)
 //   year        — ano de início
 
-const PROJECTS_DATA = [
-  // Exemplo — descomente e preencha:
-  // {
-  //   slug: "myportiolioweb",
-  //   title: "Portfólio Pessoal",
-  //   tagline: "Site construído do zero, sem frameworks.",
-  //   description: "",
-  //   challenges: "",
-  //   learnings: "",
-  //   techs: ["HTML", "CSS", "JavaScript"],
-  //   repo: "https://github.com/SauloStorel/MyPortifolioWeb",
-  //   live: "https://storel.space",
-  //   year: 2025,
-  // },
-];
+const PROJECTS_DATA = [];

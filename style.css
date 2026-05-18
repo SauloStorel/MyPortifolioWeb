@@ -188,10 +188,6 @@ ul { list-style: none; }
   100% { left: 100%; }
 }
 
-@keyframes loader-pulse {
-  0%, 100% { opacity: 0.1; }
-  50% { opacity: 1; }
-}
 
 /* ===== Toast ===== */
 #toast {
@@ -442,12 +438,6 @@ a.logo:focus-visible {
 @keyframes dot-active {
   0%, 100% { box-shadow: 0 0 0 0 rgba(40, 200, 64, 0); }
   50%       { box-shadow: 0 0 0 3px rgba(40, 200, 64, 0.25); }
-}
-
-.photo-frame picture {
-  display: block;
-  flex: 1;
-  min-height: 0;
 }
 
 .photo-frame img {
@@ -908,82 +898,6 @@ a.logo:focus-visible {
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
-}
-
-.project-item {
-  display: grid;
-  grid-template-columns: auto 1fr auto auto;
-  align-items: center;
-  gap: 2rem;
-  padding: 22px 28px;
-  background: var(--bg);
-  transition: background 0.2s;
-}
-
-.project-item:hover { background: var(--surface); }
-
-.project-index {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--border);
-  font-variant-numeric: tabular-nums;
-  transition: color 0.2s;
-}
-
-.project-item:hover .project-index { color: var(--accent); }
-
-.project-info h3 {
-  font-size: 0.98rem;
-  font-weight: 600;
-  color: var(--gray-light);
-  transition: color 0.2s;
-}
-
-.project-item:hover .project-info h3 { color: var(--white); }
-
-.project-info p {
-  font-size: 0.88rem;
-  color: var(--gray-dark);
-  margin-top: 3px;
-  line-height: 1.5;
-}
-
-.project-tags {
-  display: flex;
-  gap: 5px;
-}
-
-.project-tags span {
-  font-family: var(--font-mono);
-  font-size: 0.67rem;
-  padding: 2px 9px;
-  border-radius: 3px;
-  color: var(--gray-dark);
-  font-weight: 500;
-  letter-spacing: 0.7px;
-  text-transform: uppercase;
-  border: 1px solid var(--border);
-}
-
-.project-links {
-  display: flex;
-  gap: 12px;
-}
-
-.project-links a {
-  font-size: 0.88rem;
-  color: var(--gray-dark);
-  transition: color 0.2s;
-}
-
-.project-links a:hover { color: var(--accent); }
-
-.project-links a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 3px;
-  color: var(--accent);
 }
 
 .projects-loading {
@@ -1461,15 +1375,6 @@ footer p {
   .menu-toggle { display: flex; }
   .skills-grid { grid-template-columns: repeat(3, 1fr); }
   .projects-grid { grid-template-columns: 1fr; }
-
-  .project-item {
-    grid-template-columns: 1fr auto;
-    gap: 0.8rem;
-    padding: 18px 20px;
-  }
-
-  .project-index,
-  .project-tags { display: none; }
 
   .contact-links { flex-wrap: wrap; justify-content: center; }
   .footer-inner { flex-direction: column; gap: 0.6rem; text-align: center; }
