@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Portfólio de Saulo Storel — estudante de ADS, estagiário de TI na FMS, aprendendo na prática com Ruby on Rails, JavaScript e SQL." />
     <meta name="author" content="Saulo Storel" />
-    <meta name="theme-color" content="#0c0c0c" />
+    <meta name="theme-color" content="#050505" />
     <link rel="canonical" href="https://storel.space/" />
 
     <!-- Open Graph -->
@@ -60,277 +60,189 @@
     </script>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230c0c0c'/%3E%3Ctext x='50' y='68' font-family='Inter,system-ui,sans-serif' font-size='52' font-weight='800' fill='%23c8a97e' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050505'/%3E%3Ctext x='50' y='72' font-family='ui-monospace,monospace' font-size='60' font-weight='800' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
 
     <title>Saulo Storel | Desenvolvedor Back-End</title>
     <link rel="stylesheet" href="style.css" />
-    <script>
-      (function() {
-        const t = localStorage.getItem('theme') ||
-          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', t);
-      })();
-    </script>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
     <a href="#main-content" class="skip-link">Pular para conteúdo</a>
 
-    <!-- Loader -->
-    <div id="loader" aria-hidden="true">
-      <span class="loader-initial">SS</span>
-      <div class="loader-bar"></div>
-      <span class="loader-boot" id="loader-boot"></span>
-    </div>
-
-    <!-- Scroll Progress -->
-    <div id="scroll-progress" aria-hidden="true"></div>
-
     <!-- Toast -->
     <div id="toast" role="status" aria-live="polite"></div>
 
-    <!-- Navbar -->
-    <nav id="navbar" aria-label="Navegação principal">
-      <a href="/" class="logo">
-        <span class="logo-text">Saulo Storel</span>
-      </a>
-      <ul id="nav-list">
-        <li><a href="#home">Início</a></li>
-        <li><a href="#about">Sobre</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#projects">Projetos</a></li>
-        <li><a href="#contact">Contato</a></li>
-      </ul>
-      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Alternar tema">
-        <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-      <button type="button" class="menu-toggle" aria-label="Abrir menu" aria-controls="nav-list" aria-expanded="false">
-        <span></span>
-        <span></span>
-      </button>
-    </nav>
+    <!-- Campo de profundidade (partículas subindo — a gravidade daqui é opcional) -->
+    <canvas id="depth-field" aria-hidden="true"></canvas>
 
-    <!-- Main Content -->
-    <main id="main-content">
+    <!-- Cursor customizado (só pointer:fine, sem reduced-motion) -->
+    <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+    <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
 
-    <!-- Hero -->
-    <section id="home" class="hero">
-      <div class="hero-inner">
-      <div class="hero-photo">
-        <div class="photo-frame">
-          <div class="terminal-bar">
-            <span class="dot dot-red"></span>
-            <span class="dot dot-yellow"></span>
-            <span class="dot dot-green"></span>
-          </div>
-          <img src="images/foto.jpg" alt="Saulo Storel — Desenvolvedor Web" width="1080" height="1080" />
-        </div>
-      </div>
-      <div class="hero-content">
-        <div class="hero-status">
-          <span class="status-dot"></span>
-          Estagiário na FMS · Aberto a novas conexões
-        </div>
-        <h1>
-          <span class="greeting">$ whoami</span>
-          <span aria-hidden="true">
-            <span class="name" id="typed-name"></span><span class="cursor-blink">|</span>
-          </span>
-          <span class="sr-only">Saulo Storel</span>
-        </h1>
-        <p class="hero-desc">
-          Estudante de ADS em fase de aprendizado, adquirindo experiência prática
-          no estágio com Ruby on Rails e construindo uma base sólida no Back-End.
+    <header class="topbar">
+      <a class="topbar-brand" href="#home">saulo@storel<span class="brand-cursor" aria-hidden="true">_</span></a>
+      <nav class="topbar-nav" aria-label="Navegação principal">
+        <a href="#about">./sobre</a>
+        <a href="#skills">./skills</a>
+        <a href="#projects">./projetos</a>
+        <a href="#contact">./contato</a>
+      </nav>
+      <p class="depth-meter" aria-hidden="true">z: <span id="depth-meter">−000m</span></p>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+
+      <!-- ===== Hero ===== -->
+      <section id="home" class="hero">
+        <p class="eyebrow hero-eyebrow">
+          <span class="prompt">saulo@storel:~$</span>
+          <span aria-hidden="true"><span id="typed-cmd"></span><span class="caret" id="hero-caret"></span></span>
+          <span class="sr-only">whoami</span>
         </p>
-        <div class="hero-actions">
-          <a href="#projects" class="btn btn-primary">
-            <span>Ver Projetos</span>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-          </a>
-          <a href="docs/curriculo.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18V12M9 15l3 3 3-3"/></svg>
-            <span>Currículo</span>
-          </a>
-        </div>
-        <div class="hero-links">
-          <a href="https://github.com/SauloStorel" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"/></svg>
-          </a>
-          <a href="https://www.linkedin.com/in/saulo-storel" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.35V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.11 20.45H3.56V9h3.55v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.23 0z"/></svg>
-          </a>
-          <a href="mailto:saulostorell@gmail.com" aria-label="Email">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
-          </a>
-        </div>
-      </div>
-      </div>
-    </section>
 
-    <!-- About -->
-    <section id="about" class="about section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-number">01</span>
-          <h2>Sobre Mim</h2>
-        </div>
-        <div class="about-content">
-          <p>
-            Sou estudante de <strong>Análise e Desenvolvimento de Sistemas</strong>, ainda
-            no início da minha trajetória como desenvolvedor. Estou aprendendo na prática,
-            absorvendo bastante e evoluindo rápido — sem fingir que já sei tudo.
+        <h1 class="shatter" id="shatter">
+          <span class="sr-only">Saulo Storel</span>
+          <span class="shatter-sizer" aria-hidden="true">Saulo<br />Storel</span>
+          <span class="slice" aria-hidden="true"><span>Saulo<br />Storel</span></span>
+          <span class="slice" aria-hidden="true"><span>Saulo<br />Storel</span></span>
+          <span class="slice" aria-hidden="true"><span>Saulo<br />Storel</span></span>
+          <span class="slice" aria-hidden="true"><span>Saulo<br />Storel</span></span>
+          <span class="slice" aria-hidden="true"><span>Saulo<br />Storel</span></span>
+          <span class="slice" aria-hidden="true"><span>Saulo<br />Storel</span></span>
+        </h1>
+
+        <div class="hero-meta">
+          <p class="hero-role">Desenvolvedor Back-End — Ruby on Rails &amp; JavaScript</p>
+          <p class="status-line">
+            <span class="status-dot" aria-hidden="true"></span>
+            estagiário na FMS · aberto a novas conexões
           </p>
-          <p>
-            No estágio na FMS, faço parte da equipe de desenvolvimento do novo sistema de
-            RH da fundação, construído com Ruby on Rails — onde tenho desenvolvido uma
-            boa noção do framework e de como aplicações reais funcionam. Este portfólio foi
-            construído do zero, sem frameworks, como exercício de domínio da stack.
+          <p class="hero-desc">
+            Estudante de ADS em fase de aprendizado, adquirindo experiência
+            prática no estágio com Ruby on Rails e construindo uma base
+            sólida no Back-End.
           </p>
-          <div class="about-highlights">
-            <div class="highlight">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-              <div>
-                <strong>ADS — UNINASSAU Teresina</strong>
-                <span>Em andamento · 2026.1</span>
-              </div>
-            </div>
-            <div class="highlight">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              <div>
-                <strong>Teresina, PI</strong>
-                <span>Remoto & presencial</span>
-              </div>
-            </div>
-            <div class="highlight">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-              <div>
-                <strong>Fundação Municipal de Saúde — FMS</strong>
-                <span>Estagiário · Sistema de Gestão de Pessoas · Abr–Out 2026</span>
-              </div>
-            </div>
-            <div class="highlight">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
-              <div>
-                <strong>Back-End & Automação</strong>
-                <span>Foco principal</span>
-              </div>
-            </div>
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary magnetic">ver projetos ↓</a>
+            <a href="docs/curriculo.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline magnetic">curriculo.pdf</a>
           </div>
+          <p class="hero-links">
+            <a href="https://github.com/SauloStorel" target="_blank" rel="noopener noreferrer">github ↗</a>
+            <a href="https://www.linkedin.com/in/saulo-storel" target="_blank" rel="noopener noreferrer">linkedin ↗</a>
+            <a href="mailto:saulostorell@gmail.com">email</a>
+          </p>
         </div>
-      </div>
-    </section>
 
-    <!-- Skills -->
-    <section id="skills" class="skills section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-number">02</span>
-          <h2>Skills</h2>
-        </div>
-        <p class="skills-subtitle">Tecnologias que uso no dia a dia</p>
-        <div class="skills-grid">
-          <div class="skill-item" style="--brand: #E34F26">
-            <svg class="skill-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622L5.412 4.41l.698 8.01h9.126l-.326 3.426-2.91.804-2.955-.81-.188-2.11H6.248l.33 4.171L12 19.351l5.379-1.443.744-8.157H8.531z" fill="currentColor"/>
-            </svg>
-            <span class="skill-name">HTML5</span>
-          </div>
-          <div class="skill-item" style="--brand: #1572B6">
-            <svg class="skill-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm17.09 4.413L5.41 4.41l.213 2.622 10.125.002-.255 2.716h-6.64l.24 2.573h6.182l-.366 3.523-2.91.804-2.956-.81-.188-2.11h-2.61l.29 3.855L12 19.288l5.373-1.53L18.59 4.414z" fill="currentColor"/>
-            </svg>
-            <span class="skill-name">CSS3</span>
-          </div>
-          <div class="skill-item" style="--brand: #F7DF1E">
-            <svg class="skill-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.711-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z" fill="currentColor"/>
-            </svg>
-            <span class="skill-name">JavaScript</span>
-          </div>
-          <div class="skill-item" style="--brand: #F05032">
-            <svg class="skill-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.658 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.721.713 1.883 0 2.6-.719.721-1.889.721-2.609 0-.719-.719-.719-1.879 0-2.598.182-.18.387-.316.605-.406V8.835c-.217-.091-.424-.222-.6-.401-.545-.545-.676-1.342-.396-2.009L7.636 3.7.45 10.881c-.6.605-.6 1.584 0 2.189l10.48 10.477c.604.604 1.582.604 2.186 0l10.43-10.43c.605-.603.605-1.582 0-2.187" fill="currentColor"/>
-            </svg>
-            <span class="skill-name">Git</span>
-          </div>
-          <div class="skill-item" style="--brand: #336791">
-            <svg class="skill-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M23.5594 14.7228a.5269.5269 0 0 0-.0563-.1191c-.139-.2632-.4768-.3418-1.0074-.2321-1.6533.3411-2.2935.1312-2.5256-.0191 1.342-2.0482 2.445-4.522 3.0411-6.8297.2714-1.0507.7982-3.5237.1222-4.7316a1.5641 1.5641 0 0 0-.1509-.235C21.6931.9086 19.8007.0248 17.5099.0005c-1.4947-.0158-2.7705.3461-3.1161.4794a9.449 9.449 0 0 0-.5159-.0816 8.044 8.044 0 0 0-1.3114-.1278c-1.1822-.0184-2.2038.2642-3.0498.8406-.8573-.3211-4.7888-1.645-7.2219.0788C.9359 2.1526.3086 3.8733.4302 6.3043c.0409.818.5069 3.334 1.2423 5.7436.4598 1.5065.9387 2.7019 1.4334 3.582.553.9942 1.1259 1.5933 1.7143 1.7895.4474.1491 1.1327.1441 1.8581-.7279.8012-.9635 1.5903-1.8258 1.9446-2.2069.4351.2355.9064.3625 1.39.3772a.0569.0569 0 0 0 .0004.0041 11.0312 11.0312 0 0 0-.2472.3054c-.3389.4302-.4094.5197-1.5002.7443-.3102.064-1.1344.2339-1.1464.8115-.0025.1224.0329.2309.0919.3268.2269.4231.9216.6097 1.015.6331 1.3345.3335 2.5044.092 3.3714-.6787-.017 2.231.0775 4.4174.3454 5.0874.2212.5529.7618 1.9045 2.4692 1.9043.2505 0 .5263-.0291.8296-.0941 1.7819-.3821 2.5557-1.1696 2.855-2.9059.1503-.8707.4016-2.8753.5388-4.1012.0169-.0703.0357-.1207.057-.1362.0007-.0005.0697-.0471.4272.0307a.3673.3673 0 0 0 .0443.0068l.2539.0223.0149.001c.8468.0384 1.9114-.1426 2.5312-.4308.6438-.2988 1.8057-1.0323 1.5951-1.6698z" fill="currentColor"/>
-            </svg>
-            <span class="skill-name">PostgreSQL</span>
-          </div>
-          <div class="skill-item" style="--brand: #D97757">
-            <svg class="skill-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z" fill="currentColor"/>
-            </svg>
-            <span class="skill-name">Claude</span>
-          </div>
-          <div class="skill-item" style="--brand: #FCC624">
-            <svg class="skill-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.71-.07-.268-.005-.47.193-.6.224-.135.38-.271.483-.336.104-.074.143-.102.176-.131h.002v-.003c.169-.202.436-.47.839-.601.139-.036.294-.065.466-.065z" fill="currentColor"/>
-            </svg>
-            <span class="skill-name">Linux</span>
-          </div>
-          <div class="skill-item" style="--brand: #CC342D">
-            <svg class="skill-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20.156.083c3.033.525 3.893 2.598 3.829 4.77L24 4.822 22.635 22.71 4.89 23.926h.016C3.433 23.864.15 23.729 0 19.139l1.645-3 2.819 6.586.503 1.172 2.805-9.144-.03.007.016-.03 9.255 2.956-1.396-5.431-.99-3.9 8.82-.569-.615-.51L16.5 2.114 20.159.073l-.003.01zM0 19.089zM5.13 5.073c3.561-3.533 8.157-5.621 9.922-3.84 1.762 1.777-.105 6.105-3.673 9.636-3.563 3.532-8.103 5.734-9.864 3.957-1.766-1.777.045-6.217 3.612-9.75l.003-.003z" fill="currentColor"/>
-            </svg>
-            <span class="skill-name">Ruby</span>
-          </div>
-          <div class="skill-item" style="--brand: #CC0000">
-            <svg class="skill-svg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M.741 19.365h8.36s-1.598-7.291 3.693-10.243l.134-.066c1.286-.637 4.907-2.431 10.702 1.854.19-.159.37-.286.37-.286s-5.503-5.492-11.63-4.878c-3.079.275-6.867 3.079-9.09 6.783C1.058 16.233.741 19.365.741 19.365Zm8.804-.783a10.682 10.682 0 0 1-.127-1.333l1.143.412c.063.498.159.963.254 1.376l-1.27-.455Zm-7.799-4.317L.529 13.82c-.201.455-.423.984-.529 1.27l1.217.444c.137-.359.36-.878.529-1.269Zm7.831.296.857.677c.042-.413.116-.825.222-1.238l-.762-.603c-.137.391-.233.783-.317 1.164Zm2.042-2.646-.508-.762c.191-.243.413-.486.656-.709l.476.72a5.958 5.958 0 0 0-.624.751ZM4.19 8.878l.752.656c-.254.265-.498.551-.72.836l-.815-.698c.244-.265.508-.529.783-.794Zm9.799 1.027-.243-.73c.265-.117.571-.233.931-.339l.233.698a6.82 6.82 0 0 0-.921.371Zm3.122-.656.042-.667c.339.021.688.064 1.048.138l-.042.656a5.859 5.859 0 0 0-1.048-.127ZM8.942 6.392l-.476-.731c-.265.138-.54.286-.826.455l.487.741c.275-.169.54-.328.815-.465Zm9.217-.053.042-.709c-.095-.053-.36-.18-1.026-.371l-.043.699c.349.116.688.243 1.027.381ZM13.238 5.28h.106l-.212-.645c-.328 0-.666.021-1.016.063l.201.625a8.87 8.87 0 0 1 .921-.043Z" fill="currentColor"/>
-            </svg>
-            <span class="skill-name">Rails</span>
-          </div>
-        </div>
-        <p class="skills-learning-label">Aprendendo agora</p>
-        <div class="skills-learning">
-          <span class="learning-tag">React</span>
-          <span class="learning-tag">TypeScript</span>
-          <span class="learning-tag">UIkit</span>
-          <span class="learning-tag">Docker</span>
-          <span class="learning-tag">Node.js</span>
-        </div>
-      </div>
-    </section>
+        <p class="hero-hint" aria-hidden="true">scroll para afundar ↓</p>
+      </section>
 
-    <!-- Projects -->
-    <section id="projects" class="projects section">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-number">03</span>
-          <h2>Projetos</h2>
+      <!-- ===== Sobre ===== -->
+      <section id="about" class="section reveal">
+        <p class="eyebrow"><span class="prompt">saulo@storel:~$</span> cat sobre.md</p>
+        <h2 class="section-title" data-ghost="Sobre">Sobre</h2>
+        <div class="about-grid">
+          <div class="about-text">
+            <p>
+              Sou estudante de <strong>Análise e Desenvolvimento de Sistemas</strong>, ainda
+              no início da minha trajetória como desenvolvedor. Estou aprendendo na prática,
+              absorvendo bastante e evoluindo rápido — sem fingir que já sei tudo.
+            </p>
+            <p>
+              No estágio na FMS, faço parte da equipe de desenvolvimento do novo sistema de
+              RH da fundação, construído com Ruby on Rails — onde tenho desenvolvido uma
+              boa noção do framework e de como aplicações reais funcionam. Este portfólio foi
+              construído do zero, sem frameworks, como exercício de domínio da stack.
+            </p>
+            <div class="yaml">
+              <p class="yaml-fence" aria-hidden="true">---</p>
+              <p><span class="yaml-key">formacao:</span> ADS — UNINASSAU Teresina <span class="yaml-comment"># conclusão prevista · fim de 2026</span></p>
+              <p><span class="yaml-key">local:</span> Teresina, PI <span class="yaml-comment"># remoto &amp; presencial</span></p>
+              <p><span class="yaml-key">estagio:</span> Fundação Municipal de Saúde — FMS <span class="yaml-comment"># gestão de pessoas · abr–out 2026</span></p>
+              <p><span class="yaml-key">foco:</span> Back-End &amp; Automação</p>
+              <p class="yaml-fence" aria-hidden="true">---</p>
+            </div>
+          </div>
+          <div class="about-photo" aria-hidden="false">
+            <div class="photo-frame" id="photo-frame">
+              <img src="images/foto.jpg" alt="Saulo Storel — Desenvolvedor Back-End" width="1080" height="1080" loading="lazy" />
+            </div>
+            <p class="photo-caption" aria-hidden="true">// a sombra está errada de propósito</p>
+          </div>
         </div>
-        <div class="projects-list" id="projects-list">
+      </section>
+
+      <!-- ===== Skills ===== -->
+      <section id="skills" class="section reveal">
+        <p class="eyebrow"><span class="prompt">saulo@storel:~$</span> cat skills.json</p>
+        <h2 class="section-title" data-ghost="Skills">Skills</h2>
+        <div class="skills-groups">
+          <div class="skill-group">
+            <h3 class="skill-group-label">"stack_do_dia_a_dia"</h3>
+            <ul class="chips" aria-label="Tecnologias do dia a dia">
+              <li class="chip"><img src="https://cdn.simpleicons.org/ruby/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />Ruby</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/rubyonrails/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />Rails</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/javascript/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />JavaScript</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/html5/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />HTML5</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/css/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />CSS3</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/postgresql/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />PostgreSQL</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/git/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />Git</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/linux/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />Linux</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/claude/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />Claude</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="skill-group-label">"aprendendo_agora"</h3>
+            <ul class="chips chips-dim" aria-label="Aprendendo agora">
+              <li class="chip"><img src="https://cdn.simpleicons.org/react/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />React</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/typescript/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />TypeScript</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/uikit/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />UIkit</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/docker/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />Docker</li>
+              <li class="chip"><img src="https://cdn.simpleicons.org/nodedotjs/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />Node.js</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="skill-group-label">"skills_pessoais"</h3>
+            <ul class="chips" aria-label="Skills pessoais">
+              <li class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.5-.76L3 21l1.76-6A8.5 8.5 0 1 1 21 11.5z"/></svg>Comunicação</li>
+              <li class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Produtividade</li>
+              <li class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Trabalho em equipe</li>
+              <li class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Proatividade</li>
+              <li class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Aprendizado rápido</li>
+              <li class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Organização</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Projetos ===== -->
+      <section id="projects" class="section reveal">
+        <p class="eyebrow"><span class="prompt">saulo@storel:~/projetos$</span> ls -la --sort=updated</p>
+        <h2 class="section-title" data-ghost="Projetos">Projetos</h2>
+        <div class="cards" id="projects-list">
           <div class="projects-loading" aria-live="polite">
             <span class="projects-loading-dot"></span>
             <span class="projects-loading-dot"></span>
             <span class="projects-loading-dot"></span>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="contact section">
-      <div class="container">
-        <div class="section-header center">
-          <span class="section-number">04</span>
-          <h2>Contato</h2>
-        </div>
-        <p class="contact-text">
-          Prefiro resolver problemas reais. Se tiver um, me manda.
+        <p class="projects-more">
+          <a href="https://github.com/SauloStorel?tab=repositories" target="_blank" rel="noopener noreferrer">ver todos os repositórios ↗</a>
         </p>
+      </section>
+
+      <!-- ===== Contato ===== -->
+      <section id="contact" class="section reveal">
+        <p class="eyebrow"><span class="prompt">saulo@storel:~$</span> ./contato.sh</p>
+        <h2 class="section-title" data-ghost="Contato">Contato</h2>
+        <p class="contact-note"># Prefiro resolver problemas reais. Se tiver um, me manda.</p>
         <p class="local-time">
-          <span class="time-live-dot"></span>
-          Agora são <strong id="local-time-display">--:--</strong> em Teresina, PI
+          <span class="time-live-dot" aria-hidden="true"></span>
+          agora são <strong id="local-time-display">--:--</strong> em Teresina, PI
         </p>
         <form
           class="contact-form"
@@ -341,47 +253,39 @@
         >
           <div class="form-row">
             <div class="form-group">
-              <label for="contact-name">Nome</label>
+              <label for="contact-name">nome</label>
               <input type="text" id="contact-name" name="name" placeholder="Seu nome" autocomplete="name" required aria-describedby="error-name" />
               <span class="field-error" id="error-name" role="alert"></span>
             </div>
             <div class="form-group">
-              <label for="contact-email">Email</label>
+              <label for="contact-email">email</label>
               <input type="email" id="contact-email" name="email" placeholder="seu@email.com" autocomplete="email" required aria-describedby="error-email" />
               <span class="field-error" id="error-email" role="alert"></span>
             </div>
           </div>
           <div class="form-group">
-            <label for="contact-message">Mensagem</label>
+            <label for="contact-message">mensagem</label>
             <textarea id="contact-message" name="message" rows="5" placeholder="Descreva seu projeto, ideia ou proposta..." required aria-describedby="error-message"></textarea>
             <span class="field-error" id="error-message" role="alert"></span>
           </div>
-          <button type="submit" class="btn btn-primary btn-lg" id="form-submit">
-            <span>Enviar mensagem</span>
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          <button type="submit" class="btn btn-primary btn-lg magnetic" id="form-submit">
+            <span>enviar mensagem</span>
           </button>
         </form>
         <div class="contact-links">
-          <a href="https://github.com/SauloStorel" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <span class="divider"></span>
-          <a href="https://www.linkedin.com/in/saulo-storel" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <span class="divider"></span>
-          <a href="mailto:saulostorell@gmail.com">Email</a>
+          <a href="https://github.com/SauloStorel" target="_blank" rel="noopener noreferrer">github</a>
+          <span class="divider" aria-hidden="true">·</span>
+          <a href="https://www.linkedin.com/in/saulo-storel" target="_blank" rel="noopener noreferrer">linkedin</a>
+          <span class="divider" aria-hidden="true">·</span>
+          <a href="mailto:saulostorell@gmail.com">email</a>
         </div>
-      </div>
-    </section>
+      </section>
 
-    </main><!-- /#main-content -->
+    </main>
 
-    <!-- Footer -->
-    <footer>
-      <div class="footer-inner">
-        <a href="/" class="logo">
-          <span class="logo-text">Saulo Storel</span>
-        </a>
-        <p class="footer-prompt">exit 0</p>
-        <p>&copy; <span id="footer-year"></span> Saulo Storel</p>
-      </div>
+    <footer class="footer">
+      <p>© <span id="footer-year"></span> Saulo Storel · <span class="footer-exit">exit 0</span></p>
+      <p class="footer-note" aria-hidden="true">// construído do zero, sem frameworks — a gravidade daqui é opcional</p>
     </footer>
 
     <script src="projects-data.js"></script>
