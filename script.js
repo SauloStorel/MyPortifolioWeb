@@ -279,6 +279,19 @@ window.addEventListener("scroll", () => {
 updateOnScroll();
 
 /* ============================================================
+   Skills: ícone ganha a cor da marca ao passar o mouse
+   ============================================================ */
+document.querySelectorAll(".chip img[data-hover-color]").forEach((icon) => {
+  const dimSrc = icon.src;
+  const brandSrc = dimSrc.replace(/\/[0-9a-fA-F]{3,6}$/, `/${icon.dataset.hoverColor}`);
+  const chip = icon.closest(".chip");
+  if (!chip) return;
+
+  chip.addEventListener("mouseenter", () => { icon.src = brandSrc; });
+  chip.addEventListener("mouseleave", () => { icon.src = dimSrc; });
+});
+
+/* ============================================================
    Links âncora: rola até a seção sem alterar a URL
    ============================================================ */
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {

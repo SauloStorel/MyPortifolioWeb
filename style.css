@@ -607,9 +607,9 @@ main {
 }
 
 .chip:hover {
-  border-color: var(--azure);
+  border-color: var(--brand, var(--azure));
   color: var(--ink);
-  box-shadow: 0 0 18px var(--azure-soft);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--brand, var(--azure)) 40%, transparent);
 }
 
 /* cada chip flutua num ritmo próprio */
