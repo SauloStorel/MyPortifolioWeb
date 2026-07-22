@@ -6,7 +6,10 @@
     <meta name="description" content="Portfólio de Saulo Storel — estudante de ADS, estagiário de TI na FMS, aprendendo na prática com Ruby on Rails, JavaScript e SQL." />
     <meta name="author" content="Saulo Storel" />
     <meta name="theme-color" content="#050505" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="keywords" content="Saulo Storel, desenvolvedor back-end, Ruby on Rails, JavaScript, SQL, portfólio, programador Teresina" />
     <link rel="canonical" href="https://storel.space/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://storel.space/" />
 
     <!-- Open Graph -->
     <meta property="og:title" content="Saulo Storel | Desenvolvedor Back-End" />
@@ -30,39 +33,62 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Saulo Storel",
-      "jobTitle": "Desenvolvedor Back-End",
-      "description": "Estudante de ADS na UNINASSAU, estagiário de TI na FMS. Em fase de aprendizado, desenvolvendo experiência prática com Ruby on Rails, JavaScript e SQL.",
-      "url": "https://storel.space/",
-      "image": "https://storel.space/images/foto.jpg",
-      "email": "saulostorell@gmail.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Teresina",
-        "addressRegion": "PI",
-        "addressCountry": "BR"
-      },
-      "sameAs": [
-        "https://github.com/SauloStorel",
-        "https://www.linkedin.com/in/saulo-storel"
-      ],
-      "knowsAbout": ["Ruby on Rails", "JavaScript", "SQL", "PostgreSQL", "Git", "Linux"],
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "UNINASSAU Teresina"
-      },
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Fundação Municipal de Saúde (FMS)"
-      }
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://storel.space/#website",
+          "url": "https://storel.space/",
+          "name": "Saulo Storel — Portfólio",
+          "description": "Portfólio de Saulo Storel, desenvolvedor Back-End com Ruby on Rails e JavaScript.",
+          "inLanguage": "pt-BR",
+          "publisher": { "@id": "https://storel.space/#saulo" }
+        },
+        {
+          "@type": "ProfilePage",
+          "@id": "https://storel.space/#profilepage",
+          "url": "https://storel.space/",
+          "name": "Saulo Storel — Desenvolvedor Back-End",
+          "inLanguage": "pt-BR",
+          "isPartOf": { "@id": "https://storel.space/#website" },
+          "mainEntity": { "@id": "https://storel.space/#saulo" }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://storel.space/#saulo",
+          "name": "Saulo Storel",
+          "jobTitle": "Desenvolvedor Back-End",
+          "description": "Estudante de ADS na UNINASSAU, estagiário de TI na FMS. Em fase de aprendizado, desenvolvendo experiência prática com Ruby on Rails, JavaScript e SQL.",
+          "url": "https://storel.space/",
+          "image": "https://storel.space/images/foto.jpg",
+          "email": "saulostorell@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Teresina",
+            "addressRegion": "PI",
+            "addressCountry": "BR"
+          },
+          "sameAs": [
+            "https://github.com/SauloStorel",
+            "https://www.linkedin.com/in/saulo-storel"
+          ],
+          "knowsAbout": ["Ruby on Rails", "JavaScript", "SQL", "PostgreSQL", "Git", "Linux", "Docker"],
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "UNINASSAU Teresina"
+          },
+          "worksFor": {
+            "@type": "Organization",
+            "name": "Fundação Municipal de Saúde (FMS)"
+          }
+        }
+      ]
     }
     </script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23050505'/%3E%3Ctext x='50' y='72' font-family='ui-monospace,monospace' font-size='60' font-weight='800' fill='%23ffffff' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E" />
 
-    <title>Saulo Storel | Desenvolvedor Back-End</title>
+    <title>Saulo Storel — Desenvolvedor Back-End Ruby on Rails</title>
 
     <!-- Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-M75ZHD8C4D"></script>
