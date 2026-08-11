@@ -685,6 +685,32 @@ main {
   }
 }
 
+.card-thumb-wrap {
+  display: block;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  margin: -0.4rem -0.4rem 0;
+}
+
+.card-thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top;
+  background: var(--void);
+  transition: transform 0.4s var(--ease-out);
+}
+
+.card:hover .card-thumb {
+  transform: scale(1.04);
+}
+
+.card-featured .card-thumb-wrap {
+  margin: -1rem -1rem 0;
+}
+
 /* Destaque: o repo com push mais recente (HEAD) ocupa a linha toda */
 .card-featured {
   grid-column: 1 / -1;

@@ -439,7 +439,10 @@ function langIconHtml(lang) {
   return `<img src="https://cdn.simpleicons.org/${encodeURIComponent(slug)}/b5b5b5" alt="" width="14" height="14" loading="lazy" onerror="this.remove()" />`;
 }
 
-function projectCard({ name, url, lang, desc, stars, homepage, detailsSlug, topics, pushedAt, featured, index }) {
+function projectCard({ name, url, lang, desc, stars, homepage, thumb, detailsSlug, topics, pushedAt, featured, index }) {
+  const thumbHtml = thumb
+    ? `<a href="${escHtml(homepage || url)}" target="_blank" rel="noopener noreferrer" class="card-thumb-wrap"><img class="card-thumb" src="${escHtml(thumb)}" alt="Captura de tela do projeto ${escHtml(name)}" loading="lazy" width="800" height="450" /></a>`
+    : "";
   const langHtml = lang
     ? `<span class="card-lang">${langIconHtml(lang)}${escHtml(lang)}</span>`
     : "";
@@ -460,6 +463,7 @@ function projectCard({ name, url, lang, desc, stars, homepage, detailsSlug, topi
 
   return `
     <article class="card${featured ? " card-featured" : ""}" style="animation-delay: ${index * 90}ms">
+      ${thumbHtml}
       <header class="card-head">
         <h3 class="card-name"><a href="${escHtml(url)}" target="_blank" rel="noopener noreferrer">${escHtml(name)}</a></h3>
         ${badgeHtml}
@@ -477,8 +481,25 @@ function projectCard({ name, url, lang, desc, stars, homepage, detailsSlug, topi
   `;
 }
 
+// Projetos que não aparecem via API pública do GitHub (ex: repositórios privados)
+// e por isso precisam ser fixados manualmente aqui.
+const MANUAL_PROJECTS = [
+  {
+    name: "DeMolay Piauí",
+    html_url: "https://github.com/SauloStorel/DeMolay-PI-web-site",
+    language: "Ruby",
+    description: "Site institucional da Ordem DeMolay Piauí: história da jurisdição, documentos, galeria, transparência financeira, eventos e e-commerce com checkout. Rails 8, Hotwire, Tailwind CSS v4 e PostgreSQL.",
+    stargazers_count: 0,
+    homepage: "https://demolaypiaui.com",
+    thumb: "images/demolay-pi.png",
+    topics: ["portfolio"],
+    pushed_at: new Date().toISOString(),
+    fork: false,
+  },
+];
+
 function renderProjects(list, repos) {
-  const nonForks = repos.filter(r => !r.fork);
+  const nonForks = [...MANUAL_PROJECTS, ...repos].filter(r => !r.fork);
   const pinned = nonForks.filter(r => r.topics?.includes("portfolio"));
   const toShow = (pinned.length > 0 ? pinned : nonForks).slice(0, 6);
 
@@ -500,6 +521,7 @@ function renderProjects(list, repos) {
       desc: repo.description || "Sem descrição.",
       stars: repo.stargazers_count,
       homepage: repo.homepage,
+      thumb: repo.thumb || null,
       detailsSlug: manualData ? slug : null,
       topics: (repo.topics || []).filter(t => t !== "portfolio").slice(0, 4),
       pushedAt: repo.pushed_at,
