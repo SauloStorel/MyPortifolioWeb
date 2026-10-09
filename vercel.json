@@ -11,15 +11,15 @@
       ]
     },
     {
-      "source": "/images/(.*)",
+      "source": "/fonts/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     },
     {
-      "source": "/(.*)\\.(css|js|woff2|jpg|jpeg|png|svg|webp|ico)",
+      "source": "/(.*)\\.(css|js|jpg|jpeg|png|svg|webp|pdf)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
       ]
     }
   ]

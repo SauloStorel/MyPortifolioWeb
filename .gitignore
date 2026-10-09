@@ -16,3 +16,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Capturas de revisão de design (geradas localmente)
+.impeccable/review/
