@@ -98,8 +98,8 @@ const PROJECTS = [
     year: 2026,
     stack: ["Rails", "Hotwire", "Tailwind"],
     summary: {
-      pt: "Sistema com login onde cada capítulo DeMolay acompanha a própria campanha do CRN e da CNIE.",
-      en: "A login-based system where each DeMolay chapter tracks its own CRN and CNIE campaign.",
+      pt: "Sistema das campanhas CRN e CNIE da Ordem DeMolay: registro das atividades corrigidas e acompanhamento dos capítulos em cada campanha, com acesso restrito a corretores e coordenadores.",
+      en: "The DeMolay Order's CRN and CNIE campaign system: graded activities are recorded and each chapter is tracked across every campaign, with access restricted to graders and coordinators.",
     },
     study: null,
   },
