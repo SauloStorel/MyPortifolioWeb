@@ -2,7 +2,7 @@ import { CANDIDATOS, ESCOPOS, INTERVALO, REGIOES_DO_EXTERIOR, TSE_ENSAIO, UFS } 
 import { criarBusca } from "./busca.js";
 import { renderizarMosaico, renderizarTabela } from "./estados.js";
 import { FontePrimeiroTurno, FonteSimulada, FonteTSE } from "./fontes.js";
-import { bandeira, escapar, pct, pctDe, pp, slug } from "./formato.js";
+import { bandeira, bandeiraDoEstado, escapar, pct, pctDe, pp, slug } from "./formato.js";
 import { criarLugares } from "./lugares.js";
 import { NOMES_DOS_MODOS, criarMapa } from "./mapa.js";
 import { Historico, MEMORIA, NAVEGADOR, renderizarNoite } from "./noite.js";
@@ -13,12 +13,13 @@ import { VAZIO, temVotos, virada } from "./resultado.js";
 const $ = (seletor) => document.querySelector(seletor);
 const carregar = (caminho) => fetch(caminho).then((resposta) => resposta.json());
 
-const [topologiaDoBrasil, topologiaDoMundo, municipios, primeiroTurno, exterior] = await Promise.all([
+const [topologiaDoBrasil, topologiaDoMundo, municipios, primeiroTurno, exterior, bandeiras] = await Promise.all([
   carregar("malhas/brasil.json"),
   carregar("malhas/mundo.json"),
   carregar("dados/municipios.json"),
   carregar("dados/1turno.json"),
   carregar("dados/exterior.json"),
+  carregar("dados/bandeiras.json"),
 ]);
 
 // ---------- Fonte dos dados ----------
@@ -50,6 +51,7 @@ const lugares = criarLugares({
   topologiaDoMundo,
   municipios,
   exterior,
+  bandeiras,
   primeiroTurno,
   carregarMalha: (uf) => carregar(`malhas/${uf}.json`),
 });
@@ -79,8 +81,8 @@ function lerRota() {
 // O lugar em foco no placar: a cidade escolhida, o estado aberto, o Brasil ou o exterior.
 const emFoco = () =>
   estado.cidade
-    ? { nome: estado.cidade.rotulo, chave: estado.cidade.chave, uf: estado.cidade.uf }
-    : { nome: ESCOPOS[estado.escopo].nome, chave: estado.escopo, uf: estado.escopo };
+    ? { nome: estado.cidade.rotulo, chave: estado.cidade.chave, bandeira: estado.cidade.bandeira }
+    : { nome: ESCOPOS[estado.escopo].nome, chave: estado.escopo, bandeira: bandeiraDoEstado(estado.escopo) };
 
 // ---------- Dica ao passar o mouse ----------
 
@@ -95,7 +97,7 @@ function mostrarDica(area, evento) {
     <p><i class="amostra" style="background:${c.cor}"></i>${c.nome}<b>${pctDe(r, c)}</b></p>`).join("");
   const andou = temVotos(r) ? `<small>${CANDIDATOS[0].nome} vs 1º turno: ${pp(virada(r, area.primeiroTurno))}</small>` : "";
 
-  dica.innerHTML = `<strong>${bandeira(area.uf ?? area.chave)}${escapar(area.rotulo ?? area.nome)}</strong><small>${pct(r.urnas)} das urnas apuradas</small>${linhas}${andou}`;
+  dica.innerHTML = `<strong>${bandeira(area.bandeira)}${escapar(area.rotulo ?? area.nome)}</strong><small>${pct(r.urnas)} das urnas apuradas</small>${linhas}${andou}`;
   dica.hidden = false;
   const x = Math.min(evento.clientX + 16, innerWidth - dica.offsetWidth - 8);
   const y = Math.min(evento.clientY + 16, innerHeight - dica.offsetHeight - 8);
@@ -110,7 +112,9 @@ const mapa = criarMapa($("#mapa"), $("#legenda"), lugares, {
   aoPassar: mostrarDica,
   aoSair: esconderDica,
   aoEscolher: (area) => (location.hash = area.rota),
-  aoMoverCamera: () => mirar(),
+  aoMoverCamera: () => acompanharCamera(),
+  // Afastar o zoom bem além do estado aberto volta ao Brasil, sem encher o histórico.
+  aoAfastar: () => location.replace("#brasil"),
 });
 
 // Cada escopo diz de onde parte a trilha, como o mapa se chama e como abri-lo.
@@ -135,7 +139,7 @@ const ESCOPOS_DO_MAPA = {
 
 const escopoDoMapa = (escopo) => ESCOPOS_DO_MAPA[escopo] ?? {
   raiz: BRASIL,
-  passo: { nome: UFS[escopo].nome, rota: escopo },
+  passo: { nome: UFS[escopo].nome, rota: escopo, bandeira: bandeiraDoEstado(escopo) },
   descricao: `Mapa de ${UFS[escopo].nome} por município`,
   abrir: async () => mapa.abrirEstado(escopo, await lugares.estado(escopo)),
   lugares: () => [...cidades.values()].filter((cidade) => cidade.uf === escopo),
@@ -157,8 +161,8 @@ function renderizarTrilha() {
   const passos = [raiz, ...(passo ? [passo] : []), ...(estado.cidade ? [estado.cidade] : [])];
   $("#trilha").innerHTML = passos.map((p, i) =>
     i === passos.length - 1
-      ? `<span aria-current="page">${escapar(p.nome)}</span>`
-      : `<a href="#${p.rota}">${escapar(p.nome)}</a>`).join(`<span aria-hidden="true">/</span>`);
+      ? `<span aria-current="page">${bandeira(p.bandeira)}${escapar(p.nome)}</span>`
+      : `<a href="#${p.rota}">${bandeira(p.bandeira)}${escapar(p.nome)}</a>`).join(`<span aria-hidden="true">/</span>`);
 
   for (const aba of document.querySelectorAll("#abas a")) {
     aba.toggleAttribute("aria-current", aba.hash === `#${raiz.rota}`);
@@ -167,31 +171,40 @@ function renderizarTrilha() {
   renderizarVoltar();
 }
 
-// "← brasil" no canto do mapa, sempre que um estado ou o exterior está aberto.
+// "← brasil" no canto do mapa, sempre que um estado ou o exterior está aberto, com a
+// bandeira e a sigla de onde se está.
 function renderizarVoltar() {
   const { escopo } = estado;
   $("#voltar").hidden = escopo === "br";
   $("#voltar").setAttribute("aria-label", `Voltar ao Brasil (agora em ${ESCOPOS[escopo].nome})`);
+  $("#voltar-de").innerHTML = `${bandeira(bandeiraDoEstado(escopo))}${rotaDoEscopo(escopo)}`;
 }
 
-// ---------- Mira (telas de toque) ----------
+// ---------- Câmera e mira ----------
 
-// Como no G1: dentro de um estado ou no exterior, arrastar o mapa escolhe o lugar
-// que fica sob a mira, no centro. O endereço acompanha sem encher o histórico.
+// Com um estado aberto, levar o centro do mapa até um vizinho (arrastando, com a roda ou
+// com o dedo) abre o vizinho. O endereço acompanha sem encher o histórico.
 const telaDeToque = matchMedia("(hover: none)");
 
 let trocandoDeEstado = false;
 
-function mirar() {
-  if (!telaDeToque.matches || estado.escopo === "br" || trocandoDeEstado) return;
+function acompanharCamera() {
+  if (estado.escopo === "br" || trocandoDeEstado) return;
 
-  const caixa = $("#mapa").getBoundingClientRect();
-  const area = mapa.areaEm(caixa.left + caixa.width / 2, caixa.top + caixa.height / 2);
+  const area = mapa.areaNoCentro();
   const cruzouADivisa = estado.escopo in UFS && area?.chave in UFS && area.chave !== estado.escopo;
   if (cruzouADivisa) {
     trocandoDeEstado = true;  // já aqui: os próximos quadros do arraste não enfileiram a mesma troca
     return enfileirar(() => trocarDeEstado(area.chave));
   }
+
+  mirar(area);
+}
+
+// Como no G1, nas telas de toque: dentro de um estado ou no exterior, arrastar o mapa
+// escolhe o lugar que fica sob a mira, no centro. No computador, escolhe-se clicando.
+function mirar(area) {
+  if (!telaDeToque.matches) return;
 
   const cidade = cidades.get(area?.id) ?? null;
   if (cidade === estado.cidade) return;
@@ -210,7 +223,7 @@ async function trocarDeEstado(uf) {
   mapa.trocarEstado(uf, await lugares.estado(uf));
   await atualizar();
   trocandoDeEstado = false;
-  mirar();
+  acompanharCamera();
 }
 
 // O que depende só do lugar em foco: placar, contorno no mapa, trilha e etiqueta da mira.
@@ -222,7 +235,7 @@ function renderizarFoco() {
   mapa.destacar(cidade?.chave);
   renderizarTrilha();
   // O lugar sob a mira escrito como rota: /pi/floriano, /exterior/toquio.
-  $("#mira-rotulo").innerHTML = cidade ? `<span>/${rotaDoEscopo(cidade.uf)}/</span>${slug(cidade.nome)}` : "";
+  $("#mira-rotulo").innerHTML = cidade ? `${bandeira(cidade.bandeira)}<span>/${rotaDoEscopo(cidade.uf)}/</span>${slug(cidade.nome)}` : "";
 }
 
 // ---------- Situação da apuração ----------
@@ -318,9 +331,12 @@ async function seguirRota() {
   Object.assign(estado, rota);
   esconderDica();
   renderizarTrilha();
+  await (mudouDeEscopo ? abrirNovoEscopo() : renderizar());
+  // Escolher uma cidade (no mapa, na busca, nos destaques ou por um link) aproxima o mapa dela.
+  await mapa.aproximarLugar(estado.cidade?.chave);
+}
 
-  if (!mudouDeEscopo) return renderizar();
-
+async function abrirNovoEscopo() {
   for (const botao of $("#regioes").children) botao.setAttribute("aria-pressed", "false");
 
   // Primeiro a câmera chega, depois os resultados do estado: buscar e pintar
@@ -392,7 +408,8 @@ async function compartilhar() {
 $("#placar").addEventListener("click", (evento) => evento.target.closest(".compartilhar") && compartilhar());
 
 const ZOOM = { aproximar: () => mapa.aproximar(1.6), afastar: () => mapa.aproximar(1 / 1.6), reenquadrar: () => mapa.reenquadrar() };
-$(".zoom").addEventListener("click", (evento) => ZOOM[evento.target.dataset.zoom]?.());
+// O clique pode cair no ícone dentro do botão, então vale o botão mais próximo.
+$(".zoom").addEventListener("click", (evento) => ZOOM[evento.target.closest("[data-zoom]")?.dataset.zoom]?.());
 
 addEventListener("hashchange", () => enfileirar(seguirRota));
 addEventListener("resize", () => renderizarNoite($("#noite"), historico.pontos));

@@ -11,6 +11,8 @@
 - dados/exterior.json: coordenadas e país das cidades onde se vota no exterior.
 - malhas/mundo.json: os outros países, desenhados em volta do Brasil.
 - bandeiras/: bandeira de cada estado, do Wikimedia Commons.
+- bandeiras/municipios/ e dados/bandeiras.json: bandeira dos municípios que têm uma
+  no Wikidata (precisa do ImageMagick).
 
 Roda tudo ou só as etapas pedidas:
 
@@ -25,6 +27,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -216,6 +219,7 @@ def preparar_mundo():
 # Bandeiras dos estados (símbolos oficiais), do Wikimedia Commons, em PNG de 120 px
 # (um dos tamanhos que o Commons já tem pronto; tamanhos fora do padrão são recusados).
 COMMONS = "https://commons.wikimedia.org/w/api.php"
+CABECALHO = {"User-Agent": "storell.dev.br/apuracao (mapa da apuração)"}
 BANDEIRAS = {
     "ac": "Bandeira do Acre.svg", "al": "Bandeira de Alagoas.svg", "ap": "Bandeira do Amapá.svg",
     "am": "Bandeira do Amazonas.svg", "ba": "Bandeira da Bahia.svg", "ce": "Bandeira do Ceará.svg",
@@ -228,25 +232,100 @@ BANDEIRAS = {
     "ro": "Bandeira de Rondônia.svg", "rr": "Bandeira de Roraima.svg", "sc": "Bandeira de Santa Catarina.svg",
     "sp": "Bandeira do estado de São Paulo.svg", "se": "Bandeira de Sergipe.svg", "to": "Bandeira do Tocantins.svg",
 }
+# A API do Commons responde por até 50 arquivos de uma vez.
+POR_CONSULTA = 50
+
+
+def pedir(url, tentativas=5):
+    """Corpo da resposta; o Commons recusa rajadas (429), então espera e tenta de novo."""
+    for tentativa in range(tentativas):
+        try:
+            with urllib.request.urlopen(urllib.request.Request(url, headers=CABECALHO), timeout=60) as resposta:
+                return resposta.read()
+        except urllib.error.HTTPError as erro:
+            if erro.code != 429 or tentativa == tentativas - 1:
+                raise
+            time.sleep(10 * (tentativa + 1))
+
+
+def miniaturas(arquivos, largura):
+    """{chave: endereço da miniatura} para {chave: nome do arquivo no Commons}."""
+    chave_do_titulo = {f"File:{arquivo}": chave for chave, arquivo in arquivos.items()}
+    titulos = list(chave_do_titulo)
+    encontradas = {}
+    for inicio in range(0, len(titulos), POR_CONSULTA):
+        time.sleep(1)
+        consulta = urllib.parse.urlencode({
+            "action": "query", "titles": "|".join(titulos[inicio:inicio + POR_CONSULTA]), "prop": "imageinfo",
+            "iiprop": "url", "iiurlwidth": largura, "format": "json", "redirects": 1,
+        })
+        resposta = json.loads(pedir(f"{COMMONS}?{consulta}"))["query"]
+        # O Commons devolve o título normalizado ("_" vira espaço) e segue redirecionamentos.
+        original = {d["to"]: d["from"] for d in resposta.get("normalized", []) + resposta.get("redirects", [])}
+        for pagina in resposta["pages"].values():
+            titulo = pagina["title"]
+            while titulo not in chave_do_titulo and titulo in original:
+                titulo = original[titulo]
+            if "imageinfo" in pagina and titulo in chave_do_titulo:
+                encontradas[chave_do_titulo[titulo]] = pagina["imageinfo"][0]["thumburl"]
+    return encontradas
 
 
 def baixar_bandeiras():
     destino = RAIZ / "bandeiras"
     destino.mkdir(exist_ok=True)
-    cabecalho = {"User-Agent": "storell.dev.br/apuracao (mapa da apuração)"}
-    for uf, arquivo in BANDEIRAS.items():
-        if (destino / f"{uf}.png").exists():
-            continue
-        time.sleep(3)  # o Commons recusa pedidos em rajada
-        consulta = urllib.parse.urlencode({
-            "action": "query", "titles": f"File:{arquivo}", "prop": "imageinfo",
-            "iiprop": "url", "iiurlwidth": 120, "format": "json", "redirects": 1,
-        })
-        with urllib.request.urlopen(urllib.request.Request(f"{COMMONS}?{consulta}", headers=cabecalho)) as resposta:
-            [pagina] = json.load(resposta)["query"]["pages"].values()
-        with urllib.request.urlopen(urllib.request.Request(pagina["imageinfo"][0]["thumburl"], headers=cabecalho)) as imagem:
-            (destino / f"{uf}.png").write_bytes(imagem.read())
+    faltando = {uf: arquivo for uf, arquivo in BANDEIRAS.items() if not (destino / f"{uf}.png").exists()}
+    for uf, endereco in miniaturas(faltando, 120).items():
+        time.sleep(3)
+        (destino / f"{uf}.png").write_bytes(pedir(endereco))
         print(f"bandeiras/{uf}.png")
+
+
+# Bandeiras dos municípios que têm uma no Wikidata (P41, achadas pelo código do IBGE, P1585).
+# Cada uma vira um WebP de 60x40, recortado no meio: o dobro do maior tamanho em que aparece
+# na página. A lista dos códigos com bandeira vai para dados/bandeiras.json; quem não tem
+# usa a do estado. Precisa do ImageMagick.
+WIKIDATA = "https://query.wikidata.org/sparql"
+CONSULTA_DAS_BANDEIRAS = "SELECT ?ibge ?bandeira WHERE { ?municipio wdt:P1585 ?ibge; wdt:P41 ?bandeira. }"
+TAMANHO_DA_BANDEIRA = "60x40"
+
+
+def arquivos_das_bandeiras_municipais():
+    """{código do IBGE: nome do arquivo no Commons}; com mais de uma bandeira, fica a primeira."""
+    consulta = urllib.parse.urlencode({"query": CONSULTA_DAS_BANDEIRAS, "format": "json"})
+    linhas = json.loads(pedir(f"{WIKIDATA}?{consulta}"))["results"]["bindings"]
+    arquivos = {}
+    for linha in linhas:
+        nome = urllib.parse.unquote(linha["bandeira"]["value"].rsplit("/", 1)[1])
+        arquivos.setdefault(linha["ibge"]["value"], nome)
+    return arquivos
+
+
+def converter_bandeira(destino, endereco):
+    subprocess.run([
+        "magick", "-", "-background", "white", "-flatten", "-resize", f"{TAMANHO_DA_BANDEIRA}^",
+        "-gravity", "center", "-extent", TAMANHO_DA_BANDEIRA, "-strip", "-quality", "85", str(destino),
+    ], input=pedir(endereco), check=True)
+
+
+def baixar_bandeiras_municipais():
+    destino = RAIZ / "bandeiras" / "municipios"
+    destino.mkdir(parents=True, exist_ok=True)
+    arquivos = arquivos_das_bandeiras_municipais()
+    faltando = {ibge: arquivo for ibge, arquivo in arquivos.items() if not (destino / f"{ibge}.webp").exists()}
+    enderecos = miniaturas(faltando, 60)
+    print(f"{len(arquivos)} bandeiras no Wikidata, {len(enderecos)} para baixar")
+
+    def baixar(par):
+        ibge, endereco = par
+        try:
+            converter_bandeira(destino / f"{ibge}.webp", endereco)
+        except (urllib.error.URLError, subprocess.CalledProcessError) as erro:
+            print(f"{ibge}: {erro}")
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        list(pool.map(baixar, enderecos.items()))
+    gravar(RAIZ / "dados" / "bandeiras.json", sorted(caminho.stem for caminho in destino.glob("*.webp")))
 
 
 ETAPAS = {
@@ -255,6 +334,7 @@ ETAPAS = {
     "exterior": preparar_exterior,
     "mundo": preparar_mundo,
     "bandeiras": baixar_bandeiras,
+    "bandeiras_municipais": baixar_bandeiras_municipais,
 }
 
 if __name__ == "__main__":

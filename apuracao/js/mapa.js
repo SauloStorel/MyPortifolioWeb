@@ -17,9 +17,17 @@ const NS = "http://www.w3.org/2000/svg";
 const DURACAO = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 900;
 const PIXELS_POR_PONTO = 6;
 const SETA_MAXIMA = 52;
-// Até onde o zoom do usuário vai, a partir do enquadramento de cada vista.
+// Até onde o zoom do usuário vai, a partir do enquadramento de cada vista. Num estado,
+// dá para afastar até o Brasil inteiro.
 const ZOOM_MINIMO = 0.8;
 const ZOOM_MAXIMO = 12;
+// Num estado, afastar até menos que este tanto do enquadramento dele é sair do estado; no
+// Brasil, aproximar até este tanto do enquadramento do estado no centro é entrar nele.
+// A folga entre os dois evita entrar e sair sem parar perto do limite.
+const AFASTAMENTO_PARA_SAIR = 0.6;
+const APROXIMACAO_PARA_ENTRAR = 0.8;
+// Escolher uma cidade aproxima de leve: até caber na tela, mas no máximo este tanto.
+const ZOOM_NA_CIDADE = 2.5;
 // Raio, em pixels de tela, em que um toque ou o mouse "pega" a cidade do exterior mais próxima;
 // a mira do celular alcança mais longe, já que o dedo não precisa estar em cima do ponto.
 const ALCANCE_DO_PONTO = 22;
@@ -100,7 +108,7 @@ const elemento = (tag, atributos = {}) => {
 // { chave, nome, rota, feature, primeiroTurno } e bordas é uma geometria de linhas.
 // `mundo` é { formas, bordas }: os outros países, só de fundo. As cidades do
 // exterior trazem `coordenadas` no lugar de `feature`.
-export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, aoEscolher, aoMoverCamera }) {
+export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, aoEscolher, aoMoverCamera, aoAfastar }) {
   svg.setAttribute("viewBox", `0 0 ${LARGURA} ${ALTURA}`);
   svg.innerHTML = `
     <defs>${pontas}</defs>
@@ -208,10 +216,13 @@ export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, a
     for (const outro of pontos) outro.circulo.classList.toggle("sob-ponteiro", outro === ponto);
   }
 
+  // Fora de qualquer área (no mar, nos outros países) o realce e a dica somem; sobre uma
+  // área, quem cuida é o pointermove dela.
   svg.addEventListener("pointermove", (evento) => {
     const ponto = pontoMaisProximo(evento);
     marcarPontoSobOPonteiro(ponto);
-    if (ponto) aoPassar(ponto, evento);
+    if (ponto) return aoPassar(ponto, evento);
+    if (!areaDaForma.has(evento.target)) soltarRealce();
   });
 
   svg.addEventListener("click", (evento) => {
@@ -222,19 +233,23 @@ export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, a
     aoEscolher(ponto);
   }, true);
 
-  // O lugar sob um ponto da tela (usado pela mira): a área desenhada ali ou, no exterior,
-  // a cidade mais perto.
-  function areaEm(x, y) {
+  // O lugar no centro do mapa (usado pela mira e para trocar de estado): a área desenhada
+  // ali ou, no exterior, a cidade mais perto.
+  function areaNoCentro() {
+    const caixa = svg.getBoundingClientRect();
+    const [x, y] = [caixa.left + caixa.width / 2, caixa.top + caixa.height / 2];
     return pontos.length
       ? pontoMaisProximo({ clientX: x, clientY: y }, ALCANCE_DA_MIRA)
       : areaDaForma.get(document.elementFromPoint(x, y)) ?? null;
   }
 
-  svg.addEventListener("pointerleave", () => {
+  function soltarRealce() {
     $(".realce").removeAttribute("d");
     marcarPontoSobOPonteiro(null);
     aoSair();
-  });
+  }
+
+  svg.addEventListener("pointerleave", soltarRealce);
 
   // ---------- Câmera ----------
 
@@ -277,6 +292,7 @@ export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, a
   // Durante o movimento só a câmera anda: nada é criado, pintado ou esmaecido
   // ao mesmo tempo, senão o navegador engasga redesenhando centenas de municípios.
   async function mover(destino) {
+    gestos.pararARoda();
     svg.classList.add("movendo");
     aplicar(destino);
     await esperar(DURACAO);
@@ -290,16 +306,30 @@ export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, a
     await mover(destino);
   }
 
-  const limitarZoom = (k) => Math.min(enquadramento.k * ZOOM_MAXIMO, Math.max(enquadramento.k * ZOOM_MINIMO, k));
+  const limitarZoom = (k) =>
+    Math.min(enquadramento.k * ZOOM_MAXIMO, Math.max(Math.min(enquadramento.k, INICIO.k) * ZOOM_MINIMO, k));
+
+  // O zoom do usuário (dedo, roda ou botões) também navega: afastar bem além do estado
+  // aberto é sair dele e, no Brasil, aproximar até o estado do centro quase encher a tela
+  // é escolhê-lo.
+  function conferirZoom({ k }) {
+    const saiuDoEstado = svg.classList.contains("em-estado") && k < zoom.k && k < enquadramento.k * AFASTAMENTO_PARA_SAIR;
+    if (saiuDoEstado) return aoAfastar();
+    if (visiveis !== base || k <= zoom.k) return;
+
+    const estado = areaNoCentro();
+    if (estado && k >= enquadrar(estado.feature).k * APROXIMACAO_PARA_ENTRAR) aoEscolher(estado);
+  }
 
   // Durante o gesto a cena acompanha o dedo e, uma vez por quadro, as marcas são
   // reposicionadas e a mira é avisada.
   let quadroPedido = false;
-  ligarGestos(svg, {
+  const gestos = ligarGestos(svg, {
     ativo: () => true,
     ler: () => zoom,
     limites: () => ({ minimo: limitarZoom(0), maximo: limitarZoom(Infinity) }),
     aplicar: (destino) => {
+      conferirZoom(destino);
       aplicar(destino);
       if (quadroPedido) return;
 
@@ -318,10 +348,25 @@ export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, a
     const real = k / zoom.k;
     const area = areaVisivel();
     const [cx, cy] = [area.x + area.largura / 2, area.y + area.altura / 2];
+    conferirZoom({ k });
     await mover({ k, x: cx - (cx - zoom.x) * real, y: cy - (cy - zoom.y) * real });
   }
 
   const reenquadrar = () => mover(enquadramento);
+
+  // Centraliza a cidade escolhida e aproxima até ela caber na tela, sem passar de
+  // ZOOM_NA_CIDADE vezes o enquadramento da vista nem afastar quem já estava mais perto.
+  // Os pontos do exterior não têm tamanho, então só o limite vale.
+  async function aproximarLugar(chave) {
+    const lugar = visiveis.find((area) => area.chave === chave);
+    if (!lugar) return;
+
+    const cabe = lugar.feature ? enquadrar(lugar.feature).k : Infinity;
+    const k = limitarZoom(Math.max(zoom.k, Math.min(cabe, enquadramento.k * ZOOM_NA_CIDADE)));
+    const area = areaVisivel();
+    const [x, y] = lugar.centro;
+    await mover({ k, x: area.x + area.largura / 2 - k * x, y: area.y + area.altura / 2 - k * y });
+  }
 
   // Aproxima uma caixa [[oeste, sul], [leste, norte]] sem mudar o enquadramento da vista,
   // então "voltar ao enquadramento" ainda mostra o mundo todo.
@@ -478,5 +523,8 @@ export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, a
     for (const ponto of pontos) ponto.circulo.classList.toggle("selecionado", ponto.chave === chave);
   }
 
-  return { abrirEstado, trocarEstado, abrirExterior, voltarAoBrasil, pintar, destacar, aproximar, reenquadrar, aproximarCaixa, areaEm };
+  return {
+    abrirEstado, trocarEstado, abrirExterior, voltarAoBrasil, pintar, destacar,
+    aproximar, reenquadrar, aproximarCaixa, aproximarLugar, areaNoCentro,
+  };
 }

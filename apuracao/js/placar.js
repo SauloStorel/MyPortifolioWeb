@@ -75,8 +75,8 @@ function animar(elemento, chave) {
   requestAnimationFrame(quadro);
 }
 
-// `foco` é { nome, uf, chave }: o lugar mostrado, a UF dele (que dá a bandeira) e a chave
-// do resultado (que diz se é o mesmo lugar da última vez, para animar a mudança).
+// `foco` é { nome, chave, bandeira }: o lugar mostrado, a chave do resultado (que diz se é
+// o mesmo lugar da última vez, para animar a mudança) e o caminho da bandeira.
 export function renderizarPlacar(elemento, foco, resultado) {
   const [A, B] = CANDIDATOS;
   const situacao = SITUACOES.find((s) => s.quando(resultado));
@@ -84,7 +84,7 @@ export function renderizarPlacar(elemento, foco, resultado) {
   elemento.innerHTML = `
     <p class="label">Placar <code>placar#show</code></p>
     <div class="placar-topo">
-      <h2 class="placar-escopo">${bandeira(foco.uf)}${escapar(foco.nome)}</h2>
+      <h2 class="placar-escopo">${bandeira(foco.bandeira)}${escapar(foco.nome)}</h2>
       <button class="compartilhar" type="button" aria-label="Compartilhar o resultado de ${escapar(foco.nome)}">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
       </button>

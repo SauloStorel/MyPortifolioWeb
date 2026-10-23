@@ -2,6 +2,7 @@
 // coordenadas das cidades do exterior.
 import { feature, mesh } from "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/+esm";
 import { UFS } from "./config.js";
+import { bandeiraDoEstado } from "./formato.js";
 import { doPrimeiroTurno } from "./resultado.js";
 
 const MINUSCULAS = new Set(["da", "das", "de", "do", "dos", "e"]);
@@ -15,9 +16,19 @@ const capitalizar = (nome) =>
 const fronteiras = (topologia, objeto) => mesh(topologia, objeto, (a, b) => a !== b);
 
 // Uma cidade do Brasil é achada pelo código do IBGE; uma do exterior, pelo código do TSE.
-function cidadeDoBrasil(uf, [cd, cdi, nome]) {
+// Município sem bandeira conhecida (`comBandeira` são os códigos que têm) leva a do estado.
+function cidadeDoBrasil(uf, [cd, cdi, nome], comBandeira) {
   const nomeBonito = capitalizar(nome);
-  return { id: cdi, uf, chave: uf + cd, nome: nomeBonito, regiao: UFS[uf].nome, rotulo: `${nomeBonito} (${uf.toUpperCase()})`, rota: `${uf}/${cdi}` };
+  return {
+    id: cdi,
+    uf,
+    chave: uf + cd,
+    nome: nomeBonito,
+    regiao: UFS[uf].nome,
+    rotulo: `${nomeBonito} (${uf.toUpperCase()})`,
+    rota: `${uf}/${cdi}`,
+    bandeira: comBandeira.has(cdi) ? `bandeiras/municipios/${cdi}.webp` : bandeiraDoEstado(uf),
+  };
 }
 
 function cidadeDoExterior([cd, , nome], [longitude, latitude, pais]) {
@@ -30,22 +41,24 @@ function cidadeDoExterior([cd, , nome], [longitude, latitude, pais]) {
     regiao: pais,
     rotulo: `${nomeBonito}, ${pais}`,
     rota: `exterior/${cd}`,
+    bandeira: null,
     coordenadas: [longitude, latitude],
   };
 }
 
-// Cada lugar do mapa é { chave, nome, rota, primeiroTurno } mais a forma (`feature`)
-// ou, no exterior, o ponto (`coordenadas`). `chave` acha o resultado na fonte e
-// `rota` é o que vai na URL.
-export function criarLugares({ topologiaDoBrasil, topologiaDoMundo, municipios, exterior, primeiroTurno, carregarMalha }) {
+// Cada lugar do mapa é { chave, nome, rota, bandeira, primeiroTurno } mais a forma (`feature`)
+// ou, no exterior, o ponto (`coordenadas`). `chave` acha o resultado na fonte, `rota` é o
+// que vai na URL e `bandeira` é o caminho da imagem (ou null).
+export function criarLugares({ topologiaDoBrasil, topologiaDoMundo, municipios, exterior, bandeiras, primeiroTurno, carregarMalha }) {
   const doPrimeiro = (chave) => doPrimeiroTurno(primeiroTurno.mun[chave] ?? primeiroTurno.uf[chave]);
   // Votos válidos no 1º turno dão o porte da cidade, para a busca mostrar as maiores primeiro.
   const completar = (cidade) => ({ ...cidade, porte: primeiroTurno.mun[cidade.chave]?.[2] ?? 0, primeiroTurno: doPrimeiro(cidade.chave) });
 
   const { zz: listaDoExterior, ...listasDoBrasil } = municipios;
   const cidadesDoExterior = listaDoExterior.map((linha) => completar(cidadeDoExterior(linha, exterior[linha[0]])));
+  const comBandeira = new Set(bandeiras);
   const cidades = new Map([
-    ...Object.entries(listasDoBrasil).flatMap(([uf, lista]) => lista.map((linha) => completar(cidadeDoBrasil(uf, linha)))),
+    ...Object.entries(listasDoBrasil).flatMap(([uf, lista]) => lista.map((linha) => completar(cidadeDoBrasil(uf, linha, comBandeira)))),
     ...cidadesDoExterior,
   ].map((cidade) => [cidade.id, cidade]));
 
@@ -55,6 +68,7 @@ export function criarLugares({ topologiaDoBrasil, topologiaDoMundo, municipios, 
       chave: forma.id,
       nome: UFS[forma.id].nome,
       rota: forma.id,
+      bandeira: bandeiraDoEstado(forma.id),
       feature: forma,
       primeiroTurno: doPrimeiro(forma.id),
     })),

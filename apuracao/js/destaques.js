@@ -1,7 +1,7 @@
 // "Onde cada um foi mais forte": os lugares do recorte aberto (estados, municípios ou
 // cidades do exterior) com o maior percentual de cada candidato.
 import { CANDIDATOS } from "./config.js";
-import { escapar, inteiro, pct } from "./formato.js";
+import { bandeira, escapar, inteiro, pct } from "./formato.js";
 import { percentual, temVotos, votos } from "./resultado.js";
 
 const QUANTOS = 5;
@@ -9,7 +9,7 @@ const QUANTOS = 5;
 const linha = (candidato, selecionado) => ({ lugar, resultado }) => `
   <li>
     <a href="#${lugar.rota}" ${lugar.chave === selecionado ? 'aria-current="true"' : ""}>
-      <span class="destaque-nome">${escapar(lugar.nome)}</span>
+      <span class="destaque-nome">${bandeira(lugar.bandeira)}${escapar(lugar.nome)}</span>
       <span class="destaque-votos">${inteiro(votos(resultado, candidato))} votos</span>
       <b>${pct(percentual(resultado, candidato))}</b>
       <i style="--cor:${candidato.cor};width:${percentual(resultado, candidato)}%"></i>
@@ -27,7 +27,7 @@ const coluna = (comVotos, selecionado) => (candidato) => {
     </div>`;
 };
 
-// `lugares` são { chave, nome, rota }; `selecionado` é a chave do lugar em foco, se houver.
+// `lugares` são { chave, nome, rota, bandeira }; `selecionado` é a chave do lugar em foco, se houver.
 export function renderizarDestaques(elemento, lugares, resultado, selecionado) {
   const comVotos = lugares
     .map((lugar) => ({ lugar, resultado: resultado(lugar.chave) }))

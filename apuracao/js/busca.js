@@ -27,7 +27,7 @@ export function criarBusca(formulario, cidades, aoEscolher) {
 
   const opcao = (cidade, i) => `
     <li role="option" id="sugestao-${i}" aria-selected="${i === ativa}" data-indice="${i}">
-      ${bandeira(cidade.uf)}${escapar(cidade.nome)} <span>${escapar(cidade.regiao)}</span>
+      ${bandeira(cidade.bandeira)}${escapar(cidade.nome)} <span>${escapar(cidade.regiao)}</span>
     </li>`;
 
   function mostrar(encontradas) {

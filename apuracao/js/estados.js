@@ -1,7 +1,7 @@
 // As duas visões dos 27 estados: o mosaico (todos do mesmo tamanho) e a tabela.
 import { CANDIDATOS, ESCOPOS, SEM_VOTOS, UFS } from "./config.js";
 import { corDoLider, forca } from "./cores.js";
-import { bandeira, pct, pctDe, pp } from "./formato.js";
+import { bandeira, bandeiraDoEstado, pct, pctDe, pp } from "./formato.js";
 import { lider, temVotos, virada } from "./resultado.js";
 
 const descrever = (nome, resultado) =>
@@ -20,7 +20,7 @@ export function renderizarMosaico(elemento, resultado) {
     return `
       <a class="ladrilho" href="#${uf}" style="grid-area:${lin + 1}/${col + 1};background:${fundo(r)}"
         aria-label="${descrever(nome, r)}" title="${descrever(nome, r)}">
-        <b>${bandeira(uf, "ladrilho-bandeira")}${uf.toUpperCase()}</b><span>${placar}</span>
+        <b>${bandeira(bandeiraDoEstado(uf), "ladrilho-bandeira")}${uf.toUpperCase()}</b><span>${placar}</span>
         <i style="width:${r.urnas}%"></i>
       </a>`;
   }).join("");
@@ -29,7 +29,7 @@ export function renderizarMosaico(elemento, resultado) {
 const linhaDaTabela = (resultado, primeiroTurno) => ([uf, { nome }]) => {
   const r = resultado(uf);
   const andou = temVotos(r) ? pp(virada(r, primeiroTurno(uf))) : "–";
-  const titulo = uf in UFS ? `<a href="#${uf}">${bandeira(uf)}${nome}</a>` : nome;
+  const titulo = uf in UFS ? `<a href="#${uf}">${bandeira(bandeiraDoEstado(uf))}${nome}</a>` : nome;
   return `
     <tr>
       <th scope="row">${titulo}</th>

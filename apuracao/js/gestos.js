@@ -1,10 +1,17 @@
 // Arrastar e dar zoom no mapa com o dedo ou o mouse.
 // - Um ponteiro arrasta; dois (pinça) aproximam ou afastam em volta do meio dos dedos.
-// - No computador, Ctrl/⌘ + roda do mouse dá zoom (a roda sozinha continua rolando a página).
+// - No computador, Ctrl/⌘ + roda do mouse dá zoom (a roda sozinha continua rolando a página),
+//   deslizando até o zoom pedido em vez de saltar a cada dente da roda.
 // O mapa decide quando os gestos valem (`ativo`), até onde o zoom vai (`limites`)
 // e como aplicar o novo enquadramento. Um clique ou toque rápido continua sendo clique.
 
 const DISTANCIA_PARA_ARRASTE = 6;
+// Quanto cada pixel de roda aproxima: um dente (100 px) dá uns 16%.
+const ZOOM_POR_PIXEL = 0.0015;
+// A roda pode contar em pixels, linhas ou páginas (`deltaMode` 0, 1 e 2).
+const PIXELS_POR_MODO = [1, 25, 500];
+// Tempo, em ms, para a câmera andar uns dois terços do que falta até o zoom pedido.
+const SUAVIDADE_DA_RODA = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 90;
 
 const distancia = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 const meio = (a, b) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 });
@@ -22,11 +29,15 @@ export function ligarGestos(svg, { ativo, ler, aplicar, limites }) {
 
   const noSvg = (ponto) => pontoNoSvg(svg, ponto);
 
+  const limitar = (k) => {
+    const { minimo, maximo } = limites();
+    return Math.min(maximo, Math.max(minimo, k));
+  };
+
   // Aproxima por `fator` mantendo parado o ponto do mapa que está sob `centro`.
   function zoomEm(centro, fatorPedido, deslocamento = { x: 0, y: 0 }) {
     const zoom = ler();
-    const { minimo, maximo } = limites();
-    const k = Math.min(maximo, Math.max(minimo, zoom.k * fatorPedido));
+    const k = limitar(zoom.k * fatorPedido);
     const fator = k / zoom.k;
     aplicar({
       k,
@@ -93,12 +104,41 @@ export function ligarGestos(svg, { ativo, ler, aplicar, limites }) {
     arrastou = false;
   }, true);
 
+  // Cada giro da roda soma ao zoom pedido (`roda.k`, já dentro dos limites, para girar
+  // além do máximo não acumular) e, a cada quadro, a câmera anda uma fração do que falta.
+  let roda = null;
+  let quadro = null;
+  let quadroAnterior = null;
+
+  function seguirARoda(agora) {
+    const passado = agora - (quadroAnterior ?? agora - 16);
+    quadroAnterior = agora;
+    const falta = Math.log(roda.k / ler().k);
+    const chegou = Math.abs(falta) < 0.001;
+    zoomEm(roda.centro, Math.exp(chegou ? falta : falta * (1 - Math.exp(-passado / SUAVIDADE_DA_RODA))));
+    if (chegou) return pararARoda();
+
+    quadro = requestAnimationFrame(seguirARoda);
+  }
+
+  // Também serve para um movimento automático da câmera (abrir um estado, voltar ao Brasil)
+  // interromper a roda.
+  function pararARoda() {
+    cancelAnimationFrame(quadro);
+    roda = quadro = quadroAnterior = null;
+  }
+
   svg.addEventListener("wheel", (evento) => {
     if (!ativo() || !(evento.ctrlKey || evento.metaKey)) return;
 
     evento.preventDefault();
-    zoomEm(noSvg({ x: evento.clientX, y: evento.clientY }), Math.exp(-evento.deltaY * 0.0025));
+    const pixels = evento.deltaY * PIXELS_POR_MODO[evento.deltaMode];
+    roda = {
+      k: limitar((roda?.k ?? ler().k) * Math.exp(-pixels * ZOOM_POR_PIXEL)),
+      centro: noSvg({ x: evento.clientX, y: evento.clientY }),
+    };
+    quadro ??= requestAnimationFrame(seguirARoda);
   }, { passive: false });
 
-  return { zoomEm };
+  return { zoomEm, pararARoda };
 }
