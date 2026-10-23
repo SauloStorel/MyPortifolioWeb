@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Mapa ao vivo da apuração do 2º turno para presidente em 25 de outubro de 2026, por estado e por município, com dados oficiais do TSE." />
+    <meta name="author" content="Saulo Storel" />
+    <meta name="theme-color" content="#0f0f11" />
+    <link rel="canonical" href="https://www.storell.dev.br/apuracao/" />
+
+    <meta property="og:title" content="Apuração do 2º turno 2026 | Mapa ao vivo" />
+    <meta property="og:description" content="Lula × Flávio Bolsonaro por estado e por município, com dados oficiais do TSE." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.storell.dev.br/apuracao/" />
+    <meta property="og:image" content="https://www.storell.dev.br/apuracao/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Apuração ao vivo do 2º turno para presidente: Lula × Flávio Bolsonaro" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Apuração do 2º turno 2026 | Mapa ao vivo" />
+    <meta name="twitter:image" content="https://www.storell.dev.br/apuracao/og.jpg" />
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <title>Apuração do 2º turno 2026 | Saulo Storel</title>
+
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M75ZHD8C4D"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-M75ZHD8C4D");
+    </script>
+
+    <link rel="preload" href="/fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="malhas/brasil.json" as="fetch" crossorigin />
+    <link rel="preconnect" href="https://resultados.tse.jus.br" crossorigin />
+    <link rel="stylesheet" href="/style.css?v=2026-10-23" />
+    <link rel="stylesheet" href="apuracao.css?v=2026-10-22" />
+  </head>
+  <body>
+    <svg hidden>
+      <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+    </svg>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <header class="masthead grid" id="top">
+      <a class="masthead-name" href="/">Saulo Storel</a>
+      <p class="masthead-role">Desenvolvedor Ruby on Rails</p>
+      <p class="masthead-clock">Teresina, PI <time data-local-time>--:--</time></p>
+      <nav class="masthead-nav" aria-label="Navegação principal">
+        <a href="/#projects">Projetos</a>
+        <a href="/#about">Sobre</a>
+        <a href="/#contact">Contato</a>
+      </nav>
+    </header>
+
+    <!-- O palco: o mapa ocupa a tela inteira e os painéis flutuam por cima. -->
+    <section class="palco" aria-label="Mapa da apuração">
+      <div class="moldura">
+        <svg id="mapa" role="group" aria-label="Mapa do Brasil por estado"></svg>
+        <!-- Mira do celular: arrastar o mapa escolhe o lugar que fica sob o centro. -->
+        <a class="voltar" id="voltar" href="#brasil" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>
+          <span id="voltar-rotulo"></span>
+        </a>
+        <div class="mira" aria-hidden="true">
+          <i class="mira-alvo"></i>
+          <p class="mira-rotulo" id="mira-rotulo"></p>
+        </div>
+      </div>
+      <p class="carregando" id="carregando" hidden>Carregando os municípios…</p>
+
+      <div class="painel painel-controles">
+        <h1 class="painel-titulo">Apuração para presidente</h1>
+        <p class="painel-sub">Eleições 2026 · 2º turno em 25 de outubro</p>
+        <p class="status" id="status" role="status" aria-live="polite">Carregando os dados do TSE…</p>
+        <p class="aviso-simulacao" id="aviso-simulacao" hidden>
+          <strong>Simulação</strong> com os votos do 1º turno e viradas inventadas. Não é resultado real.
+          <a href="./">Ver a oficial</a>
+        </p>
+
+        <div class="turnos" id="turnos" role="group" aria-label="Turno">
+          <button type="button" data-turno="1" aria-pressed="false">1º turno</button>
+          <button type="button" data-turno="2" aria-pressed="true">2º turno</button>
+        </div>
+
+        <nav class="abas" id="abas" aria-label="Onde ver">
+          <a href="#brasil">Brasil</a>
+          <a href="#exterior">Exterior</a>
+        </nav>
+
+        <div class="regioes" id="regioes" role="group" aria-label="Aproximar uma região" hidden></div>
+
+        <form class="busca" id="busca" role="search">
+          <label class="sr-only" for="busca-municipio">Buscar município</label>
+          <input id="busca-municipio" type="search" placeholder="Buscar cidade, no Brasil ou no exterior" autocomplete="off" spellcheck="false"
+            role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugestoes" />
+          <ul class="sugestoes" id="sugestoes" role="listbox" aria-label="Municípios encontrados" hidden></ul>
+        </form>
+
+        <div class="modos" id="modos" role="radiogroup" aria-label="O que o mapa mostra"></div>
+        <div class="legenda" id="legenda"></div>
+        <nav class="trilha" id="trilha" aria-label="Você está em"></nav>
+      </div>
+
+      <aside class="painel painel-placar" id="placar" aria-label="Placar"></aside>
+
+      <div class="zoom" role="group" aria-label="Zoom do mapa">
+        <button type="button" data-zoom="aproximar" aria-label="Aproximar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+        <button type="button" data-zoom="afastar" aria-label="Afastar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+        <button type="button" data-zoom="reenquadrar" aria-label="Voltar ao enquadramento inicial"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+      </div>
+    </section>
+
+    <main class="apuracao">
+      <section class="block grid primeira" aria-labelledby="titulo-estados">
+        <h2 class="label" id="titulo-estados">Estados</h2>
+        <div class="estados">
+          <p class="lead">Cada estado do mesmo tamanho, para São Paulo e Roraima pesarem igual na vista.</p>
+          <div class="mosaico" id="mosaico"></div>
+          <details class="tabela">
+            <summary>Ver todos os estados em tabela</summary>
+            <div class="tabela-rolagem"><table id="tabela"></table></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="block grid" aria-labelledby="titulo-noite">
+        <h2 class="label" id="titulo-noite">A noite</h2>
+        <div class="noite">
+          <p class="lead">Como o placar nacional andou conforme as urnas foram apuradas.</p>
+          <figure id="noite"></figure>
+        </div>
+      </section>
+
+      <section class="block grid" aria-labelledby="titulo-dados">
+        <h2 class="label" id="titulo-dados">Sobre os dados</h2>
+        <div class="sobre">
+          <p>Os números vêm direto dos arquivos públicos de resultado do <a href="https://resultados.tse.jus.br/oficial/app/index.html">TSE</a>, lidos pelo seu navegador a cada 30 segundos. Só é baixado o que mudou desde a última leitura.</p>
+          <p>Os percentuais são de votos válidos. "Decidido" é só aritmética: a vantagem já é maior que o número de eleitores que ainda faltam apurar. Não há projeção nem pesquisa aqui.</p>
+          <p>Os contornos são do <a href="https://servicodados.ibge.gov.br/api/docs/malhas?versao=3">IBGE</a>. A comparação com o 1º turno considera só os votos de Lula e Flávio nas duas datas.</p>
+          <p>Quer ver como fica com a apuração andando? <a href="?simular">Abra a simulação</a>.</p>
+        </div>
+      </section>
+    </main>
+
+    <div class="dica" id="dica" role="tooltip" hidden></div>
+
+    <footer class="footer grid">
+      <p>© <span id="footer-year"></span> Saulo Storel</p>
+      <p class="footer-note">Este site é HTML puro. O Rails fica para os sistemas.</p>
+      <a class="footer-top" href="#top">Voltar ao topo<svg class="icon" aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
+    </footer>
+
+    <script src="/common.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
