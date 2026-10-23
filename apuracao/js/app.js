@@ -2,10 +2,11 @@ import { CANDIDATOS, ESCOPOS, INTERVALO, REGIOES_DO_EXTERIOR, TSE_ENSAIO, UFS } 
 import { criarBusca } from "./busca.js";
 import { renderizarMosaico, renderizarTabela } from "./estados.js";
 import { FontePrimeiroTurno, FonteSimulada, FonteTSE } from "./fontes.js";
-import { bandeira, escapar, pct, pctDe, pp } from "./formato.js";
+import { bandeira, escapar, pct, pctDe, pp, slug } from "./formato.js";
 import { criarLugares } from "./lugares.js";
 import { NOMES_DOS_MODOS, criarMapa } from "./mapa.js";
 import { Historico, MEMORIA, NAVEGADOR, renderizarNoite } from "./noite.js";
+import { renderizarDestaques } from "./destaques.js";
 import { renderizarPlacar } from "./placar.js";
 import { VAZIO, temVotos, virada } from "./resultado.js";
 
@@ -116,9 +117,20 @@ const mapa = criarMapa($("#mapa"), $("#legenda"), lugares, {
 const BRASIL = { nome: "Brasil", rota: "brasil" };
 const EXTERIOR = { nome: "Exterior", rota: "exterior" };
 
+// `lugares()` são as partes do escopo, usadas nos destaques: estados, municípios ou cidades.
 const ESCOPOS_DO_MAPA = {
-  br: { raiz: BRASIL, descricao: "Mapa do Brasil por estado", abrir: () => mapa.voltarAoBrasil() },
-  zz: { raiz: EXTERIOR, descricao: "Mapa das cidades onde se vota no exterior", abrir: () => mapa.abrirExterior(lugares.exterior) },
+  br: {
+    raiz: BRASIL,
+    descricao: "Mapa do Brasil por estado",
+    abrir: () => mapa.voltarAoBrasil(),
+    lugares: () => lugares.brasil.areas,
+  },
+  zz: {
+    raiz: EXTERIOR,
+    descricao: "Mapa das cidades onde se vota no exterior",
+    abrir: () => mapa.abrirExterior(lugares.exterior),
+    lugares: () => lugares.exterior,
+  },
 };
 
 const escopoDoMapa = (escopo) => ESCOPOS_DO_MAPA[escopo] ?? {
@@ -126,6 +138,7 @@ const escopoDoMapa = (escopo) => ESCOPOS_DO_MAPA[escopo] ?? {
   passo: { nome: UFS[escopo].nome, rota: escopo },
   descricao: `Mapa de ${UFS[escopo].nome} por município`,
   abrir: async () => mapa.abrirEstado(escopo, await lugares.estado(escopo)),
+  lugares: () => [...cidades.values()].filter((cidade) => cidade.uf === escopo),
 };
 
 const rotaDoEscopo = (escopo) => {
@@ -154,14 +167,11 @@ function renderizarTrilha() {
   renderizarVoltar();
 }
 
-// Botão "voltar ao Brasil" no canto do mapa, com a bandeira e a sigla de onde se está.
-const ROTULOS_DO_VOLTAR = { zz: () => "Exterior" };
-
+// "← brasil" no canto do mapa, sempre que um estado ou o exterior está aberto.
 function renderizarVoltar() {
   const { escopo } = estado;
   $("#voltar").hidden = escopo === "br";
   $("#voltar").setAttribute("aria-label", `Voltar ao Brasil (agora em ${ESCOPOS[escopo].nome})`);
-  $("#voltar-rotulo").innerHTML = (ROTULOS_DO_VOLTAR[escopo] ?? (() => `${bandeira(escopo)}${escopo.toUpperCase()}`))();
 }
 
 // ---------- Mira (telas de toque) ----------
@@ -208,9 +218,11 @@ function renderizarFoco() {
   const foco = emFoco();
   const { cidade } = estado;
   renderizarPlacar($("#placar"), foco, resultado(foco.chave));
+  renderizarDestaques($("#destaques"), escopoDoMapa(estado.escopo).lugares(), resultado, estado.cidade?.chave);
   mapa.destacar(cidade?.chave);
   renderizarTrilha();
-  $("#mira-rotulo").innerHTML = cidade ? `${bandeira(cidade.uf)}<span>${escapar(cidade.regiao)}</span>${escapar(cidade.nome)}` : "";
+  // O lugar sob a mira escrito como rota: /pi/floriano, /exterior/toquio.
+  $("#mira-rotulo").innerHTML = cidade ? `<span>/${rotaDoEscopo(cidade.uf)}/</span>${slug(cidade.nome)}` : "";
 }
 
 // ---------- Situação da apuração ----------

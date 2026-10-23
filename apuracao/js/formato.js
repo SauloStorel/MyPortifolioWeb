@@ -17,3 +17,7 @@ export const escapar = (texto) => String(texto).replace(/[&<>"]/g, (c) => ENTIDA
 // Bandeira do estado (só para as 27 UFs; Brasil e exterior não levam).
 export const bandeira = (uf, classe = "bandeira") =>
   uf in UFS ? `<img class="${classe}" src="bandeiras/${uf}.png" alt="" width="24" height="16" />` : "";
+
+// "São Gonçalo do Gurguéia" vira "sao-goncalo-do-gurgueia", para escrever o lugar como rota.
+export const slug = (texto) =>
+  texto.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");

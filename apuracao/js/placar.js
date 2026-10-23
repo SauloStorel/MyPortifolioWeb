@@ -38,10 +38,10 @@ const numero = (papel, valor, formato) =>
 
 const candidato = (resultado) => (c) => `
   <li class="candidato" style="--cor:${c.cor}">
-    <img class="candidato-foto" src="${c.foto}" alt="" width="48" height="48" />
-    <p class="candidato-nome">${c.nome} <span>${c.partido}</span></p>
+    <img class="candidato-foto" src="${c.foto}" alt="" width="44" height="44" />
+    <p class="candidato-nome">${c.nome}</p>
     <p class="candidato-pct" ${temVotos(resultado) ? numero(`pct${c.numero}`, percentual(resultado, c), "pct") : `>${pctDe(resultado, c)}`}</p>
-    <p class="candidato-votos" ${numero(`votos${c.numero}`, votos(resultado, c), "votos")}</p>
+    <p class="candidato-ficha"><code>${c.numero}</code> ${c.partido} · <span ${numero(`votos${c.numero}`, votos(resultado, c), "votos")}</span></p>
   </li>`;
 
 const barra = (resultado) => (c) =>
@@ -82,6 +82,7 @@ export function renderizarPlacar(elemento, foco, resultado) {
   const situacao = SITUACOES.find((s) => s.quando(resultado));
 
   elemento.innerHTML = `
+    <p class="label">Placar <code>placar#show</code></p>
     <div class="placar-topo">
       <h2 class="placar-escopo">${bandeira(foco.uf)}${escapar(foco.nome)}</h2>
       <button class="compartilhar" type="button" aria-label="Compartilhar o resultado de ${escapar(foco.nome)}">
