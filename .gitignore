@@ -17,5 +17,6 @@ Thumbs.db
 # Logs
 *.log
 
-# Capturas de revisão de design (geradas localmente)
+# Capturas e críticas de revisão de design (geradas localmente)
 .impeccable/review/
+.impeccable/critique/
