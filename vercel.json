@@ -11,6 +11,11 @@
       ],
       "destination": "https://www.storell.dev.br/$1",
       "permanent": true
+    },
+    {
+      "source": "/apuracao",
+      "destination": "/apuracao/",
+      "permanent": true
     }
   ],
   "headers": [
