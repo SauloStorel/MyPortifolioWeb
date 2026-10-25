@@ -108,7 +108,7 @@ const elemento = (tag, atributos = {}) => {
 // { chave, nome, rota, feature, primeiroTurno } e bordas é uma geometria de linhas.
 // `mundo` é { formas, bordas }: os outros países, só de fundo. As cidades do
 // exterior trazem `coordenadas` no lugar de `feature`.
-export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, aoEscolher, aoMoverCamera, aoAfastar }) {
+export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, aoEscolher, aoMoverComGesto, aoAfastar }) {
   svg.setAttribute("viewBox", `0 0 ${LARGURA} ${ALTURA}`);
   svg.innerHTML = `
     <defs>${pontas}</defs>
@@ -298,7 +298,6 @@ export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, a
     await esperar(DURACAO);
     svg.classList.remove("movendo");
     repintar();
-    aoMoverCamera();
   }
 
   async function irPara(destino) {
@@ -322,7 +321,8 @@ export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, a
   }
 
   // Durante o gesto a cena acompanha o dedo e, uma vez por quadro, as marcas são
-  // reposicionadas e a mira é avisada.
+  // reposicionadas e a mira é avisada. Só o gesto avisa a mira: quando a própria câmera
+  // anda (abrir um estado, os botões de zoom), o lugar em foco continua o mesmo.
   let quadroPedido = false;
   const gestos = ligarGestos(svg, {
     ativo: () => true,
@@ -337,7 +337,7 @@ export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, a
       requestAnimationFrame(() => {
         quadroPedido = false;
         posicionarMarcas();
-        aoMoverCamera();
+        aoMoverComGesto();
       });
     },
   });
@@ -418,7 +418,6 @@ export function criarMapa(svg, legenda, { brasil, mundo }, { aoPassar, aoSair, a
     await proximoQuadro();
     await irPara(enquadramentoDoEstado);
     grupo.classList.remove("escondido");
-    aoMoverCamera();  // de novo: só agora os municípios estão sob a mira
   }
 
   // A mira cruzou a divisa: o vizinho vira o estado aberto sem a câmera sair do lugar.

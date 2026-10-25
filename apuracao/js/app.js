@@ -112,7 +112,7 @@ const mapa = criarMapa($("#mapa"), $("#legenda"), lugares, {
   aoPassar: mostrarDica,
   aoSair: esconderDica,
   aoEscolher: (area) => (location.hash = area.rota),
-  aoMoverCamera: () => acompanharCamera(),
+  aoMoverComGesto: () => acompanharCamera(),
   // Afastar o zoom bem além do estado aberto volta ao Brasil, sem encher o histórico.
   aoAfastar: () => location.replace("#brasil"),
 });
