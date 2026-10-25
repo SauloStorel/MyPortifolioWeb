@@ -6,9 +6,13 @@ import { VAZIO, doPrimeiroTurno } from "./resultado.js";
 
 const numero = (texto) => Number(texto.replace(",", "."));
 
+// Um pedido pendurado prenderia a fila de atualizações para sempre; desistir dele
+// conta como falha e a próxima leitura tenta de novo.
+const TEMPO_LIMITE = 15_000;
+
 async function buscar(url) {
   // no-cache revalida pelo ETag: quando nada mudou, o TSE responde 304 sem corpo.
-  const resposta = await fetch(url, { cache: "no-cache" });
+  const resposta = await fetch(url, { cache: "no-cache", signal: AbortSignal.timeout(TEMPO_LIMITE) });
   if (!resposta.ok) throw new Error(`TSE respondeu ${resposta.status} em ${url}`);
   return resposta.json();
 }
