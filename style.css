@@ -180,10 +180,6 @@ section[id] { scroll-margin-top: 24px; }
 
 .masthead-nav .lang { color: var(--accent); font-family: var(--mono); font-size: 13px; }
 
-/* Link para o mapa da apuração, com o ponto vermelho de "ao vivo". */
-.masthead-live { display: inline-flex; align-items: center; gap: 6px; }
-.masthead-live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-
 /* ---------- Blocos de código ---------- */
 
 .code {
