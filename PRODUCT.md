@@ -13,7 +13,7 @@ Recrutadores, tech leads e pessoas da comunidade que chegam por LinkedIn, GitHub
 ## O que a página precisa fazer
 
 1. Dizer em segundos quem é e o que faz (back-end, Rails).
-2. Mostrar projetos reais com estudos de caso (DeMolay Piauí, CRN Cap, rhut).
+2. Mostrar projetos reais com estudos de caso (DeMolay Piauí, CRN Cap, rhut, Xfria).
 3. Facilitar o contato: email, LinkedIn, GitHub, formulário (Formspree) e currículo em PDF.
 
 ## Tom

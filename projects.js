@@ -182,4 +182,83 @@ const PROJECTS = [
       },
     },
   },
+  {
+    slug: "xfria",
+    name: "Xfria",
+    repo: "https://github.com/SauloStorel/xfria",
+    site: "https://xfria.storell.dev.br",
+    thumb: "/images/xfria.webp",
+    year: 2026,
+    stack: ["ESP32", "MQTT", "Tauri"],
+    summary: {
+      pt: "Controle do ar-condicionado Gree pelo computador e pelo celular: um ESP32 imita o controle remoto infravermelho, com custo mensal zero.",
+      en: "Control a Gree air conditioner from your computer and phone: an ESP32 imitates the infrared remote, at zero monthly cost.",
+    },
+    study: {
+      pt: {
+        tagline: "O ar sem Wi-Fi ganha painel no computador, na barra e no celular.",
+        role: "Projeto pessoal, código aberto",
+        sections: [
+          {
+            title: "Por que existe",
+            paragraphs: [
+              "O controle remoto some, fica no outro cômodo ou acaba a pilha, e o ar não tem Wi-Fi. Em vez de trocar o aparelho, o Xfria imita o controle original: um LED infravermelho de poucos reais, um ESP32 e um painel próprio, sem nuvem paga, sem abrir porta no roteador e sem app de fabricante.",
+            ],
+          },
+          {
+            title: "Como funciona",
+            bullets: [
+              "O ESP32 fala o protocolo do Gree pela biblioteca IRremoteESP8266 e manda o estado completo a cada comando: ligado, modo, temperatura, ventilação e aleta.",
+              "Painel e ESP32 conversam por MQTT no plano gratuito do Adafruit IO. O ESP32 só abre conexões de saída, então nada fica exposto na rede de casa.",
+              "Estado de verdade: o ESP32 publica o estado depois de cada comando e avisa quando cai (last will), e todos os painéis mostram a mesma coisa.",
+              "O mesmo painel em três lugares: app Tauri no Windows e no Linux, ícone na barra do Omarchy e app web instalável no celular.",
+              "O último estado fica na flash e volta depois de uma queda de energia, e o firmware novo vai pelo Wi-Fi, com senha, sem tirar a placa do lugar.",
+            ],
+          },
+          {
+            title: "Limites assumidos",
+            paragraphs: [
+              "O infravermelho é de mão única: se alguém usar o controle original, o painel não fica sabendo. Cada placa controla um aparelho, só da Gree, e o plano grátis do Adafruit IO aceita até 30 mensagens por minuto, por isso a barra espera um instante antes de mandar a temperatura.",
+            ],
+          },
+        ],
+        images: [
+          { src: "/images/xfria-painel.webp", caption: "O painel: temperatura, modo, ventilação e aleta, igual no computador e no celular." },
+          { src: "/images/xfria-caixa.webp", caption: "A montagem: ESP32, emissor infravermelho e uma caixa impressa em 3D, sem solda." },
+        ],
+      },
+      en: {
+        tagline: "An air conditioner without Wi-Fi gets a panel on the desktop, the status bar and the phone.",
+        role: "Personal project, open source",
+        sections: [
+          {
+            title: "Why it exists",
+            paragraphs: [
+              "The remote goes missing, sits in another room or runs out of battery, and the air conditioner has no Wi-Fi. Instead of replacing the unit, Xfria imitates the original remote: a cheap infrared LED, an ESP32 and a panel of its own, with no paid cloud, no open router ports and no manufacturer app.",
+            ],
+          },
+          {
+            title: "How it works",
+            bullets: [
+              "The ESP32 speaks the Gree protocol through the IRremoteESP8266 library and sends the full state with every command: power, mode, temperature, fan and louver.",
+              "Panel and ESP32 talk over MQTT on Adafruit IO's free plan. The ESP32 only opens outbound connections, so nothing on the home network is exposed.",
+              "Real state: the ESP32 publishes its state after every command and announces when it drops (last will), so every panel shows the same thing.",
+              "One panel in three places: a Tauri app on Windows and Linux, an icon in the Omarchy status bar and an installable web app on the phone.",
+              "The last state is saved to flash and comes back after a power cut, and new firmware goes over Wi-Fi, password-protected, without taking the board down.",
+            ],
+          },
+          {
+            title: "Known limits",
+            paragraphs: [
+              "Infrared is one-way: if someone uses the original remote, the panel never finds out. Each board controls one unit, Gree only, and Adafruit IO's free plan allows up to 30 messages per minute, so the status bar waits a moment before sending the temperature.",
+            ],
+          },
+        ],
+        images: [
+          { src: "/images/xfria-painel.webp", caption: "The panel: temperature, mode, fan and louver, the same on the desktop and the phone." },
+          { src: "/images/xfria-caixa.webp", caption: "The build: an ESP32, an infrared emitter and a 3D-printed case, no soldering." },
+        ],
+      },
+    },
+  },
 ];
