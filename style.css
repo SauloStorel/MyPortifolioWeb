@@ -161,15 +161,27 @@ section[id] { scroll-margin-top: 24px; }
 /* ---------- Cabeçalho ---------- */
 
 .masthead {
+  align-items: center;
   padding-top: 20px;
   padding-bottom: 20px;
   font-size: 15px;
 }
 
-.masthead-name { grid-column: 1 / 4; font-weight: 600; }
-.masthead-role { grid-column: 4 / 7; color: var(--muted); }
-.masthead-clock { grid-column: 7 / 10; color: var(--muted); }
+.masthead-brand {
+  grid-column: 1 / 4;
+  justify-self: start;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.masthead-role { grid-column: 4 / 8; color: var(--muted); }
+.masthead-clock { grid-column: 8 / 10; color: var(--muted); }
 .masthead-clock time { margin-left: 4px; color: var(--ink); }
+
+/* O ponto final vermelho da marca: logotipo e frase de abertura. */
+.dot { color: var(--accent); }
 
 .masthead-nav {
   display: flex;
@@ -647,6 +659,9 @@ section[id] { scroll-margin-top: 24px; }
 
 .case-head .lead { grid-column: 1 / 9; color: var(--muted); }
 
+/* 404: o erro de rota do Rails, como ele aparece no log. */
+.not-found .code { grid-column: 1 / 9; }
+
 .case-meta {
   display: grid;
   grid-column: 1 / -1;
@@ -713,9 +728,21 @@ section[id] { scroll-margin-top: 24px; }
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 15px;
+  container-type: inline-size;
 }
 
-.footer p:first-child { grid-column: 1 / 4; }
+/* O logotipo assina a página ocupando a largura do conteúdo (3,27em de largura → 30cqi). */
+.footer-brand {
+  grid-column: 1 / -1;
+  margin: clamp(24px, 4vw, 56px) 0 clamp(20px, 3vw, 40px);
+  color: var(--ink);
+  font-size: 30cqi;
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+}
+
+.footer-copy { grid-column: 1 / 4; }
 .footer-note { grid-column: 4 / 10; }
 
 .footer-top {
@@ -768,7 +795,7 @@ section[id] { scroll-margin-top: 24px; }
 
 @media (max-width: 900px) {
   .masthead-role { display: none; }
-  .masthead-name { grid-column: 1 / 5; }
+  .masthead-brand { grid-column: 1 / 5; }
   .masthead-clock { grid-column: 5 / 9; }
   .masthead-nav { grid-column: 9 / 13; }
 
@@ -778,7 +805,7 @@ section[id] { scroll-margin-top: 24px; }
   .about-photo { grid-column: 9 / 13; }
   .gemfile { grid-column: 1 / 8; }
   .stack-side { grid-column: 8 / 13; }
-  .case-title, .case-head .lead { grid-column: 1 / -1; }
+  .case-title, .case-head .lead, .not-found .code { grid-column: 1 / -1; }
   .case-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
   .case-next .label { grid-column: 1 / -1; margin-bottom: 12px; }
   .case-next a { grid-column: 1 / -1; }
@@ -801,7 +828,7 @@ section[id] { scroll-margin-top: 24px; }
 
 @media (max-width: 640px) {
   .masthead { row-gap: 4px; }
-  .masthead-name { grid-column: 1 / 7; }
+  .masthead-brand { grid-column: 1 / 7; }
   .masthead-clock { grid-column: 7 / 13; justify-self: end; }
   .masthead-nav { grid-column: 1 / -1; justify-content: flex-start; margin-top: 8px; }
 
@@ -824,9 +851,9 @@ section[id] { scroll-margin-top: 24px; }
 
   .contact-form { grid-template-columns: minmax(0, 1fr); }
 
-  .footer p:first-child { grid-column: 1 / 7; }
+  .footer-copy { grid-column: 1 / -1; }
   .footer-note { display: none; }
-  .footer-top { grid-column: 7 / 13; }
+  .footer-top { grid-column: 1 / -1; justify-self: start; margin-top: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

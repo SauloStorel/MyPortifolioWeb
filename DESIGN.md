@@ -19,6 +19,18 @@ Fundo escuro único, com um vermelho Rails dessaturado em dois papéis.
 
 O mapa de atividade usa a mesma família: `#1d1d22`, `#3a1416`, `#5e191b`, `#8b1e1e`, `#c2504a`.
 
+## Marca
+
+**Storell.** é a marca; Saulo Storel é a pessoa. A marca assina o site e o nome continua visível ao lado dela (título, SEO, dados estruturados e `.masthead-role`). O logotipo é "Storell" em Schibsted 800, tracking −0.05em, terminando no ponto vermelho (`.dot`, em `--accent`). O "S." do favicon é a versão curta. O ponto vermelho é a assinatura e aparece em poucos lugares.
+
+- Cabeçalho: `.masthead-brand`, o logotipo a 22px; ao lado, "Saulo Storel, desenvolvedor Ruby on Rails".
+- Abertura: o ponto final da frase.
+- Rodapé: `.footer-brand`, o logotipo ocupando a largura do conteúdo (`30cqi`; a palavra mede 3,27em), e "© Storell · Saulo Storel".
+- 404: o erro de rota do Rails como aparece no log, com o caminho pedido.
+- Imagem de compartilhamento (`images/og-image.jpg`): o logotipo grande, o nome e o cargo embaixo, e um S gigante em `#17171b` ao fundo, com o ponto em `#5e191b`.
+
+Fica de fora do kit de identidade: a Inter (a Schibsted cumpre o mesmo papel), as texturas de pontos e diagonais, as molduras e o slogan "Seu desenvolvedor".
+
 ## Tipografia
 
 Servidas pelo próprio site, em `/fonts/`.

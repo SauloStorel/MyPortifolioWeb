@@ -24,7 +24,7 @@
     <meta property="og:image:alt" content="Saulo Storel, desenvolvedor Ruby on Rails" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:locale:alternate" content="en_US" />
-    <meta property="og:site_name" content="Saulo Storel" />
+    <meta property="og:site_name" content="Storell" />
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -42,7 +42,7 @@
           "@id": "https://www.storell.dev.br/#website",
           "url": "https://www.storell.dev.br/",
           "name": "Saulo Storel",
-          "alternateName": ["Saulo Storel — Portfólio", "storell.dev.br"],
+          "alternateName": ["Storell", "Saulo Storel — Portfólio", "storell.dev.br"],
           "description": "Portfólio de Saulo Storel, desenvolvedor Ruby on Rails.",
           "inLanguage": ["pt-BR", "en"],
           "publisher": { "@id": "https://www.storell.dev.br/#saulo" }
@@ -110,7 +110,7 @@
 
     <link rel="preload" href="/fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.css" />
-    <link rel="stylesheet" href="/style.css?v=2026-10-23" />
+    <link rel="stylesheet" href="/style.css?v=2026-10-30" />
     <script>
       // Esconde só o que a entrada anima; motion.js revela. A trava de 3s cobre falha no CDN.
       if (matchMedia("(prefers-reduced-motion: no-preference)").matches) {
@@ -138,8 +138,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <header class="masthead grid" id="top">
-      <a class="masthead-name" href="#top">Saulo Storel</a>
-      <p class="masthead-role">Desenvolvedor Ruby on Rails</p>
+      <a class="masthead-brand" href="#top">Storell<span class="dot">.</span></a>
+      <p class="masthead-role">Saulo Storel, desenvolvedor Ruby on Rails</p>
       <p class="masthead-clock">Teresina, PI <time data-local-time>--:--</time></p>
       <nav class="masthead-nav" aria-label="Navegação principal">
         <a href="#projects">Projetos</a>
@@ -153,7 +153,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
       <section class="intro grid" aria-label="Apresentação">
         <h1 class="sr-only">Saulo Storel, desenvolvedor Ruby on Rails</h1>
-        <p class="intro-statement">Ruby on Rails é o meu forte.</p>
+        <p class="intro-statement">Ruby on Rails é o meu forte<span class="dot">.</span></p>
 
         <figure class="code intro-code">
           <figcaption>app/models/saulo.rb</figcaption>
@@ -390,7 +390,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
     </main>
 
     <footer class="footer grid">
-      <p>© <span id="footer-year"></span> Saulo Storel</p>
+      <p class="footer-brand" aria-hidden="true">Storell<span class="dot">.</span></p>
+      <p class="footer-copy">© <span id="footer-year"></span> Storell · Saulo Storel</p>
       <p class="footer-note">Este site é HTML puro. O Rails fica para os sistemas.</p>
       <a class="footer-top" href="#top">Voltar ao topo<svg class="icon" aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
     </footer>

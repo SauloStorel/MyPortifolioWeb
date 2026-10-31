@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0f0f11" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <title>Página não encontrada · Storell</title>
+
+    <link rel="preload" href="/fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/style.css?v=2026-10-30" />
+  </head>
+  <body>
+    <svg hidden>
+      <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+    </svg>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <header class="masthead grid" id="top">
+      <a class="masthead-brand" href="/">Storell<span class="dot">.</span></a>
+      <p class="masthead-role">Saulo Storel, desenvolvedor Ruby on Rails</p>
+      <p class="masthead-clock">Teresina, PI <time data-local-time>--:--</time></p>
+      <nav class="masthead-nav" aria-label="Navegação principal">
+        <a href="/#projects">Projetos</a>
+        <a href="/#about">Sobre</a>
+        <a href="/#contact">Contato</a>
+        <a class="lang" href="/en/" hreflang="en" lang="en">EN</a>
+      </nav>
+    </header>
+
+    <main class="case-head grid not-found">
+      <h1 class="case-title">Essa página não existe<span class="dot">.</span></h1>
+      <figure class="code">
+        <figcaption>log/production.log</figcaption>
+<pre tabindex="0"><code><span class="c">ActionController::RoutingError</span>
+  No route matches [GET] <span class="s">"<span data-path>/</span>"</span></code></pre>
+      </figure>
+      <p class="lead">O endereço pode ter mudado. Os projetos continuam na página inicial.</p>
+      <a class="case-back" href="/">Voltar ao início</a>
+    </main>
+
+    <footer class="footer grid">
+      <p class="footer-brand" aria-hidden="true">Storell<span class="dot">.</span></p>
+      <p class="footer-copy">© <span id="footer-year"></span> Storell · Saulo Storel</p>
+      <p class="footer-note">Este site é HTML puro. O Rails fica para os sistemas.</p>
+      <a class="footer-top" href="#top">Voltar ao topo<svg class="icon" aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
+    </footer>
+
+    <script src="/common.js"></script>
+    <script>
+      document.querySelector("[data-path]").textContent = location.pathname;
+    </script>
+  </body>
+</html>
