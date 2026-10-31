@@ -1,96 +1,102 @@
 /* ============================================================
-   Página inicial: índice de projetos e formulário de contato.
-   Depende de common.js (T, LANG, escHtml, icon) e projects.js.
+   Página inicial: cards de projeto, pílula de vidro sobre eles
+   e formulário de contato. Depende de common.js e projects.js.
    ============================================================ */
 
-/* ---------- Índice de projetos ---------- */
-function projectRow(project, index) {
-  const caseUrl = project.study && `${T.caseStudyPath}${project.slug}`;
-  const mainUrl = caseUrl || project.site;
-  const mainTarget = caseUrl ? "" : ' target="_blank" rel="noopener noreferrer"';
-  const links = [
-    project.site && externalLink(project.site, T.site),
-    project.repo && externalLink(project.repo, T.code),
-  ].filter(Boolean).join("");
-
+/* ---------- Projetos: todo card abre o estudo de caso ---------- */
+function caseCard(project) {
   return `
-    <li class="row">
-      <span class="row-num">${String(index + 1).padStart(2, "0")}</span>
-      <div class="row-main">
-        <h3 class="row-name">
-          <a href="${escHtml(mainUrl)}"${mainTarget}>${escHtml(project.name)}${icon(caseUrl ? "i-arrow" : "i-external")}</a>
-        </h3>
-        <p class="row-desc">${escHtml(project.summary[LANG])}</p>
-        ${links && `<p class="row-links">${links}</p>`}
-      </div>
-      <span class="row-stack">${project.stack.map(escHtml).join(", ")}</span>
-      <span class="row-year">${project.year ?? ""}</span>
-      <img class="row-thumb" src="${escHtml(project.thumb)}" alt="" loading="lazy" width="1600" height="840" />
+    <li class="case reveal">
+      <a href="${T.caseStudyPath}${escHtml(project.slug)}">
+        <div class="case-media">
+          <img src="${escHtml(project.thumb)}" alt="" width="1600" height="840" loading="lazy" />
+        </div>
+        <div class="case-head">
+          <h3>${escHtml(project.name)}</h3>
+          <span class="round-btn" aria-hidden="true">${icon("i-arrow")}</span>
+        </div>
+        <p>${escHtml(project.summary[LANG])}</p>
+        <ul class="tags">${project.stack.map((tech) => `<li>${escHtml(tech)}</li>`).join("")}</ul>
+      </a>
     </li>
   `;
 }
 
-document.getElementById("projects-list").innerHTML = PROJECTS.map(projectRow).join("");
-document.querySelectorAll("[data-project-count]").forEach((el) => { el.textContent = PROJECTS.length; });
+const workGrid = document.getElementById("work-grid");
+workGrid.innerHTML = PROJECTS.map(caseCard).join("");
+revealWithin(workGrid);
 
-/* ---------- Formulário de contato (Formspree) ---------- */
-const contactForm = document.getElementById("contact-form");
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+/* ---------- Pílula de vidro que segue o cursor sobre os prints ---------- */
+// Persegue o cursor com atraso (lerp), para parecer um objeto com peso.
+function followCursorOverCases() {
+  const pill = document.querySelector(".cursor-pill");
+  pill.querySelector("span").textContent = T.seeProject;
+  const target = { x: 0, y: 0 };
+  const current = { x: 0, y: 0 };
+  let visible = false;
 
-// Cada campo devolve a mensagem de erro, ou "" quando está válido.
-const VALIDATIONS = {
-  "contact-name": (value) => (value ? "" : T.nameRequired),
-  "contact-email": (value) => {
-    if (!value) return T.emailRequired;
-    return EMAIL_PATTERN.test(value) ? "" : T.emailInvalid;
-  },
-  "contact-message": (value) => (value ? "" : T.messageRequired),
-};
+  // O loop só roda enquanto a pílula está à vista.
+  function tick() {
+    current.x += (target.x - current.x) * 0.2;
+    current.y += (target.y - current.y) * 0.2;
+    pill.style.translate = `${current.x}px ${current.y}px`;
+    if (visible) requestAnimationFrame(tick);
+  }
 
-function showFieldError(input, msg) {
-  input.setAttribute("aria-invalid", String(Boolean(msg)));
-  document.getElementById(input.getAttribute("aria-describedby")).textContent = msg;
+  function show(event) {
+    Object.assign(target, { x: event.clientX, y: event.clientY });
+    Object.assign(current, target);
+    visible = true;
+    pill.classList.add("is-visible");
+    tick();
+  }
+
+  function hide() {
+    visible = false;
+    pill.classList.remove("is-visible");
+  }
+
+  workGrid.querySelectorAll(".case-media").forEach((media) => {
+    media.addEventListener("pointerenter", show);
+    media.addEventListener("pointerleave", hide);
+  });
+
+  addEventListener("pointermove", (event) => Object.assign(target, { x: event.clientX, y: event.clientY }));
+  document.documentElement.classList.add("has-cursor-pill");
 }
 
-function validateForm() {
-  return Object.entries(VALIDATIONS)
-    .map(([id, validate]) => {
-      const input = document.getElementById(id);
-      const msg = validate(input.value.trim());
-      showFieldError(input, msg);
-      return !msg;
-    })
-    .every(Boolean);
-}
+if (finePointer) followCursorOverCases();
 
-Object.keys(VALIDATIONS).forEach((id) => {
-  const input = document.getElementById(id);
-  input.addEventListener("input", () => showFieldError(input, ""));
-});
+/* ---------- Formulário (Formspree) ---------- */
+const form = document.getElementById("contact-form");
+const formStatus = form.querySelector(".form-status");
 
-contactForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  if (!validateForm()) return;
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-  const btn = document.getElementById("form-submit");
-  const label = btn.querySelector("span");
-  btn.disabled = true;
-  label.textContent = T.sending;
+  const invalid = [...form.elements].filter((field) => field.willValidate && !field.checkValidity());
+  form.querySelectorAll("input, textarea").forEach((field) => field.removeAttribute("aria-invalid"));
+  invalid.forEach((field) => field.setAttribute("aria-invalid", "true"));
+
+  if (invalid.length) {
+    formStatus.textContent = T.formInvalid;
+    invalid[0].focus();
+    return;
+  }
+
+  formStatus.textContent = T.sending;
 
   try {
-    const res = await fetch(contactForm.action, {
+    const response = await fetch(form.action, {
       method: "POST",
+      body: new FormData(form),
       headers: { Accept: "application/json" },
-      body: new FormData(contactForm),
     });
-    if (!res.ok) throw new Error(`Formspree: ${res.status}`);
+    if (!response.ok) throw new Error(response.statusText);
 
-    showToast(T.sent);
-    contactForm.reset();
+    form.reset();
+    formStatus.textContent = T.sent;
   } catch {
-    showToast(T.sendFailed);
-  } finally {
-    btn.disabled = false;
-    label.textContent = T.send;
+    formStatus.textContent = T.sendFailed;
   }
 });

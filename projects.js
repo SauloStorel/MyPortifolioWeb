@@ -5,9 +5,13 @@
 //   slug    — identificador na URL do estudo de caso (/projeto.html?p=slug)
 //   repo    — URL pública do código, ou null quando o repositório é privado
 //   site    — URL do projeto no ar, ou null
-//   thumb   — imagem 40:21 usada no índice e no topo do estudo de caso
+//   thumb   — imagem 40:21 usada nos cards e no topo do estudo de caso
 //   year    — ano de referência, ou null quando não confirmado
-//   study   — estudo de caso por idioma, ou null (a linha do índice leva direto ao site)
+//   study   — estudo de caso por idioma; todo projeto tem um
+//
+// Estudo de caso, além de tagline, role, sections e images:
+//   facts           — números de destaque [{ value, label }], opcional
+//   sections[].layers — partes do sistema [{ title, text }], mostradas como lista numerada
 
 const PROJECTS = [
   {
@@ -17,74 +21,124 @@ const PROJECTS = [
     site: "https://demolaypiaui.com",
     thumb: "/images/demolay-pi.webp",
     year: 2026,
-    stack: ["Rails 8.1", "Hotwire", "PostgreSQL"],
+    stack: ["Rails 8.1", "Hotwire", "PostgreSQL", "InfinitePay", "Kamal"],
     summary: {
-      pt: "Site institucional da Ordem DeMolay Piauí com e-commerce de eventos e inscrições, painel administrativo próprio e pagamento via InfinitePay.",
-      en: "Institutional website for the DeMolay Order in Piauí, with an events and registration store, a custom admin panel and InfinitePay payments.",
+      pt: "Site institucional da Ordem DeMolay Piauí com loja de inscrições, pagamento via InfinitePay, portal de transparência, check-in e certificados dos eventos.",
+      en: "Institutional website for the DeMolay Order in Piauí, with a registration store, InfinitePay payments, a transparency portal, event check-in and certificates.",
     },
     study: {
       pt: {
-        tagline: "Site institucional com loja de eventos, do model ao deploy.",
-        role: "Desenvolvimento completo e participação na identidade visual",
+        tagline: "Site, loja de inscrições, finanças abertas e o dia do evento, num sistema só.",
+        role: "Desenvolvimento completo, do model ao servidor, e participação na identidade visual",
+        facts: [
+          { value: "90+", label: "funcionalidades em produção" },
+          { value: "427", label: "commits entre maio e outubro de 2026" },
+          { value: "180", label: "arquivos de teste com RSpec" },
+          { value: "0", label: "falhas em 21 mil requisições no teste de carga" },
+        ],
         sections: [
           {
             title: "Contexto",
             paragraphs: [
-              "A jurisdição precisava de um site público com história, documentos, galeria, transparência financeira e, principalmente, um jeito de vender inscrições para os congressos estaduais sem depender de planilhas.",
+              "A jurisdição precisava de um site público com história, documentos e transparência financeira e, principalmente, de um jeito de vender inscrições para os dois congressos estaduais do ano sem depender de planilhas.",
+              "O projeto cresceu junto com a operação. Depois da loja vieram a portaria do evento, os certificados, as rifas e o controle das viagens da gestão. Hoje é a ferramenta do dia a dia da equipe estadual, e o site serve de referência para outras jurisdições.",
             ],
           },
           {
-            title: "Regras de negócio",
+            title: "As camadas do sistema",
+            layers: [
+              { title: "Site institucional", text: "História, organizações por tipo, galeria de gestões, documentos oficiais com filtro, taxas, dúvidas e busca. Dados estruturados de organização e de evento para aparecer bem no Google." },
+              { title: "Loja de inscrições", text: "O preço do lote vigente sai da data. Cada evento tem uma grade de lote, categoria e modalidade (kit, camisa, hospedagem), com cupons, inscrição de cortesia e aviso por email quando um lote abre." },
+              { title: "Pagamento", text: "Checkout da InfinitePay com PIX, cartão e boleto em até 12x. O webhook é idempotente, os emails de confirmação saem em segundo plano e quem não pagou recebe um lembrete automático." },
+              { title: "Portal de Transparência", text: "Extrato da jurisdição por exercício fiscal, liberado com uma senha temporária de 2 horas e exportável para Excel. Os exercícios abrem e fecham sozinhos em 1º de setembro." },
+              { title: "Dia do evento", text: "Check-in na portaria com leitor e busca por nome. O certificado é gerado a partir da presença, não da inscrição: quem pagou e não foi não recebe." },
+              { title: "Gestão do estado", text: "Viagens com a distância por estrada calculada pelo OpenStreetMap, quilometragem mensal no formato da planilha antiga, regularização das organizações com vencimento automático e trilha de auditoria de tudo que muda." },
+              { title: "Painel administrativo", text: "Design system próprio, instalável no celular como um app separado do site, para a equipe abrir o painel direto da tela inicial." },
+            ],
+          },
+          {
+            title: "Decisões que fazem diferença",
             bullets: [
-              "Camada de services para a precificação por lote, a validação do carrinho, o checkout e a confirmação do pedido.",
-              "Pagamento via InfinitePay, com webhook idempotente: a mesma notificação recebida duas vezes não confirma o pedido duas vezes.",
-              "Painel administrativo próprio para conteúdo, produtos, lotes, pedidos e financeiro, com autenticação via Devise.",
+              "Rifa sem número vendido duas vezes: a reserva trava os números no PostgreSQL (FOR UPDATE SKIP LOCKED), então dois compradores nunca levam o mesmo. O sorteio grava a semente usada, e qualquer participante consegue refazer a conta e chegar ao mesmo vencedor.",
+              "Certificado com a arte da comunicação: o admin escreve {nome} na peça, no próprio editor gráfico. O sistema acha o marcador no PDF, apaga e escreve o nome de cada participante exatamente ali.",
+              "Evento do ano seguinte em um clique: a duplicação copia lotes, a grade de preços com dezenas de valores, cronograma, locais e hotéis, e todas as datas andam um ano. A cópia nasce desativada, para alguém revisar antes de abrir.",
+              "Correção de pedido sem console: email digitado errado, camisa trocada, nome errado no crachá. Tudo numa transação, e um campo inválido desfaz o resto.",
+              "Envios que podem ser repetidos: certificados e lembretes saem só para quem ainda não recebeu, então reenviar nunca manda em dobro.",
             ],
           },
           {
             title: "Qualidade e entrega",
             bullets: [
-              "Testes com RSpec e FactoryBot.",
-              "Rubocop, Brakeman e bundler-audit a cada pull request, no GitHub Actions.",
-              "Deploy com Kamal 2 numa VPS.",
+              "RSpec e FactoryBot, com Rubocop, Brakeman e bundler-audit a cada pull request no GitHub Actions.",
+              "Deploy com Kamal 2 numa VPS, sem tirar o site do ar, e certificado SSL renovado sozinho.",
+              "Backup diário do banco, com cópia fora do servidor no Cloudflare R2, e Sentry avisando de erros em produção.",
+              "Teste de carga com k6 na mesma configuração do servidor: 21.056 requisições sem nenhuma falha, 95% delas respondidas em menos de 8 ms.",
             ],
           },
         ],
         images: [
-          { src: "/images/demolay-loja.webp", caption: "Eventos: as inscrições abrem por lote, cerca de três meses antes de cada congresso." },
-          { src: "/images/demolay-transparencia.webp", caption: "Portal da Transparência: o extrato da jurisdição abre com senha fornecida pela diretoria." },
+          { src: "/images/demolay-celular.webp", caption: "No celular: a home, os capítulos por região e o Portal da Transparência." },
+          { src: "/images/demolay-capitulos.webp", caption: "Capítulos por região, com busca, filtros e a situação de cada um, regular ou inativo, vinda do painel." },
+          { src: "/images/demolay-transparencia.webp", caption: "Portal da Transparência: o extrato abre com uma senha temporária, e a sessão expira sozinha em 2 horas." },
+          { src: "/images/demolay-numeros.webp", caption: "Os números da jurisdição na home, atualizados pela equipe no painel." },
+          { src: "/images/demolay-estrutura.webp", caption: "Os sete tipos de organização, cada um com sua página e a contagem de unidades ativas." },
         ],
       },
       en: {
-        tagline: "An institutional website with an events store, from model to deploy.",
-        role: "Full development and part of the visual identity",
+        tagline: "Website, registration store, open finances and event day, in a single system.",
+        role: "Full development, from model to server, and part of the visual identity",
+        facts: [
+          { value: "90+", label: "features in production" },
+          { value: "427", label: "commits between May and October 2026" },
+          { value: "180", label: "RSpec test files" },
+          { value: "0", label: "failures in 21k requests under load testing" },
+        ],
         sections: [
           {
             title: "Context",
             paragraphs: [
-              "The jurisdiction needed a public website with its history, documents, gallery and financial transparency, and above all a way to sell registrations for the state congresses without relying on spreadsheets.",
+              "The jurisdiction needed a public website with its history, documents and financial transparency, and above all a way to sell registrations for its two yearly state congresses without relying on spreadsheets.",
+              "The project grew with the operation. After the store came event check-in, certificates, raffles and travel tracking for the state board. Today it is the state team's everyday tool, and other jurisdictions use the website as a reference.",
             ],
           },
           {
-            title: "Business rules",
+            title: "The layers of the system",
+            layers: [
+              { title: "Institutional website", text: "History, organizations by type, a gallery of past boards, official documents with filters, fees, FAQ and search. Organization and event structured data so it shows up well on Google." },
+              { title: "Registration store", text: "The active batch price comes from the date. Each event has a grid of batch, category and option (kit, shirt, lodging), with coupons, complimentary registrations and an email alert when a batch opens." },
+              { title: "Payments", text: "InfinitePay checkout with PIX, card and boleto in up to 12 installments. The webhook is idempotent, confirmation emails go out in the background and unpaid orders get an automatic reminder." },
+              { title: "Transparency portal", text: "The jurisdiction's statement by fiscal year, unlocked with a 2-hour temporary password and exportable to Excel. Fiscal years open and close on their own on September 1st." },
+              { title: "Event day", text: "Door check-in with a scanner and name search. Certificates come from attendance, not registration: whoever paid and didn't show up doesn't get one." },
+              { title: "State management", text: "Trips with road distance calculated from OpenStreetMap, monthly mileage in the old spreadsheet's format, organization compliance with automatic expiry and an audit trail of every change." },
+              { title: "Admin panel", text: "Its own design system, installable on the phone as an app separate from the website, so the team opens the panel straight from the home screen." },
+            ],
+          },
+          {
+            title: "Decisions that matter",
             bullets: [
-              "A services layer for batch pricing, cart validation, checkout and order confirmation.",
-              "InfinitePay payments with an idempotent webhook: the same notification received twice never confirms an order twice.",
-              "A custom admin panel for content, products, batches, orders and finances, with Devise authentication.",
+              "No raffle number sold twice: reservations lock the numbers in PostgreSQL (FOR UPDATE SKIP LOCKED), so two buyers never get the same one. The draw stores its seed, so any participant can redo the math and reach the same winner.",
+              "Certificates with the communications team's artwork: the admin types {nome} on the piece, in their own design tool. The system finds the marker in the PDF, erases it and writes each participant's name right there.",
+              "Next year's event in one click: duplication copies batches, a price grid with dozens of values, schedule, venues and hotels, and every date moves forward a year. The copy starts disabled so someone reviews it before opening.",
+              "Order fixes without a console: a mistyped email, a swapped shirt size, a wrong name on the badge. All in one transaction, so one invalid field rolls back the rest.",
+              "Sends that can be repeated: certificates and reminders only go to whoever hasn't received them yet, so resending never doubles up.",
             ],
           },
           {
             title: "Quality and delivery",
             bullets: [
-              "Tests with RSpec and FactoryBot.",
-              "Rubocop, Brakeman and bundler-audit on every pull request, on GitHub Actions.",
-              "Deployed with Kamal 2 to a VPS.",
+              "RSpec and FactoryBot, with Rubocop, Brakeman and bundler-audit on every pull request, on GitHub Actions.",
+              "Deployed with Kamal 2 to a VPS with zero downtime, and SSL renewed automatically.",
+              "Daily database backups with an off-site copy on Cloudflare R2, and Sentry reporting production errors.",
+              "Load test with k6 on the same configuration as the server: 21,056 requests with no failures, 95% of them answered in under 8 ms.",
             ],
           },
         ],
         images: [
-          { src: "/images/demolay-loja.webp", caption: "Events: registrations open in batches, about three months before each congress." },
-          { src: "/images/demolay-transparencia.webp", caption: "Transparency portal: the financial statement opens with a password provided by the board." },
+          { src: "/images/demolay-celular.webp", caption: "On the phone: the home page, chapters by region and the transparency portal." },
+          { src: "/images/demolay-capitulos.webp", caption: "Chapters by region, with search, filters and each one's status, active or inactive, coming from the panel." },
+          { src: "/images/demolay-transparencia.webp", caption: "Transparency portal: the statement opens with a temporary password, and the session expires on its own after 2 hours." },
+          { src: "/images/demolay-numeros.webp", caption: "The jurisdiction's numbers on the home page, kept up to date by the team in the panel." },
+          { src: "/images/demolay-estrutura.webp", caption: "The seven types of organization, each with its own page and a count of active units." },
         ],
       },
     },
@@ -96,12 +150,89 @@ const PROJECTS = [
     site: "https://crncap.com.br",
     thumb: "/images/crncap.webp",
     year: 2026,
-    stack: ["Rails", "Hotwire", "Tailwind"],
+    stack: ["Rails 8.1", "Hotwire", "Tailwind"],
     summary: {
       pt: "Sistema das campanhas CRN e CNIE da Ordem DeMolay: registro das atividades corrigidas e acompanhamento dos capítulos em cada campanha, com acesso restrito a corretores e coordenadores.",
       en: "The DeMolay Order's CRN and CNIE campaign system: graded activities are recorded and each chapter is tracked across every campaign, with access restricted to graders and coordinators.",
     },
-    study: null,
+    study: {
+      pt: {
+        tagline: "Duas campanhas, cinco perfis e um ranking, sem planilha no meio.",
+        role: "Desenvolvimento completo",
+        facts: [
+          { value: "2", label: "campanhas no mesmo sistema" },
+          { value: "5", label: "perfis de acesso" },
+          { value: "0 a 130", label: "pontos por atividade na CRN, com ranking" },
+        ],
+        sections: [
+          {
+            title: "Contexto",
+            paragraphs: [
+              "As campanhas CRN e CNIE da Ordem DeMolay avaliam as atividades que os capítulos enviam ao longo do ano. Corretores lançam o resultado de cada atividade corrigida, e a coordenação acompanha quem está participando, quem foi eliminado e, na CRN, quem lidera o ranking.",
+              "O sistema começou só com a CRN. Quando a CNIE entrou, as duas passaram a dividir o cadastro de capítulos, mas cada uma com suas regras, seu histórico e sua eliminação.",
+            ],
+          },
+          {
+            title: "Regras de negócio",
+            bullets: [
+              "Cinco perfis exclusivos (corretor e coordenador de cada campanha, mais o Geral), com toda permissão conferida no servidor.",
+              "CRN: vários envios por atividade, nota de 0 a 130 e ranking com posição, quem está logo acima e logo abaixo, e a curva de pontos ao lado da do líder.",
+              "CNIE: um registro por capítulo e atividade, garantido pelo banco, então um duplo clique não grava duas vezes. A participação é calculada, sem ranking.",
+              "A planilha antiga da CNIE é conferida inteira antes de gravar: com qualquer linha errada, nada entra, e a tela lista o que corrigir.",
+              "Cada envio, ajuste e exclusão fica numa trilha de auditoria que não pode ser editada.",
+              "Retrospectiva por período: cada corretor recebe por email o link da sua, e a coordenação recebe o resumo da equipe, sem email repetido se o envio rodar de novo.",
+            ],
+          },
+          {
+            title: "Qualidade e entrega",
+            bullets: [
+              "A migração para duas campanhas foi ensaiada numa cópia da produção, preservando IDs, pontuações e a classificação da CRN.",
+              "Testes de permissões, concorrência, exportações e da própria migração.",
+              "Exportações em Excel e PDF, e deploy com Kamal.",
+            ],
+          },
+        ],
+        images: [],
+      },
+      en: {
+        tagline: "Two campaigns, five roles and a leaderboard, with no spreadsheet in between.",
+        role: "Full development",
+        facts: [
+          { value: "2", label: "campaigns in one system" },
+          { value: "5", label: "access roles" },
+          { value: "0 to 130", label: "points per activity in CRN, with a leaderboard" },
+        ],
+        sections: [
+          {
+            title: "Context",
+            paragraphs: [
+              "The DeMolay Order's CRN and CNIE campaigns assess the activities chapters submit throughout the year. Graders record the result of each graded activity, and coordinators follow who is taking part, who was eliminated and, in CRN, who leads the leaderboard.",
+              "The system started with CRN only. When CNIE joined, both began sharing the chapter registry, each with its own rules, history and eliminations.",
+            ],
+          },
+          {
+            title: "Business rules",
+            bullets: [
+              "Five exclusive roles (grader and coordinator for each campaign, plus a general admin), with every permission checked on the server.",
+              "CRN: several submissions per activity, scores from 0 to 130 and a leaderboard with position, who is right above and below, and the points curve next to the leader's.",
+              "CNIE: one record per chapter and activity, enforced by the database, so a double click never saves twice. Participation is calculated, with no ranking.",
+              "CNIE's old spreadsheet is checked in full before saving: with any bad row, nothing goes in, and the screen lists what to fix.",
+              "Every submission, adjustment and deletion lands in an audit trail that can't be edited.",
+              "Period recaps: each grader gets an email with a link to theirs, and coordinators get the team summary, with no repeated email if the job runs again.",
+            ],
+          },
+          {
+            title: "Quality and delivery",
+            bullets: [
+              "The migration to two campaigns was rehearsed on a copy of production, preserving IDs, scores and the CRN leaderboard.",
+              "Tests for permissions, concurrency, exports and the migration itself.",
+              "Excel and PDF exports, deployed with Kamal.",
+            ],
+          },
+        ],
+        images: [],
+      },
+    },
   },
   {
     slug: "rhut",

@@ -1,6 +1,6 @@
 # Produto
 
-Portfólio pessoal de Saulo Storel, publicado em https://storel.space.
+Site da Storell, o estúdio de uma pessoa só de Saulo Storel, publicado em https://www.storell.dev.br. A página `/apuracao/` é um projeto à parte, com CSS e JS próprios dentro da pasta.
 
 ## Quem é
 
@@ -8,27 +8,27 @@ Desenvolvedor Ruby on Rails. Estudante do último período de Análise e Desenvo
 
 ## Para quem
 
-Recrutadores, tech leads e pessoas da comunidade que chegam por LinkedIn, GitHub ou currículo. Leem rápido, em desktop durante o expediente ou no celular.
+Em primeiro lugar, quem pode contratar: donos de negócio, instituições e equipes que hoje controlam o trabalho em planilha, papel ou WhatsApp. A maioria abre pelo celular. Em segundo lugar, recrutadores e pessoas da comunidade, que chegam por LinkedIn ou GitHub.
 
 ## O que a página precisa fazer
 
-1. Dizer em segundos quem é e o que faz (back-end, Rails).
-2. Mostrar projetos reais com estudos de caso (DeMolay Piauí, CRN Cap, rhut, Xfria).
-3. Facilitar o contato: email, LinkedIn, GitHub, formulário (Formspree) e currículo em PDF.
+1. Dizer em segundos o que a Storell faz: sites, sistemas e painéis sob medida, com Rails.
+2. Mostrar projetos reais, todos com estudo de caso (DeMolay Piauí, CRN Cap, rhut, Xfria). O card sempre abre o estudo, nunca o site direto.
+3. Levar ao orçamento: formulário (Formspree), WhatsApp (86 99815-5687) e email.
 
 ## Tom
 
-Honesto e direto: em formação, sem inflar experiência e sem frases de autopromoção. Nada de alegações que não estejam no currículo, nos READMEs ou nos sites no ar. Não citar "construir o novo sistema de RH" (pedido do dono do site).
+Honesto e direto, em primeira pessoa ("eu faço"): a Storell é uma pessoa, e o site nunca finge ter uma equipe. Sem inflar experiência e sem frases de autopromoção. Nada de alegações que não estejam no currículo, nos READMEs ou nos sites no ar. Não citar "construir o novo sistema de RH" (pedido do dono do site).
 
 ## Restrições
 
 - HTML, CSS e JS puros, sem frameworks nem build. Deploy estático na Vercel.
 - Manter SEO (meta tags, JSON-LD, sitemap) e o GA4.
-- Projetos são curados em `projects.js` (a maioria dos repositórios é privada). A API do GitHub só alimenta o mapa de atividade, via github-contributions-api.jogruber.de, que depende de "Private contributions" ligado no perfil.
+- Projetos e estudos de caso são curados em `projects.js` (a maioria dos repositórios é privada). Os números dos estudos vêm dos repositórios (commits, testes, teste de carga), nunca de estimativa.
 - Site bilíngue: `/` e `/projeto.html` em português, `/en/` e `/en/project.html` em inglês.
 
 ## Compromissos de marca
 
-- Minimalismo profissional com tema Rails em grafite (aprovado em 2026-10-09, depois de testar versões clara e escura).
-- Interações com bibliotecas consagradas (GSAP, Lenis), sempre discretas.
+- Identidade do kit da Storell (aprovada em 2026-10-31), descrita em `DESIGN.md`. O tema Rails anterior está guardado no branch `design-rails-producao`.
+- Interações em CSS e JS próprios; a única biblioteca é o Lenis, para a rolagem suave.
 - Sem link de "pular para o conteúdo" (pedido do dono do site); o resto da navegação por teclado continua funcionando.
