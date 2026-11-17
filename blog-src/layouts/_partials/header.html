@@ -1,0 +1,27 @@
+{{- $home := site.Params.home -}}
+{{- $anchor := site.Params.anchor -}}
+{{- $blog := (site.GetPage "/blog").RelPermalink -}}
+{{- $other := dict "RelPermalink" (i18n "other_language_url") -}}
+{{- with .Translations }}{{ $other = index . 0 }}{{ end -}}
+{{- $otherLang := cond (eq site.Language.Lang "pt") "en" "pt-BR" -}}
+<header class="bbar">
+  <div class="bbar-in wrap">
+    <a class="logo" href="{{ $home }}" aria-label="{{ i18n "home_label" }}">Storell<span class="dot"></span></a>
+    <a class="bbar-section" href="{{ $blog }}">{{ i18n "blog" }}</a>
+
+    <nav class="bbar-nav" aria-label="{{ i18n "main_nav" }}">
+      <a href="{{ $blog }}">{{ i18n "nav_home" }}</a>
+      <a href="{{ (site.GetPage "tags").RelPermalink }}">{{ i18n "nav_tags" }}</a>
+      <a href="{{ $home }}">{{ i18n "nav_site" }}</a>
+    </nav>
+
+    <div class="bbar-tools">
+      <a class="lang" href="{{ $other.RelPermalink }}" hreflang="{{ $otherLang }}" lang="{{ $otherLang }}">{{ upper (substr $otherLang 0 2) }}</a>
+      <button class="theme-toggle" type="button" aria-label="{{ i18n "theme_toggle" }}" data-theme-toggle>
+        <svg class="icon icon-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+        <svg class="icon icon-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm bbar-cta" href="{{ $home }}#{{ $anchor.contact }}">{{ i18n "nav_quote" }}<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+  </div>
+</header>

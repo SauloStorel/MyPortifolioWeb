@@ -4,7 +4,7 @@
    ============================================================ */
 const STRINGS = {
   pt: {
-    caseStudyPath: "/projeto.html?p=",
+    caseStudyPath: "/projetos/",
     home: "/",
     projects: "/#projetos",
     contact: "/#contato",
@@ -18,7 +18,7 @@ const STRINGS = {
     sendFailed: "Não consegui enviar agora. Me escreve direto no WhatsApp ou no email ao lado.",
   },
   en: {
-    caseStudyPath: "/en/project.html?p=",
+    caseStudyPath: "/en/projects/",
     home: "/en/",
     projects: "/en/#work",
     contact: "/en/#contact",

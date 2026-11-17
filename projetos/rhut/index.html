@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rhut · estudo de caso | Storell</title>
+    <meta name="description" content="Transmissão de tela para servidores do Discord, direto no navegador: /live abre uma sala com WebRTC P2P em até 1080p60." />
+    <meta name="author" content="Saulo Storel" />
+    <meta name="theme-color" content="#0e0e10" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://www.storell.dev.br/projetos/rhut/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/rhut/" />
+    <link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/rhut/" />
+    <link rel="alternate" hreflang="x-default" href="https://www.storell.dev.br/projetos/rhut/" />
+
+    <meta property="og:title" content="rhut · estudo de caso | Storell" />
+    <meta property="og:description" content="Transmissão de tela para servidores do Discord, direto no navegador: /live abre uma sala com WebRTC P2P em até 1080p60." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://www.storell.dev.br/projetos/rhut/" />
+    <meta property="og:image" content="https://www.storell.dev.br/images/rhut.webp" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="840" />
+    <meta property="og:image:alt" content="rhut" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:site_name" content="Storell" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="rhut · estudo de caso | Storell" />
+    <meta name="twitter:description" content="Transmissão de tela para servidores do Discord, direto no navegador: /live abre uma sala com WebRTC P2P em até 1080p60." />
+    <meta name="twitter:image" content="https://www.storell.dev.br/images/rhut.webp" />
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Storell",
+          "item": "https://www.storell.dev.br/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Todos os projetos",
+          "item": "https://www.storell.dev.br/#projetos"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "rhut",
+          "item": "https://www.storell.dev.br/projetos/rhut/"
+        }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "@id": "https://www.storell.dev.br/projetos/rhut/#project",
+      "name": "rhut",
+      "description": "Transmissão de tela para servidores do Discord, direto no navegador: /live abre uma sala com WebRTC P2P em até 1080p60.",
+      "url": "https://www.storell.dev.br/projetos/rhut/",
+      "image": "https://www.storell.dev.br/images/rhut.webp",
+      "inLanguage": "pt-BR",
+      "keywords": "WebRTC, Cloudflare Workers, Durable Objects",
+      "author": {
+        "@type": "Person",
+        "@id": "https://www.storell.dev.br/#saulo",
+        "name": "Saulo Storel",
+        "url": "https://www.storell.dev.br/"
+      },
+      "sameAs": [
+        "https://rhut.storell.dev.br",
+        "https://github.com/SauloStorel/rhut"
+      ],
+      "dateCreated": "2026"
+    }
+  ]
+}
+    </script>
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M75ZHD8C4D"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-M75ZHD8C4D");
+    </script>
+
+    <link rel="preload" href="/fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/style.css?v=2026-10-31" />
+    <script>document.documentElement.classList.add("js");</script>
+  </head>
+  <body>
+    <svg hidden>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+      <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20.5 11.6a8.4 8.4 0 0 1-12.3 7.5L3.5 20.5l1.4-4.6A8.4 8.4 0 1 1 20.5 11.6Z"/></symbol>
+    </svg>
+
+    <header class="header">
+      <div class="bar">
+        <a class="logo" href="/" aria-label="Storell, início">Storell<span class="dot"></span></a>
+        <nav class="nav" id="menu" aria-label="Navegação principal">
+          <div class="nav-links">
+            <a href="/#servicos">Serviços</a>
+            <a href="/#projetos">Projetos</a>
+            <a href="/#processo">Processo</a>
+            <a href="/#sobre">Sobre</a>
+            <a href="/blog/">Blog</a>
+            <a class="lang" href="/en/projects/rhut/" hreflang="en" lang="en">EN</a>
+            <a class="btn btn-primary nav-cta" href="/#contato">Pedir orçamento<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </nav>
+        <a class="btn btn-primary btn-sm bar-cta" href="/#contato">Pedir orçamento<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu"><span></span><span></span></button>
+      </div>
+    </header>
+
+    <main id="case">
+      <section class="study-hero wrap">
+        <a class="back-link" href="/#projetos"><span class="round-btn"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span>Todos os projetos</a>
+        <p class="eyebrow reveal">Estudo de caso · 2026</p>
+        <h1 class="study-title reveal">rhut<span class="dot"></span></h1>
+        <p class="study-tagline reveal">1080p a 60 fps para o Discord, sem Nitro e sem servidor ligado.</p>
+        <dl class="study-meta reveal">
+          <div><dt>Papel</dt><dd>Projeto pessoal, código aberto</dd></div>
+          <div><dt>Stack</dt><dd><ul class="tags"><li>WebRTC</li><li>Cloudflare Workers</li><li>Durable Objects</li></ul></dd></div>
+          <div><dt>Ano</dt><dd>2026</dd></div>
+          <div class="study-links"><a class="btn btn-ghost btn-sm" href="https://rhut.storell.dev.br" target="_blank" rel="noopener noreferrer">Abrir site<svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a><a class="btn btn-ghost btn-sm" href="https://github.com/SauloStorel/rhut" target="_blank" rel="noopener noreferrer">Ver código<svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
+        </dl>
+        <figure class="study-cover reveal"><img src="/images/rhut.webp" alt="rhut" width="1600" height="840" fetchpriority="high" /></figure>
+      </section>
+
+      <section class="study-section wrap">
+        <div class="study-section-head reveal">
+          <span>01</span>
+          <h2>Por que existe</h2>
+        </div>
+        <div class="study-body reveal"><p>O compartilhamento de tela do Discord limita a qualidade para quem não tem Nitro. O rhut é a alternativa para grupos pequenos de amigos: alguém digita /live, o bot posta um aviso no canal e todo mundo entra numa sala na web.</p></div>
+      </section>
+      <section class="study-section wrap">
+        <div class="study-section-head reveal">
+          <span>02</span>
+          <h2>Como funciona</h2>
+        </div>
+        <div class="study-body reveal"><ul><li>Bot sem servidor ligado: o Discord chama o Worker por HTTP só quando alguém usa o comando ou clica num botão.</li><li>Uma sala, um Durable Object: ele só apresenta os navegadores (offer, answer e candidates) e guarda o estado do aviso. O vídeo nunca passa por ele.</li><li>Identidade sem login: o bot responde a cada pessoa com um link assinado (HMAC), válido para aquela sala por 12 horas.</li><li>Codec em hardware: a página prefere o codec que a GPU de quem transmite consegue codificar (AV1, H.264 ou VP9).</li><li>A sala vazia por 15 minutos fecha sozinha e atualiza o aviso no canal.</li></ul></div>
+      </section>
+      <section class="study-section wrap">
+        <div class="study-section-head reveal">
+          <span>03</span>
+          <h2>Limites assumidos</h2>
+        </div>
+        <div class="study-body reveal"><p>Cada pessoa assistindo recebe uma cópia direta do vídeo, então o upload de quem transmite é o teto: até 4 ou 5 pessoas fica tranquilo. Para muito mais gente, o caminho seria trocar o P2P por um SFU.</p></div>
+      </section>
+      <div class="study-gallery wrap">
+        
+        <figure class="reveal">
+          <img src="/images/rhut-sala.webp" alt="A sala esperando alguém transmitir." width="1440" height="756" loading="lazy" />
+          <figcaption>A sala esperando alguém transmitir.</figcaption>
+        </figure>
+        <figure class="reveal">
+          <img src="/images/rhut-guia.webp" alt="Passo a passo antes de compartilhar a tela, para o áudio do jogo ir junto." width="1440" height="756" loading="lazy" />
+          <figcaption>Passo a passo antes de compartilhar a tela, para o áudio do jogo ir junto.</figcaption>
+        </figure>
+      </div>
+      <section class="cta wrap">
+        <div class="contact-card reveal">
+          <div class="contact-stripes" aria-hidden="true"></div>
+          <div class="contact-copy">
+            <h2 class="contact-title">Quer algo assim <em>pro seu negócio?</em></h2>
+            <p class="contact-lead">Me conta o que você precisa. Eu respondo em até um dia útil.</p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-light" href="/#contato">Pedir orçamento<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-ghost" href="https://wa.me/5586998155687?text=Oi%2C%20Saulo%21%20Vim%20pelo%20site%20da%20Storell%20e%20queria%20conversar%20sobre%20um%20projeto." target="_blank" rel="noopener noreferrer">Chamar no WhatsApp<svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg></a>
+          </div>
+        </div>
+      </section>
+      <a class="next wrap reveal" href="/projetos/xfria/">
+        <div>
+          <p class="eyebrow">Próximo projeto</p>
+          <p class="next-name">Xfria<span class="round-btn" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span></p>
+        </div>
+        <img src="/images/xfria.webp" alt="" width="1600" height="840" loading="lazy" />
+      </a>
+    </main>
+
+    <footer class="footer wrap">
+      <p class="footer-mark" aria-hidden="true">Storell<span class="dot"></span></p>
+      <div class="footer-row">
+        <p>© <span id="year"></span> Storell · Saulo Storel</p>
+        <ul class="footer-links">
+          <li><a class="link" href="https://wa.me/5586998155687" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+          <li><a class="link" href="https://github.com/SauloStorel" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a class="link" href="https://www.linkedin.com/in/saulo-storel" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a class="link" href="/blog/">Blog</a></li>
+          <li><a class="link" href="/docs/curriculo.pdf" target="_blank" rel="noopener noreferrer">Currículo</a></li>
+        </ul>
+        <a class="round-btn" href="#case" aria-label="Voltar ao topo"><svg class="icon icon-up" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+    <script src="/common.js"></script>
+    <script src="/study.js"></script>
+  </body>
+</html>

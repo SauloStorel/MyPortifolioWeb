@@ -1,0 +1,50 @@
+{{ define "main" }}
+<div class="progress" aria-hidden="true"><i data-progress></i></div>
+
+<div class="post-layout wrap">
+  <article class="post">
+    <header class="post-head">
+      {{ partial "breadcrumbs.html" . }}
+      <h1 class="post-title">{{ .Title }}</h1>
+      {{ with .Description }}<p class="post-lead">{{ . }}</p>{{ end }}
+      <p class="post-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format ":date_long" }}</time>
+        <span>{{ i18n "read_time" .ReadingTime }}</span>
+        <button class="copy-link" type="button" data-copy-link data-done="{{ i18n "link_copied" }}">
+          <svg class="icon" aria-hidden="true"><use href="#i-link"/></svg><span>{{ i18n "copy_link" }}</span>
+        </button>
+      </p>
+      {{ partial "tags.html" . }}
+    </header>
+
+    <div class="prose" data-prose data-copy="{{ i18n "copy_code" }}" data-copied="{{ i18n "copied" }}">{{ .Content }}</div>
+
+    <footer class="post-foot">
+      <p class="author"><strong>{{ i18n "written_by" }} Saulo Storel</strong><br />{{ i18n "author_bio" }}</p>
+
+      <aside class="post-cta">
+        <h2>{{ i18n "cta_title" }}</h2>
+        <p>{{ i18n "cta_text" }}</p>
+        <a class="btn btn-primary" href="{{ site.Params.home }}#{{ site.Params.anchor.contact }}">{{ i18n "nav_quote" }}<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </aside>
+
+      {{ partial "related.html" . }}
+
+      {{- $newer := .NextInSection }}{{ $older := .PrevInSection }}
+      {{- if or $newer $older }}
+      <nav class="pager" aria-label="{{ i18n "blog" }}">
+        {{ with $older }}<a class="pager-link" href="{{ .RelPermalink }}" rel="prev"><span>← {{ i18n "previous" }}</span><strong>{{ .Title }}</strong></a>{{ else }}<span></span>{{ end }}
+        {{ with $newer }}<a class="pager-link pager-next" href="{{ .RelPermalink }}" rel="next"><span>{{ i18n "next" }} →</span><strong>{{ .Title }}</strong></a>{{ end }}
+      </nav>
+      {{- end }}
+    </footer>
+  </article>
+
+  {{- if gt (len .Fragments.Headings) 0 }}
+  <aside class="toc" aria-label="{{ i18n "toc_title" }}">
+    <p class="toc-title">{{ i18n "toc_title" }}</p>
+    {{ .Fragments.ToHTML 2 3 false }}
+  </aside>
+  {{- end }}
+</div>
+{{ end }}

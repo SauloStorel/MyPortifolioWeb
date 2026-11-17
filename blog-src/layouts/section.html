@@ -1,0 +1,34 @@
+{{ define "main" }}
+<section class="blog-head wrap">
+  <div class="blog-head-row">
+    <div>
+      <h1 class="blog-title">{{ .Title }}<span class="dot"></span></h1>
+      <p class="blog-lead">{{ i18n "blog_lead" }}</p>
+    </div>
+    <p class="blog-links">
+      {{- with .OutputFormats.Get "rss" }}<a class="link" href="{{ .RelPermalink }}">RSS</a>{{ end }}
+      <a class="link" href="{{ (site.GetPage "tags").RelPermalink }}">{{ i18n "all_tags" }}</a>
+    </p>
+  </div>
+
+  <div class="filters">
+    <label class="search">
+      <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+      <span class="sr-only">{{ i18n "search_label" }}</span>
+      <input type="search" placeholder="{{ i18n "search_placeholder" }}" autocomplete="off" data-search />
+      <kbd aria-hidden="true">/</kbd>
+    </label>
+    <div class="chips-row" role="group" aria-label="{{ i18n "filter_by_tag" }}">
+      <button class="chip is-on" type="button" aria-pressed="true" data-tag-chip="">{{ i18n "all" }}</button>
+      {{- range (site.Taxonomies.tags).Alphabetical }}
+      <button class="chip" type="button" aria-pressed="false" data-tag-chip="{{ .Page.Data.Term }}">#{{ .Page.Data.Term }}</button>
+      {{- end }}
+    </div>
+  </div>
+</section>
+
+<section class="blog-list wrap" data-blog-list data-one="{{ i18n "articles" 1 }}" data-other="{{ i18n "articles" 2 }}">
+  {{ partial "article-list.html" .Pages }}
+  <p class="blog-empty" data-empty hidden>{{ i18n "no_results" }}</p>
+</section>
+{{ end }}

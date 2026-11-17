@@ -1,0 +1,88 @@
+[blog]
+other = "Blog"
+[blog_lead]
+other = "About the projects I build: the ideas, the challenges, how I did it and which technologies I used."
+[nav_services]
+other = "Services"
+[nav_work]
+other = "Work"
+[nav_process]
+other = "Process"
+[nav_about]
+other = "About"
+[nav_quote]
+other = "Get a quote"
+[menu_open]
+other = "Open menu"
+[home_label]
+other = "Storell, home"
+[main_nav]
+other = "Main navigation"
+[articles]
+one = "{{ .Count }} article"
+other = "{{ .Count }} articles"
+[all_tags]
+other = "All tags"
+[posts_tagged]
+other = "Articles tagged"
+[read_time]
+one = "{{ .Count }} min read"
+other = "{{ .Count }} min read"
+[back_to_blog]
+other = "All articles"
+[cta_title]
+other = "Got a similar problem?"
+[cta_text]
+other = "Tell me how your business runs today. I'll reply within one business day."
+[resume]
+other = "Résumé"
+[back_to_top]
+other = "Back to top"
+[empty]
+other = "No articles here yet."
+[other_language_url]
+other = "/blog/"
+[nav_home]
+other = "Home"
+[nav_site]
+other = "Portfolio"
+[nav_projects]
+other = "Work"
+[nav_tags]
+other = "Tags"
+[theme_toggle]
+other = "Switch between light and dark theme"
+[search_label]
+other = "Search articles"
+[search_placeholder]
+other = "Search articles…"
+[all]
+other = "All"
+[no_results]
+other = "No articles found. Try another word or tag."
+[toc_title]
+other = "In this article"
+[copy_code]
+other = "Copy"
+[copied]
+other = "Copied"
+[copy_link]
+other = "Copy link"
+[link_copied]
+other = "Link copied"
+[previous]
+other = "Previous"
+[next]
+other = "Next"
+[written_by]
+other = "Written by"
+[author_bio]
+other = "Developer in Teresina, Brazil. I work with Ruby on Rails."
+[filter_by_tag]
+other = "Filter by tag"
+[breadcrumb]
+other = "You are here"
+[related_title]
+other = "Keep reading"
+[updated]
+other = "Updated on"

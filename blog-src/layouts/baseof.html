@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale }}" data-theme="dark">
+  <head>
+    {{ partial "head.html" . }}
+  </head>
+  <body>
+    {{ partial "icons.html" . }}
+    {{ partial "header.html" . }}
+    <main id="top" class="blog">
+      {{ block "main" . }}{{ end }}
+    </main>
+    {{ partial "footer.html" . }}
+    <script src="/blog.js" defer></script>
+  </body>
+</html>

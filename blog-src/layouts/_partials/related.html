@@ -1,0 +1,19 @@
+{{- /* Outros artigos do mesmo assunto; sem tags em comum, os mais recentes. */ -}}
+{{- $self := . -}}
+{{- $items := (site.RegularPages.Related $self) | first 3 -}}
+{{- $items = or $items (where site.RegularPages "Permalink" "ne" $self.Permalink | first 3) -}}
+{{- with $items }}
+<section class="related" aria-labelledby="related-title">
+  <h2 id="related-title">{{ i18n "related_title" }}</h2>
+  <ul>
+    {{- range . }}
+    <li>
+      <a href="{{ .RelPermalink }}">
+        <strong>{{ .Title }}</strong>
+        <span>{{ or .Description (.Summary | plainify | truncate 120) }}</span>
+      </a>
+    </li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}

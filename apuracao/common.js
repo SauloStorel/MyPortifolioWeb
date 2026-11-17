@@ -5,7 +5,7 @@
 const STRINGS = {
   pt: {
     locale: "pt-BR",
-    caseStudyPath: "/projeto.html?p=",
+    caseStudyPath: "/projetos/",
     emailCopied: "Email copiado",
     sending: "Enviando…",
     send: "Enviar mensagem",
@@ -22,7 +22,7 @@ const STRINGS = {
   },
   en: {
     locale: "en-US",
-    caseStudyPath: "/en/project.html?p=",
+    caseStudyPath: "/en/projects/",
     emailCopied: "Email copied",
     sending: "Sending…",
     send: "Send message",

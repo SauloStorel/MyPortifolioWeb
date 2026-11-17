@@ -1,0 +1,17 @@
+{{- /* Sitemap do blog: só artigos e a listagem. As páginas de tag são noindex, então ficam de fora (o Google reclama de URL no sitemap marcada como noindex). */ -}}
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  {{- range where site.Pages "Kind" "in" (slice "page" "section") }}
+  {{- $page := . }}
+  <url>
+    <loc>{{ $page.Permalink }}</loc>
+    <lastmod>{{ $page.Lastmod.Format "2006-01-02" }}</lastmod>
+    {{- with $page.Translations }}
+    <xhtml:link rel="alternate" hreflang="{{ $page.Language.Locale }}" href="{{ $page.Permalink }}" />
+    {{- range . }}
+    <xhtml:link rel="alternate" hreflang="{{ .Language.Locale }}" href="{{ .Permalink }}" />
+    {{- end }}
+    {{- end }}
+  </url>
+  {{- end }}
+</urlset>

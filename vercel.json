@@ -16,6 +16,40 @@
       "source": "/apuracao",
       "destination": "/apuracao/",
       "permanent": true
+    },
+    {
+      "source": "/projeto.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "p",
+          "value": "(?<slug>[a-z0-9-]+)"
+        }
+      ],
+      "destination": "/projetos/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/en/project.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "p",
+          "value": "(?<slug>[a-z0-9-]+)"
+        }
+      ],
+      "destination": "/en/projects/:slug/",
+      "permanent": true
+    },
+    {
+      "source": "/projeto.html",
+      "destination": "/#projetos",
+      "permanent": true
+    },
+    {
+      "source": "/en/project.html",
+      "destination": "/en/#work",
+      "permanent": true
     }
   ],
   "headers": [
@@ -50,7 +84,25 @@
       ]
     },
     {
-      "source": "/(.*)\\.(css|js|json|ico|jpg|jpeg|png|svg|webp|pdf)",
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(css|js)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=600, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(json|ico|svg|pdf)",
       "headers": [
         {
           "key": "Cache-Control",

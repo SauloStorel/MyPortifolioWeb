@@ -1,0 +1,24 @@
+{{- range .GroupByDate "2006-01" "desc" }}
+{{- $month := (index .Pages 0).Date }}
+<section class="month" data-month>
+  <header class="month-head">
+    <h2>{{ $month | time.Format "January 2006" }}</h2>
+    <span data-count>{{ i18n "articles" (len .Pages) }}</span>
+  </header>
+  <ol class="posts">
+    {{- range .Pages }}
+    {{- $tags := slice }}{{ range .GetTerms "tags" }}{{ $tags = $tags | append .Data.Term }}{{ end }}
+    <li class="post-row" data-row data-tags="{{ delimit $tags " " }}" data-search="{{ printf "%s %s %s" .Title (or .Description "") (delimit $tags " ") | lower }}">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format "02 Jan" }}</time>
+      <div class="post-body">
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p>{{ or .Description (.Summary | plainify | truncate 200) }}</p>
+      </div>
+      {{ partial "tags.html" . }}
+    </li>
+    {{- end }}
+  </ol>
+</section>
+{{- else }}
+<p class="blog-empty">{{ i18n "empty" }}</p>
+{{- end }}

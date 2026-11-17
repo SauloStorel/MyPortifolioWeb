@@ -1,0 +1,76 @@
+{{- $title := printf "%s · Storell" .Title -}}
+{{- $description := or .Description .Summary (i18n "blog_lead") | plainify | truncate 160 -}}
+{{- $blog := site.GetPage "/blog" -}}
+{{- $image := "https://www.storell.dev.br/images/og-image.jpg" -}}
+{{- $author := dict "@type" "Person" "@id" "https://www.storell.dev.br/#saulo" "name" "Saulo Storel" "url" "https://www.storell.dev.br/" -}}
+{{- $robots := cond (in (slice "term" "taxonomy") .Kind) "noindex, follow" "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" -}}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $description }}" />
+<meta name="author" content="Saulo Storel" />
+<meta name="robots" content="{{ $robots }}" />
+<meta name="theme-color" content="#0e0e10" />
+<link rel="canonical" href="{{ .Permalink }}" />
+{{- with .Translations }}
+<link rel="alternate" hreflang="{{ $.Language.Locale }}" href="{{ $.Permalink }}" />
+{{ range . }}<link rel="alternate" hreflang="{{ .Language.Locale }}" href="{{ .Permalink }}" />
+{{ end }}
+{{- end }}
+{{- with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" title="Storell · {{ i18n "blog" }}" href="{{ .Permalink }}" />{{ end }}
+
+<meta property="og:title" content="{{ $title }}" />
+<meta property="og:description" content="{{ $description }}" />
+<meta property="og:type" content="{{ cond .IsPage "article" "website" }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+<meta property="og:image" content="{{ $image }}" />
+<meta property="og:locale" content="{{ site.Params.ogLocale }}" />
+<meta property="og:site_name" content="Storell" />
+{{- if .IsPage }}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02" }}" />
+<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02" }}" />
+<meta property="article:author" content="Saulo Storel" />
+{{- end }}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="{{ $title }}" />
+<meta name="twitter:description" content="{{ $description }}" />
+<meta name="twitter:image" content="{{ $image }}" />
+
+{{- /* Dados estruturados: migalhas em todas as páginas, BlogPosting no artigo e Blog na listagem. */}}
+{{- $crumbs := slice (dict "@type" "ListItem" "position" 1 "name" "Storell" "item" (absURL site.Params.home)) (dict "@type" "ListItem" "position" 2 "name" (i18n "blog") "item" $blog.Permalink) -}}
+{{- if .IsPage }}{{ $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 3 "name" .Title "item" .Permalink) }}{{ end -}}
+{{- $graph := slice (dict "@type" "BreadcrumbList" "itemListElement" $crumbs) -}}
+{{- if .IsPage }}
+  {{- $keywords := slice }}{{ range .GetTerms "tags" }}{{ $keywords = $keywords | append .Data.Term }}{{ end }}
+  {{- $graph = $graph | append (dict "@type" "BlogPosting" "headline" .Title "description" $description "datePublished" (.Date.Format "2006-01-02") "dateModified" (.Lastmod.Format "2006-01-02") "inLanguage" site.Language.Locale "url" .Permalink "mainEntityOfPage" (dict "@type" "WebPage" "@id" .Permalink) "image" $image "wordCount" .WordCount "keywords" (delimit $keywords ", ") "author" $author "publisher" (dict "@type" "Organization" "@id" "https://www.storell.dev.br/#storell" "name" "Storell")) }}
+{{- end }}
+{{- if eq .Kind "section" }}
+  {{- $graph = $graph | append (dict "@type" "Blog" "name" (printf "Storell · %s" (i18n "blog")) "description" $description "url" .Permalink "inLanguage" site.Language.Locale "author" $author) }}
+{{- end }}
+<script type="application/ld+json">
+{{ dict "@context" "https://schema.org" "@graph" $graph | jsonify (dict "indent" "  ") | safeJS }}
+</script>
+
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M75ZHD8C4D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag("js", new Date());
+  gtag("config", "G-M75ZHD8C4D");
+</script>
+
+<link rel="preload" href="/fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="/style.css" />
+<link rel="stylesheet" href="/blog.css" />
+<!-- Tema antes da primeira pintura, para a página não piscar: o escolhido, ou o do aparelho. -->
+<script>
+  try {
+    const saved = localStorage.getItem("theme");
+    const light = saved ? saved === "light" : matchMedia("(prefers-color-scheme: light)").matches;
+    document.documentElement.dataset.theme = light ? "light" : "dark";
+  } catch (error) {}
+</script>

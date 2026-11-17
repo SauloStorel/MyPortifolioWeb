@@ -1,0 +1,13 @@
+{{ define "main" }}
+<section class="blog-head wrap">
+  <p class="eyebrow"><a class="link" href="{{ (site.GetPage "/blog").RelPermalink }}">{{ i18n "back_to_blog" }}</a></p>
+  <h1 class="blog-title">{{ i18n "all_tags" }}<span class="dot"></span></h1>
+</section>
+<section class="blog-list wrap">
+  <ul class="topics topics-all">
+    {{- range .Data.Terms.Alphabetical }}
+    <li><a href="{{ .Page.RelPermalink }}">#{{ .Page.Data.Term }} <span>{{ .Count }}</span></a></li>
+    {{- end }}
+  </ul>
+</section>
+{{ end }}

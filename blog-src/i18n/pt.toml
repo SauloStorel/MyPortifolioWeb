@@ -1,0 +1,88 @@
+[blog]
+other = "Blog"
+[blog_lead]
+other = "Sobre os projetos que eu faço: as ideias, os desafios, como eu fiz e quais tecnologias usei."
+[nav_services]
+other = "Serviços"
+[nav_work]
+other = "Projetos"
+[nav_process]
+other = "Processo"
+[nav_about]
+other = "Sobre"
+[nav_quote]
+other = "Pedir orçamento"
+[menu_open]
+other = "Abrir menu"
+[home_label]
+other = "Storell, início"
+[main_nav]
+other = "Navegação principal"
+[articles]
+one = "{{ .Count }} artigo"
+other = "{{ .Count }} artigos"
+[all_tags]
+other = "Todas as tags"
+[posts_tagged]
+other = "Artigos com a tag"
+[read_time]
+one = "{{ .Count }} min de leitura"
+other = "{{ .Count }} min de leitura"
+[back_to_blog]
+other = "Todos os artigos"
+[cta_title]
+other = "Tem um problema parecido?"
+[cta_text]
+other = "Me conta como o seu negócio funciona hoje. Eu respondo em até um dia útil."
+[resume]
+other = "Currículo"
+[back_to_top]
+other = "Voltar ao topo"
+[empty]
+other = "Ainda não há artigos por aqui."
+[other_language_url]
+other = "/en/blog/"
+[nav_home]
+other = "Início"
+[nav_site]
+other = "Portfólio"
+[nav_projects]
+other = "Projetos"
+[nav_tags]
+other = "Tags"
+[theme_toggle]
+other = "Alternar entre tema claro e escuro"
+[search_label]
+other = "Buscar artigos"
+[search_placeholder]
+other = "Buscar artigos…"
+[all]
+other = "Todos"
+[no_results]
+other = "Nenhum artigo encontrado. Tente outra palavra ou outra tag."
+[toc_title]
+other = "Neste artigo"
+[copy_code]
+other = "Copiar"
+[copied]
+other = "Copiado"
+[copy_link]
+other = "Copiar link"
+[link_copied]
+other = "Link copiado"
+[previous]
+other = "Anterior"
+[next]
+other = "Próximo"
+[written_by]
+other = "Escrito por"
+[author_bio]
+other = "Desenvolvedor em Teresina, PI. Trabalho com Ruby on Rails."
+[filter_by_tag]
+other = "Filtrar por tag"
+[breadcrumb]
+other = "Você está em"
+[related_title]
+other = "Leia também"
+[updated]
+other = "Atualizado em"

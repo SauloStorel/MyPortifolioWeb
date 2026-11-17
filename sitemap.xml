@@ -14,13 +14,62 @@
     <lastmod>2026-10-31</lastmod>
     <priority>0.9</priority>
   </url>
-  <url><loc>https://www.storell.dev.br/apuracao/</loc><lastmod>2026-10-22</lastmod><changefreq>hourly</changefreq></url>
-  <url><loc>https://www.storell.dev.br/projeto.html?p=demolay-piaui</loc><lastmod>2026-10-31</lastmod></url>
-  <url><loc>https://www.storell.dev.br/projeto.html?p=crn-cap</loc><lastmod>2026-10-31</lastmod></url>
-  <url><loc>https://www.storell.dev.br/projeto.html?p=rhut</loc><lastmod>2026-10-09</lastmod></url>
-  <url><loc>https://www.storell.dev.br/projeto.html?p=xfria</loc><lastmod>2026-10-28</lastmod></url>
-  <url><loc>https://www.storell.dev.br/en/project.html?p=demolay-piaui</loc><lastmod>2026-10-31</lastmod></url>
-  <url><loc>https://www.storell.dev.br/en/project.html?p=crn-cap</loc><lastmod>2026-10-31</lastmod></url>
-  <url><loc>https://www.storell.dev.br/en/project.html?p=rhut</loc><lastmod>2026-10-09</lastmod></url>
-  <url><loc>https://www.storell.dev.br/en/project.html?p=xfria</loc><lastmod>2026-10-28</lastmod></url>
+  <!-- projetos:inicio (gerado por scripts/gerar-projetos.mjs) -->
+  <url>
+    <loc>https://www.storell.dev.br/projetos/demolay-piaui/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/demolay-piaui/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/demolay-piaui/" />
+    <lastmod>2026-11-17</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.storell.dev.br/en/projects/demolay-piaui/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/demolay-piaui/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/demolay-piaui/" />
+    <lastmod>2026-11-17</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.storell.dev.br/projetos/crn-cap/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/crn-cap/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/crn-cap/" />
+    <lastmod>2026-11-17</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.storell.dev.br/en/projects/crn-cap/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/crn-cap/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/crn-cap/" />
+    <lastmod>2026-11-17</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.storell.dev.br/projetos/rhut/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/rhut/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/rhut/" />
+    <lastmod>2026-11-17</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.storell.dev.br/en/projects/rhut/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/rhut/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/rhut/" />
+    <lastmod>2026-11-17</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.storell.dev.br/projetos/xfria/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/xfria/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/xfria/" />
+    <lastmod>2026-11-17</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.storell.dev.br/en/projects/xfria/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/xfria/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/xfria/" />
+    <lastmod>2026-11-17</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <!-- projetos:fim -->
 </urlset>

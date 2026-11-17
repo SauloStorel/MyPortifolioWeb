@@ -1,0 +1,7 @@
+{{- /* Migalhas de pão do artigo: voltam para o início do blog, não para o portfólio. O caminho completo (site > blog > artigo) vai nos dados estruturados do <head>. */ -}}
+<nav class="crumbs" aria-label="{{ i18n "breadcrumb" }}">
+  <ol>
+    <li><a href="{{ (site.GetPage "/blog").RelPermalink }}">{{ i18n "nav_home" }}</a></li>
+    {{- if .IsPage }}<li aria-current="page">{{ .Title }}</li>{{ end }}
+  </ol>
+</nav>

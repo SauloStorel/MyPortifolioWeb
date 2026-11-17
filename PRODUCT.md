@@ -25,7 +25,7 @@ Honesto e direto, em primeira pessoa ("eu faço"): a Storell é uma pessoa, e o 
 - HTML, CSS e JS puros, sem frameworks nem build. Deploy estático na Vercel.
 - Manter SEO (meta tags, JSON-LD, sitemap) e o GA4.
 - Projetos e estudos de caso são curados em `projects.js` (a maioria dos repositórios é privada). Os números dos estudos vêm dos repositórios (commits, testes, teste de carga), nunca de estimativa.
-- Site bilíngue: `/` e `/projeto.html` em português, `/en/` e `/en/project.html` em inglês.
+- Site bilíngue: `/` e `/projetos/<slug>/` em português, `/en/` e `/en/projects/<slug>/` em inglês (estudos de caso gerados por `scripts/gerar-projetos.mjs`).
 
 ## Compromissos de marca
 

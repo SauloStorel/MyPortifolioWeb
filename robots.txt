@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.storell.dev.br/sitemap.xml
+Sitemap: https://www.storell.dev.br/blog/sitemap.xml
+Sitemap: https://www.storell.dev.br/en/blog/sitemap.xml

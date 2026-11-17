@@ -31,19 +31,127 @@
     <meta name="twitter:description" content="Systems that replace your spreadsheets. Websites, systems and admin panels by Saulo Storel, in Teresina, Brazil." />
     <meta name="twitter:image" content="https://www.storell.dev.br/images/og-image.jpg" />
 
-    <!-- Structured Data: a mesma Storell da página em português -->
+    <!-- Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebPage",
-      "@id": "https://www.storell.dev.br/en/#webpage",
-      "url": "https://www.storell.dev.br/en/",
-      "name": "Storell · Custom websites and systems",
-      "inLanguage": "en",
-      "isPartOf": { "@id": "https://www.storell.dev.br/#website" },
-      "about": { "@id": "https://www.storell.dev.br/#storell" }
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://www.storell.dev.br/#website",
+          "url": "https://www.storell.dev.br/en/",
+          "name": "Storell",
+          "alternateName": [
+            "Saulo Storel",
+            "storell.dev.br"
+          ],
+          "inLanguage": "en",
+          "publisher": {
+            "@id": "https://www.storell.dev.br/#storell"
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.storell.dev.br/en/#webpage",
+          "url": "https://www.storell.dev.br/en/",
+          "name": "Storell · Custom websites and systems",
+          "inLanguage": "en",
+          "isPartOf": {
+            "@id": "https://www.storell.dev.br/#website"
+          },
+          "about": {
+            "@id": "https://www.storell.dev.br/#storell"
+          }
+        },
+        {
+          "@type": "ProfessionalService",
+          "@id": "https://www.storell.dev.br/#storell",
+          "name": "Storell",
+          "description": "Custom websites, web systems and admin panels built with Ruby on Rails.",
+          "url": "https://www.storell.dev.br/",
+          "logo": "https://www.storell.dev.br/favicon-192.png",
+          "image": "https://www.storell.dev.br/images/og-image.jpg",
+          "email": "saulostorell@gmail.com",
+          "telephone": "+55-86-99815-5687",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Teresina",
+            "addressRegion": "PI",
+            "addressCountry": "BR"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -5.0892,
+            "longitude": -42.8019
+          },
+          "areaServed": "BR",
+          "founder": {
+            "@id": "https://www.storell.dev.br/#saulo"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Storell services",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Custom systems",
+                  "description": "Registries, approval flows and controls that today live in spreadsheets, paper or WhatsApp groups."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Institutional websites",
+                  "description": "Fast, easy to find on Google, with a panel so you can update texts, photos and documents yourself."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Admin panels",
+                  "description": "Orders, finance and reports in one place, with separate access for each team member."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Payments and integrations",
+                  "description": "Sales of registrations and products with automatic confirmation, and connections to the tools you already use."
+                }
+              }
+            ]
+          }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://www.storell.dev.br/#saulo",
+          "name": "Saulo Storel",
+          "alternateName": "Saulo José Storel de Moura Abreu",
+          "jobTitle": "Ruby on Rails developer",
+          "url": "https://www.storell.dev.br/",
+          "image": "https://www.storell.dev.br/images/foto.jpg",
+          "sameAs": [
+            "https://github.com/SauloStorel",
+            "https://www.linkedin.com/in/saulo-storel"
+          ],
+          "knowsAbout": [
+            "Ruby on Rails",
+            "Ruby",
+            "PostgreSQL",
+            "Hotwire",
+            "RSpec",
+            "JavaScript",
+            "TypeScript"
+          ]
+        }
+      ]
     }
-    </script>
+        </script>
 
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
@@ -90,11 +198,12 @@
             <a href="#work">Work</a>
             <a href="#process">Process</a>
             <a href="#about">About</a>
+            <a href="/en/blog/">Blog</a>
             <a class="lang" href="/" hreflang="pt-BR" lang="pt-BR">PT</a>
-            <a class="btn btn-primary nav-cta" href="#contato">Get a quote<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-primary nav-cta" href="#contact">Get a quote<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
         </nav>
-        <a class="btn btn-primary btn-sm bar-cta" href="#contato">Get a quote<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-primary btn-sm bar-cta" href="#contact">Get a quote<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span></button>
       </div>
     </header>
@@ -108,7 +217,7 @@
           <h1 class="hero-title reveal">Systems that <span class="hero-muted">replace your</span> <span class="nowrap">spreadsheets<span class="dot hero-dot"></span></span></h1>
           <p class="hero-lead reveal">I'm Saulo. I build custom websites, systems and admin panels with Ruby on Rails, from the first sketch to the live server, and explain every step without jargon.</p>
           <div class="hero-actions reveal">
-            <a class="btn btn-primary" href="#contato">Get a quote<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-primary" href="#contact">Get a quote<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             <a class="btn btn-ghost" href="https://wa.me/5586998155687?text=Hi%20Saulo%21%20I%20found%20you%20through%20the%20Storell%20website%20and%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener noreferrer">Message on WhatsApp<svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg></a>
           </div>
         </div>
@@ -116,7 +225,7 @@
         <div class="hero-art" aria-hidden="true">
           <div class="art-dots"></div>
           <div class="art-ring"></div>
-          <div class="art-portrait"><img src="/images/saulo-recorte.webp" alt="" width="760" height="857" /></div>
+          <div class="art-portrait"><img src="/images/saulo-recorte.webp" alt="" width="760" height="857" fetchpriority="high" /></div>
           <div class="art-mark"><span>S</span><i></i></div>
           <div class="art-slash"></div>
           <p class="art-status"><i></i>Booking new projects</p>
@@ -286,6 +395,7 @@
           <li><a class="link" href="https://wa.me/5586998155687" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
           <li><a class="link" href="https://github.com/SauloStorel" target="_blank" rel="noopener noreferrer">GitHub</a></li>
           <li><a class="link" href="https://www.linkedin.com/in/saulo-storel" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a class="link" href="/en/blog/">Blog</a></li>
           <li><a class="link" href="/docs/curriculo.pdf" target="_blank" rel="noopener noreferrer">Résumé</a></li>
         </ul>
         <a class="round-btn" href="#top" aria-label="Back to top"><svg class="icon icon-up" aria-hidden="true"><use href="#i-arrow"/></svg></a>

@@ -42,9 +42,27 @@
           "@id": "https://www.storell.dev.br/#website",
           "url": "https://www.storell.dev.br/",
           "name": "Storell",
-          "alternateName": ["Saulo Storel", "storell.dev.br"],
-          "inLanguage": ["pt-BR", "en"],
-          "publisher": { "@id": "https://www.storell.dev.br/#storell" }
+          "alternateName": [
+            "Saulo Storel",
+            "storell.dev.br"
+          ],
+          "inLanguage": "pt-BR",
+          "publisher": {
+            "@id": "https://www.storell.dev.br/#storell"
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.storell.dev.br/#webpage",
+          "url": "https://www.storell.dev.br/",
+          "name": "Storell · Sites e sistemas sob medida",
+          "inLanguage": "pt-BR",
+          "isPartOf": {
+            "@id": "https://www.storell.dev.br/#website"
+          },
+          "about": {
+            "@id": "https://www.storell.dev.br/#storell"
+          }
         },
         {
           "@type": "ProfessionalService",
@@ -62,8 +80,53 @@
             "addressRegion": "PI",
             "addressCountry": "BR"
           },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -5.0892,
+            "longitude": -42.8019
+          },
           "areaServed": "BR",
-          "founder": { "@id": "https://www.storell.dev.br/#saulo" }
+          "founder": {
+            "@id": "https://www.storell.dev.br/#saulo"
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Serviços da Storell",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Sistemas sob medida",
+                  "description": "Cadastros, fluxos de aprovação e controles que hoje vivem em planilha, papel ou grupo de WhatsApp."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Sites institucionais",
+                  "description": "Rápidos, fáceis de achar no Google e com um painel para você mesmo atualizar textos, fotos e documentos."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Painéis administrativos",
+                  "description": "Pedidos, financeiro e relatórios num lugar só, com acesso separado para cada pessoa da equipe."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": "Pagamentos e integrações",
+                  "description": "Venda de inscrições e produtos com confirmação automática, e conexão com as ferramentas que você já usa."
+                }
+              }
+            ]
+          }
         },
         {
           "@type": "Person",
@@ -77,11 +140,19 @@
             "https://github.com/SauloStorel",
             "https://www.linkedin.com/in/saulo-storel"
           ],
-          "knowsAbout": ["Ruby on Rails", "Ruby", "PostgreSQL", "Hotwire", "RSpec", "JavaScript", "TypeScript"]
+          "knowsAbout": [
+            "Ruby on Rails",
+            "Ruby",
+            "PostgreSQL",
+            "Hotwire",
+            "RSpec",
+            "JavaScript",
+            "TypeScript"
+          ]
         }
       ]
     }
-    </script>
+        </script>
 
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
@@ -128,6 +199,7 @@
             <a href="#projetos">Projetos</a>
             <a href="#processo">Processo</a>
             <a href="#sobre">Sobre</a>
+            <a href="/blog/">Blog</a>
             <a class="lang" href="/en/" hreflang="en" lang="en">EN</a>
             <a class="btn btn-primary nav-cta" href="#contato">Pedir orçamento<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
           </div>
@@ -154,7 +226,7 @@
         <div class="hero-art" aria-hidden="true">
           <div class="art-dots"></div>
           <div class="art-ring"></div>
-          <div class="art-portrait"><img src="/images/saulo-recorte.webp" alt="" width="760" height="857" /></div>
+          <div class="art-portrait"><img src="/images/saulo-recorte.webp" alt="" width="760" height="857" fetchpriority="high" /></div>
           <div class="art-mark"><span>S</span><i></i></div>
           <div class="art-slash"></div>
           <p class="art-status"><i></i>Agenda aberta para novos projetos</p>
@@ -324,6 +396,7 @@
           <li><a class="link" href="https://wa.me/5586998155687" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
           <li><a class="link" href="https://github.com/SauloStorel" target="_blank" rel="noopener noreferrer">GitHub</a></li>
           <li><a class="link" href="https://www.linkedin.com/in/saulo-storel" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a class="link" href="/blog/">Blog</a></li>
           <li><a class="link" href="/docs/curriculo.pdf" target="_blank" rel="noopener noreferrer">Currículo</a></li>
         </ul>
         <a class="round-btn" href="#top" aria-label="Voltar ao topo"><svg class="icon icon-up" aria-hidden="true"><use href="#i-arrow"/></svg></a>

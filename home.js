@@ -7,7 +7,7 @@
 function caseCard(project) {
   return `
     <li class="case reveal">
-      <a href="${T.caseStudyPath}${escHtml(project.slug)}">
+      <a href="${T.caseStudyPath}${escHtml(project.slug)}/">
         <div class="case-media">
           <img src="${escHtml(project.thumb)}" alt="" width="1600" height="840" loading="lazy" />
         </div>

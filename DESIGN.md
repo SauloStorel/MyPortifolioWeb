@@ -53,6 +53,24 @@ CSS e JS próprios, mais o Lenis 1.3 (jsDelivr) para a rolagem suave, ligado só
 
 Os efeitos de mouse só ligam com ponteiro fino. Com `prefers-reduced-motion`, tudo fica parado e completo.
 
+## Blog
+
+É o blog de desenvolvedor do Saulo: os projetos que ele faz, as ideias, os desafios de cada um, como fez e quais tecnologias usou (a ideia foi do tio dele). Também ajuda o site a ser achado no Google. Estrutura inspirada no blog do Akita (lista de texto agrupada por mês, tags em mono, RSS). Feito com Hugo em `blog-src/` (Markdown em `content/pt/blog` e `content/en/blog`, ligados por `translationKey`). O Hugo gera só `/blog` e `/en/blog`; o resto do site continua HTML à mão.
+
+- **Visual:** tema escuro (o da marca) e claro, escolhido no botão do cabeçalho ou pelo aparelho, sem piscar (script no `<head>`). Cabeçalho e rodapé próprios, simples, sem a pílula flutuante. Código sempre em bloco escuro.
+- **Interação (leve, o conteúdo já vem no HTML):** busca ao vivo (atalho `/`) e filtro por tag na listagem; no artigo, barra de progresso, índice lateral que acompanha a leitura, botão de copiar nos blocos de código, link em cada título, copiar link, "Leia também" e artigo anterior/próximo. Tudo em `blog.js`, sem biblioteca.
+- **SEO:** título e descrição por artigo (`description` obrigatório no front matter), canonical e hreflang entre as versões, dados estruturados (`BlogPosting`, `Blog`, `BreadcrumbList`) ligados à marca por `@id`, migalhas visíveis, um sitemap por idioma (`/blog/sitemap.xml`, `/en/blog/sitemap.xml`, no `robots.txt`) e RSS. As páginas de tag ficam `noindex, follow`, para não virarem conteúdo fino.
+- **Gerar:** `./blog-src/build.sh` (só posts prontos) ou `./blog-src/build.sh -D` (com rascunhos). O `.vercelignore` deixa o `blog-src` fora do deploy.
+- **Novo post:** `cd blog-src && hugo new content --kind projeto content/pt/blog/nome-do-post.md` cria o texto com a estrutura (ideia, desafios, como fiz, tecnologias) e `draft: true`. Faça o mesmo em `content/en/blog/` com o mesmo `translationKey`. Linke a página do projeto quando houver.
+
+## Estudos de caso e SEO do site
+
+- **Páginas de projeto estáticas:** `scripts/gerar-projetos.mjs` lê o `projects.js` e gera `/projetos/<slug>/` e `/en/projects/<slug>/`, já com título, descrição, `canonical`, `hreflang`, Open Graph e dados estruturados (`CreativeWork` + `BreadcrumbList`). Rode `node scripts/gerar-projetos.mjs` depois de mudar ou acrescentar um projeto; ele também atualiza o trecho de projetos do `sitemap.xml`.
+- **URLs antigas:** `/projeto.html?p=slug` e `/en/project.html?p=slug` redirecionam (301) para as novas, no `vercel.json`.
+- **Cache:** imagens por 1 dia (com revalidação em segundo plano por 7), CSS e JS por 10 minutos, fontes imutáveis.
+- **Dados estruturados da home** (`WebSite`, `WebPage`, `ProfessionalService` com catálogo de serviços, `Person`) completos em português e inglês.
+- **Fora do índice:** `/apuracao/` (`noindex`, fora do sitemap), páginas de tag do blog e a 404.
+
 ## Não fazer
 
-Vidro fora da navbar e da pílula do cursor, cards iguais em fila, segundo acento de cor, sombra suave em tudo, números ou depoimentos inventados, travessão nos textos da interface.
+Fonte serifada, nunca. Vidro fora da navbar e da pílula do cursor, cards iguais em fila, segundo acento de cor, sombra suave em tudo, números ou depoimentos inventados, travessão nos textos da interface.

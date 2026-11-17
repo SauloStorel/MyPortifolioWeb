@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xfria · case study | Storell</title>
+    <meta name="description" content="Control a Gree air conditioner from your computer and phone: an ESP32 imitates the infrared remote, at zero monthly cost." />
+    <meta name="author" content="Saulo Storel" />
+    <meta name="theme-color" content="#0e0e10" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://www.storell.dev.br/en/projects/xfria/" />
+    <link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/xfria/" />
+    <link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/xfria/" />
+    <link rel="alternate" hreflang="x-default" href="https://www.storell.dev.br/projetos/xfria/" />
+
+    <meta property="og:title" content="Xfria · case study | Storell" />
+    <meta property="og:description" content="Control a Gree air conditioner from your computer and phone: an ESP32 imitates the infrared remote, at zero monthly cost." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://www.storell.dev.br/en/projects/xfria/" />
+    <meta property="og:image" content="https://www.storell.dev.br/images/xfria.webp" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="840" />
+    <meta property="og:image:alt" content="Xfria" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="pt_BR" />
+    <meta property="og:site_name" content="Storell" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Xfria · case study | Storell" />
+    <meta name="twitter:description" content="Control a Gree air conditioner from your computer and phone: an ESP32 imitates the infrared remote, at zero monthly cost." />
+    <meta name="twitter:image" content="https://www.storell.dev.br/images/xfria.webp" />
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Storell",
+          "item": "https://www.storell.dev.br/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "All projects",
+          "item": "https://www.storell.dev.br/en/#work"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Xfria",
+          "item": "https://www.storell.dev.br/en/projects/xfria/"
+        }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "@id": "https://www.storell.dev.br/en/projects/xfria/#project",
+      "name": "Xfria",
+      "description": "Control a Gree air conditioner from your computer and phone: an ESP32 imitates the infrared remote, at zero monthly cost.",
+      "url": "https://www.storell.dev.br/en/projects/xfria/",
+      "image": "https://www.storell.dev.br/images/xfria.webp",
+      "inLanguage": "en",
+      "keywords": "ESP32, MQTT, Tauri",
+      "author": {
+        "@type": "Person",
+        "@id": "https://www.storell.dev.br/#saulo",
+        "name": "Saulo Storel",
+        "url": "https://www.storell.dev.br/"
+      },
+      "sameAs": [
+        "https://xfria.storell.dev.br",
+        "https://github.com/SauloStorel/xfria"
+      ],
+      "dateCreated": "2026"
+    }
+  ]
+}
+    </script>
+
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M75ZHD8C4D"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-M75ZHD8C4D");
+    </script>
+
+    <link rel="preload" href="/fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/style.css?v=2026-10-31" />
+    <script>document.documentElement.classList.add("js");</script>
+  </head>
+  <body>
+    <svg hidden>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+      <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M20.5 11.6a8.4 8.4 0 0 1-12.3 7.5L3.5 20.5l1.4-4.6A8.4 8.4 0 1 1 20.5 11.6Z"/></symbol>
+    </svg>
+
+    <header class="header">
+      <div class="bar">
+        <a class="logo" href="/en/" aria-label="Storell, home">Storell<span class="dot"></span></a>
+        <nav class="nav" id="menu" aria-label="Main navigation">
+          <div class="nav-links">
+            <a href="/en/#services">Services</a>
+            <a href="/en/#work">Work</a>
+            <a href="/en/#process">Process</a>
+            <a href="/en/#about">About</a>
+            <a href="/en/blog/">Blog</a>
+            <a class="lang" href="/projetos/xfria/" hreflang="pt-BR" lang="pt-BR">PT</a>
+            <a class="btn btn-primary nav-cta" href="/en/#contact">Get a quote<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+        </nav>
+        <a class="btn btn-primary btn-sm bar-cta" href="/en/#contact">Get a quote<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span></button>
+      </div>
+    </header>
+
+    <main id="case">
+      <section class="study-hero wrap">
+        <a class="back-link" href="/en/#work"><span class="round-btn"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span>All projects</a>
+        <p class="eyebrow reveal">Case study · 2026</p>
+        <h1 class="study-title reveal">Xfria<span class="dot"></span></h1>
+        <p class="study-tagline reveal">An air conditioner without Wi-Fi gets a panel on the desktop, the status bar and the phone.</p>
+        <dl class="study-meta reveal">
+          <div><dt>Role</dt><dd>Personal project, open source</dd></div>
+          <div><dt>Stack</dt><dd><ul class="tags"><li>ESP32</li><li>MQTT</li><li>Tauri</li></ul></dd></div>
+          <div><dt>Year</dt><dd>2026</dd></div>
+          <div class="study-links"><a class="btn btn-ghost btn-sm" href="https://xfria.storell.dev.br" target="_blank" rel="noopener noreferrer">Open website<svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a><a class="btn btn-ghost btn-sm" href="https://github.com/SauloStorel/xfria" target="_blank" rel="noopener noreferrer">See code<svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></div>
+        </dl>
+        <figure class="study-cover reveal"><img src="/images/xfria.webp" alt="Xfria" width="1600" height="840" fetchpriority="high" /></figure>
+      </section>
+
+      <section class="study-section wrap">
+        <div class="study-section-head reveal">
+          <span>01</span>
+          <h2>Why it exists</h2>
+        </div>
+        <div class="study-body reveal"><p>The remote goes missing, sits in another room or runs out of battery, and the air conditioner has no Wi-Fi. Instead of replacing the unit, Xfria imitates the original remote: a cheap infrared LED, an ESP32 and a panel of its own, with no paid cloud, no open router ports and no manufacturer app.</p></div>
+      </section>
+      <section class="study-section wrap">
+        <div class="study-section-head reveal">
+          <span>02</span>
+          <h2>How it works</h2>
+        </div>
+        <div class="study-body reveal"><ul><li>The ESP32 speaks the Gree protocol through the IRremoteESP8266 library and sends the full state with every command: power, mode, temperature, fan and louver.</li><li>Panel and ESP32 talk over MQTT on Adafruit IO&#39;s free plan. The ESP32 only opens outbound connections, so nothing on the home network is exposed.</li><li>Real state: the ESP32 publishes its state after every command and announces when it drops (last will), so every panel shows the same thing.</li><li>One panel in three places: a Tauri app on Windows and Linux, an icon in the Omarchy status bar and an installable web app on the phone.</li><li>The last state is saved to flash and comes back after a power cut, and new firmware goes over Wi-Fi, password-protected, without taking the board down.</li></ul></div>
+      </section>
+      <section class="study-section wrap">
+        <div class="study-section-head reveal">
+          <span>03</span>
+          <h2>Known limits</h2>
+        </div>
+        <div class="study-body reveal"><p>Infrared is one-way: if someone uses the original remote, the panel never finds out. Each board controls one unit, Gree only, and Adafruit IO&#39;s free plan allows up to 30 messages per minute, so the status bar waits a moment before sending the temperature.</p></div>
+      </section>
+      <div class="study-gallery wrap">
+        
+        <figure class="reveal">
+          <img src="/images/xfria-painel.webp" alt="The panel: temperature, mode, fan and louver, the same on the desktop and the phone." width="1440" height="756" loading="lazy" />
+          <figcaption>The panel: temperature, mode, fan and louver, the same on the desktop and the phone.</figcaption>
+        </figure>
+        <figure class="reveal">
+          <img src="/images/xfria-caixa.webp" alt="The build: an ESP32, an infrared emitter and a 3D-printed case, no soldering." width="1440" height="756" loading="lazy" />
+          <figcaption>The build: an ESP32, an infrared emitter and a 3D-printed case, no soldering.</figcaption>
+        </figure>
+      </div>
+      <section class="cta wrap">
+        <div class="contact-card reveal">
+          <div class="contact-stripes" aria-hidden="true"></div>
+          <div class="contact-copy">
+            <h2 class="contact-title">Want something like this <em>for your business?</em></h2>
+            <p class="contact-lead">Tell me what you need. I'll reply within one business day.</p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-light" href="/en/#contact">Get a quote<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            <a class="btn btn-ghost" href="https://wa.me/5586998155687?text=Hi%20Saulo%21%20I%20found%20you%20through%20the%20Storell%20website%20and%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener noreferrer">Message on WhatsApp<svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg></a>
+          </div>
+        </div>
+      </section>
+      <a class="next wrap reveal" href="/en/projects/demolay-piaui/">
+        <div>
+          <p class="eyebrow">Next project</p>
+          <p class="next-name">DeMolay Piauí<span class="round-btn" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span></p>
+        </div>
+        <img src="/images/demolay-pi.webp" alt="" width="1600" height="840" loading="lazy" />
+      </a>
+    </main>
+
+    <footer class="footer wrap">
+      <p class="footer-mark" aria-hidden="true">Storell<span class="dot"></span></p>
+      <div class="footer-row">
+        <p>© <span id="year"></span> Storell · Saulo Storel</p>
+        <ul class="footer-links">
+          <li><a class="link" href="https://wa.me/5586998155687" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+          <li><a class="link" href="https://github.com/SauloStorel" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a class="link" href="https://www.linkedin.com/in/saulo-storel" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a class="link" href="/en/blog/">Blog</a></li>
+          <li><a class="link" href="/docs/curriculo.pdf" target="_blank" rel="noopener noreferrer">Résumé</a></li>
+        </ul>
+        <a class="round-btn" href="#case" aria-label="Back to top"><svg class="icon icon-up" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+    <script src="/common.js"></script>
+    <script src="/study.js"></script>
+  </body>
+</html>

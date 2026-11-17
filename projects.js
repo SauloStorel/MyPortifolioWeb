@@ -2,7 +2,7 @@
 // A maioria dos repositórios é privada, por isso a lista é curada aqui em vez de vir da API do GitHub.
 //
 // Campos:
-//   slug    — identificador na URL do estudo de caso (/projeto.html?p=slug)
+//   slug    — identificador na URL do estudo de caso (/projetos/slug/ e /en/projects/slug/, geradas por scripts/gerar-projetos.mjs)
 //   repo    — URL pública do código, ou null quando o repositório é privado
 //   site    — URL do projeto no ar, ou null
 //   thumb   — imagem 40:21 usada nos cards e no topo do estudo de caso
