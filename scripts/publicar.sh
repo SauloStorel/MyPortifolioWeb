@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
-# Prepara o site para publicar e, se você pedir, envia.
+# Prepara o site para publicar e, se você pedir, envia e confere o resultado.
 #
 #   ./scripts/publicar.sh                    só gera e confere (não mexe no git)
 #   ./scripts/publicar.sh "Novo artigo: X"   gera, confere e pergunta se pode fazer o
-#                                            commit e o envio (o deploy na Vercel sai do push)
+#                                            commit e o envio; depois espera o deploy da
+#                                            Vercel e confere o site publicado
 #
 # O que ele faz, nesta ordem:
 #   1. gera as páginas de projeto e atualiza o sitemap.xml
 #   2. gera o blog (sem rascunhos)
 #   3. confere os artigos: descrição, versão nos dois idiomas e links internos
+#   4. (com mensagem) commit, push, espera o deploy e confere o site no ar
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -36,4 +38,12 @@ read -r -p "Fazer o commit com a mensagem \"$message\" e enviar (push)? [s/N] " 
 git add -A
 git commit -m "$message"
 git push
-echo "Enviado. Agora é pedir a indexação das páginas novas no Google Search Console."
+
+# Só a branch main vai para o endereço público; as outras geram uma pré-visualização protegida.
+if [[ "$(git branch --show-current)" == "main" ]]; then
+  echo
+  node scripts/verificar-producao.mjs --esperar
+  echo "No ar. Falta só pedir a indexação das páginas novas no Google Search Console."
+else
+  echo "Enviado para a branch $(git branch --show-current): a Vercel gera uma pré-visualização (veja o painel)."
+fi
