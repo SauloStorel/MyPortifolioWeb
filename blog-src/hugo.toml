@@ -1,7 +1,7 @@
-# Blog da Storell. O Hugo gera só /blog e /en/blog; o resto do site é HTML escrito à mão.
+# Blog pessoal do Saulo. O Hugo gera só /blog e /en/blog; o resto do site é HTML escrito à mão.
 # Para gerar: ./blog-src/build.sh   (com -D inclui os rascunhos)
 baseURL = "https://www.storell.dev.br/"
-title = "Storell"
+title = "Blog do Saulo"
 defaultContentLanguage = "pt"
 defaultContentLanguageInSubdir = false
 disableKinds = ["home", "robotsTXT", "404"]
@@ -32,6 +32,7 @@ disableKinds = ["home", "robotsTXT", "404"]
 [languages.en]
   locale = "en"
   label = "English"
+  title = "Saulo's blog"
   contentDir = "content/en"
   weight = 2
   [languages.en.params]

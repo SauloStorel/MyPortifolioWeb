@@ -5,6 +5,7 @@ date: {{ .Date }}
 draft: true # troque para false quando estiver pronto para publicar
 translationKey: "{{ .File.ContentBaseName }}" # o mesmo nas duas versões (pt e en)
 tags: [] # por exemplo: ["rails", "pagamentos"]
+# resumo: pedir ao Claude depois que o texto estiver pronto (lista de frases, gerada por IA). Depois: node scripts/verificar-blog.mjs --atualizar-hashes
 ---
 
 Uma ou duas linhas: que projeto é esse e para quem. Se ele tem página aqui no site, linke: [Nome do projeto](/projetos/slug/).

@@ -15,7 +15,7 @@ other = "Pedir orçamento"
 [menu_open]
 other = "Abrir menu"
 [home_label]
-other = "Storell, início"
+other = "Blog do Saulo, início"
 [main_nav]
 other = "Navegação principal"
 [articles]
@@ -86,3 +86,8 @@ other = "Você está em"
 other = "Leia também"
 [updated]
 other = "Atualizado em"
+
+[ai_summary]
+other = "Resumo por IA"
+[ai_summary_note]
+other = "Resumo gerado por IA a partir deste artigo. Pode ter erros: o texto completo abaixo é a referência."

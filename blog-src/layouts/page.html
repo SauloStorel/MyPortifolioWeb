@@ -17,6 +17,22 @@
       {{ partial "tags.html" . }}
     </header>
 
+    {{- /* Resumo por IA: escrito para o texto atual (o verificador confere) e guardado no front matter. */}}
+    {{- with .Params.resumo }}
+    <details class="ai-summary">
+      <summary>
+        <svg class="icon" aria-hidden="true"><use href="#i-sparkle"/></svg>
+        {{ i18n "ai_summary" }}
+      </summary>
+      <div class="ai-summary-body">
+        <ul>
+          {{- range . }}<li>{{ . | markdownify }}</li>{{ end }}
+        </ul>
+        <p class="ai-summary-note">{{ i18n "ai_summary_note" }}</p>
+      </div>
+    </details>
+    {{- end }}
+
     <div class="prose" data-prose data-copy="{{ i18n "copy_code" }}" data-copied="{{ i18n "copied" }}">{{ .Content }}</div>
 
     <footer class="post-foot">

@@ -359,3 +359,28 @@ html[data-theme="light"] .icon-sun, html:not([data-theme="light"]) .icon-moon { 
   .pager { grid-template-columns: minmax(0, 1fr); }
   .pager-next { grid-column: auto; text-align: left; }
 }
+
+/* ---------- Resumo por IA (botão que abre o resumo do artigo) ---------- */
+
+.ai-summary { margin-top: 32px; border: 1px solid var(--line-strong); border-radius: var(--block); background: var(--surface); }
+.ai-summary summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  transition: color 0.2s;
+}
+.ai-summary summary::-webkit-details-marker { display: none; }
+.ai-summary summary::after { content: "+"; margin-left: auto; color: var(--faint); font: 500 18px/1 var(--mono); }
+.ai-summary[open] summary::after { content: "−"; }
+.ai-summary summary:hover { color: var(--red); }
+.ai-summary .icon { color: var(--red); }
+
+.ai-summary-body { padding: 4px 18px 18px; border-top: 1px solid var(--line); }
+.ai-summary-body ul { display: grid; gap: 10px; padding: 14px 0 0 1.2em; list-style: disc; }
+.ai-summary-body li { color: var(--ink); line-height: 1.55; }
+.ai-summary-body li::marker { color: var(--red); }
+.ai-summary-note { margin-top: 14px; color: var(--faint); font: 500 12.5px/1.5 var(--mono); }

@@ -1,9 +1,16 @@
 ---
-title: "Welcome to the Storell blog"
+title: "Welcome to my blog"
 description: "I'm 20, from Teresina, Brazil, and I've loved programming since I was a kid. This blog is where I write about my projects: ideas, challenges, how and with what."
 date: 2026-11-16
 translationKey: boas-vindas
 tags: ["welcome"]
+resumo:
+  - "Saulo is 20, lives in Teresina, in Piauí, Brazil, and has liked programming since he was a kid, influenced by his uncle, who is also a programmer."
+  - "He is in his first job, which is an internship at the FMS in Teresina (the city's Municipal Health Foundation). There he works as a systems developer in the HR department and takes care of the whole HR system and its branches."
+  - "Outside the internship, he runs Storell: websites and systems, almost always with Ruby on Rails."
+  - "The article introduces the projects he has built (DeMolay Piauí, CRN Cap, Xfria and rhut), each with a link to the project page."
+  - "To reach him, use WhatsApp or the form on the site, and he replies within one business day."
+resumo_hash: "aeb146438577"
 ---
 
 Hi, I'm Saulo.
