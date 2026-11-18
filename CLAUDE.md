@@ -18,7 +18,7 @@ Site e blog do Saulo Storel (Teresina, PI). Leia este arquivo antes de escrever 
 - Gosta de programação desde pequeno, por influência do tio, que também é programador.
 - Está no primeiro emprego, que na verdade é um estágio, na FMS de Teresina (Fundação Municipal de Saúde). Trabalha no setor de RH como desenvolvedor de sistemas e cuida de todo o sistema de RH da FMS e das ramificações dele.
 - Fora do estágio faz a Storell: sites e sistemas, quase sempre com Ruby on Rails.
-- Projetos: DeMolay Piauí, CRN Cap, Xfria e rhut (detalhes em `projects.js`).
+- Projetos: DeMolay Piauí, CRN Cap, Xfria, Cairn e rhut (detalhes em `projects.js`).
 
 ## O blog
 

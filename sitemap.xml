@@ -61,14 +61,28 @@
     <loc>https://www.storell.dev.br/projetos/xfria/</loc>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/xfria/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/xfria/" />
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.storell.dev.br/en/projects/xfria/</loc>
     <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/xfria/" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/xfria/" />
-    <lastmod>2026-11-17</lastmod>
+    <lastmod>2026-11-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.storell.dev.br/projetos/cairn/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/cairn/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/cairn/" />
+    <lastmod>2026-11-18</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.storell.dev.br/en/projects/cairn/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://www.storell.dev.br/projetos/cairn/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.storell.dev.br/en/projects/cairn/" />
+    <lastmod>2026-11-18</lastmod>
     <priority>0.7</priority>
   </url>
   <!-- projetos:fim -->

@@ -392,4 +392,115 @@ const PROJECTS = [
       },
     },
   },
+  {
+    slug: "cairn",
+    name: "Cairn",
+    repo: null,
+    site: null,
+    thumb: "/images/cairn.webp",
+    year: 2026,
+    stack: ["Next.js", "TypeScript", "PostgreSQL"],
+    summary: {
+      pt: "Painel pessoal de finanças: contas e cartões pelo Open Finance, gastos, orçamento, carteira de investimentos, imposto de renda e um assistente com IA.",
+      en: "A personal finance dashboard: accounts and cards through Open Finance, spending, budget, investment portfolio, income tax and an AI assistant.",
+    },
+    study: {
+      pt: {
+        tagline: "Minhas contas, meus gastos e meus investimentos em um painel só.",
+        role: "Projeto pessoal, uso próprio",
+        facts: [
+          { value: "318", label: "testes automáticos" },
+          { value: "458", label: "ativos com cotações, balanços e proventos oficiais" },
+          { value: "15", label: "telas, no computador e no celular" },
+          { value: "US$ 1", label: "teto mensal de gasto com a IA" },
+        ],
+        sections: [
+          {
+            title: "Por que existe",
+            paragraphs: [
+              "Eu queria ver em um lugar só o que normalmente fica espalhado: as contas e o cartão no app do banco, os gastos numa planilha, os investimentos em outra plataforma. O Cairn junta tudo, sem anúncio e com os dados sob o meu controle.",
+            ],
+          },
+          {
+            title: "Como funciona",
+            bullets: [
+              "Contas e cartões chegam pelo Open Finance, com o MeuPluggy, em modo somente leitura. O Cairn guarda os lançamentos e categoriza.",
+              "A tela inicial responde primeiro: quanto tenho, como está a fatura e o patrimônio. Todo número abre o que o compõe.",
+              "Gastos por categoria, orçamento e metas, parcelamentos com o que falta pagar e assinaturas identificadas no extrato.",
+              "Carteira de ações e renda fixa, com proventos e imposto de renda, e análise de ativos com dados públicos oficiais: cotações da B3, balanços da CVM, Tesouro Direto e Banco Central.",
+              "O Júlio é um assistente que responde sobre gastos, faturas e orçamento consultando os dados reais. Ele propõe ajustes e só altera algo depois que eu confirmo. Não mexe em valores do banco nem movimenta dinheiro.",
+              "O acesso exige senha e um código de duas etapas.",
+            ],
+          },
+          {
+            title: "O que deu trabalho",
+            bullets: [
+              "A sincronização não pode desfazer o que eu fiz: categoria apagada continua apagada e a edição de um lançamento pendente sobrevive quando o banco o reenvia.",
+              "O Júlio só fala de finanças. Ele passa por filtros de escopo e uma checagem com IA antes de responder, e eu testo com uma bateria de pedidos fora do assunto e de injeção de prompt.",
+              "O uso da IA tem teto mensal. A conta é reservada antes de cada consulta, então o gasto nunca passa do limite.",
+              "No celular, as gavetas travavam e a rolagem caía para uns 20 quadros por segundo. Medi, achei as causas (listas redesenhadas e travas de rolagem da biblioteca) e corrigi uma por uma.",
+            ],
+          },
+          {
+            title: "Limites assumidos",
+            paragraphs: [
+              "É feito para uma pessoa só. No plano gratuito do MeuPluggy são até 5 conexões e os dados atualizam uma vez por dia, sem atualização na hora. As cotações são de fechamento, não em tempo real.",
+            ],
+          },
+        ],
+        images: [
+          { src: "/images/cairn-gastos.webp", caption: "Gastos do mês, projeção e o Júlio sugerindo o próximo passo. Dados de exemplo." },
+          { src: "/images/cairn-celular.webp", caption: "No celular: início, transações e orçamento. Dados de exemplo." },
+        ],
+      },
+      en: {
+        tagline: "My accounts, my spending and my investments in a single dashboard.",
+        role: "Personal project, for my own use",
+        facts: [
+          { value: "318", label: "automated tests" },
+          { value: "458", label: "assets with official quotes, financials and dividends" },
+          { value: "15", label: "screens, on desktop and phone" },
+          { value: "US$ 1", label: "monthly cap on AI spending" },
+        ],
+        sections: [
+          {
+            title: "Why it exists",
+            paragraphs: [
+              "I wanted to see in one place what is usually scattered: accounts and card in the bank app, spending in a spreadsheet, investments on another platform. Cairn brings it all together, with no ads and with the data under my control.",
+            ],
+          },
+          {
+            title: "How it works",
+            bullets: [
+              "Accounts and cards arrive through Open Finance, with MeuPluggy, read-only. Cairn stores the transactions and categorizes them.",
+              "The home screen answers first: how much I have, how the credit card bill looks and my net worth. Every number opens what it is made of.",
+              "Spending by category, budget and goals, installment purchases with what is left to pay and subscriptions spotted in the statement.",
+              "A portfolio of stocks and fixed income, with dividends and income tax, plus asset analysis from official public data: B3 quotes, CVM financials, Tesouro Direto and the Central Bank.",
+              "Júlio is an assistant that answers about spending, bills and budget by querying the real data. It proposes adjustments and only changes something after I confirm. It never touches bank values or moves money.",
+              "Access requires a password and a two-step code.",
+            ],
+          },
+          {
+            title: "What took work",
+            bullets: [
+              "Syncing must not undo what I did: a deleted category stays deleted and the edit on a pending transaction survives when the bank sends it again.",
+              "Júlio only talks about finance. It goes through scope filters and an AI check before answering, and I test it with a battery of off-topic and prompt-injection requests.",
+              "AI usage has a monthly cap. The cost is reserved before each query, so spending never goes over the limit.",
+              "On the phone, drawers stuttered and scrolling dropped to about 20 frames per second. I measured it, found the causes (redrawn lists and the library's scroll locks) and fixed them one by one.",
+            ],
+          },
+          {
+            title: "Known limits",
+            paragraphs: [
+              "It is built for one person. MeuPluggy's free plan allows up to 5 connections and data refreshes once a day, not on demand. Quotes are end-of-day, not real time.",
+            ],
+          },
+        ],
+        images: [
+          { src: "/images/cairn-gastos.webp", caption: "Spending for the month, the projection and Júlio suggesting the next step. Sample data." },
+          { src: "/images/cairn-celular.webp", caption: "On the phone: home, transactions and budget. Sample data." },
+        ],
+      },
+    },
+  },
 ];

@@ -13,7 +13,7 @@ Em primeiro lugar, quem pode contratar: donos de negócio, instituições e equi
 ## O que a página precisa fazer
 
 1. Dizer em segundos o que a Storell faz: sites, sistemas e painéis sob medida, com Rails.
-2. Mostrar projetos reais, todos com estudo de caso (DeMolay Piauí, CRN Cap, rhut, Xfria). O card sempre abre o estudo, nunca o site direto.
+2. Mostrar projetos reais, todos com estudo de caso (DeMolay Piauí, CRN Cap, rhut, Xfria, Cairn). O card sempre abre o estudo, nunca o site direto.
 3. Levar ao orçamento: formulário (Formspree), WhatsApp (86 99815-5687) e email.
 
 ## Tom
