@@ -33,11 +33,12 @@ Schibsted Grotesk (400–800, servida em `/fonts/`) para tudo. O kit sugere Inte
 
 ## Formas e componentes
 
-- **Abertura:** a foto do Saulo recortada (`images/saulo-recorte.webp`) na frente do quadrado em degradê do kit. O quadrado corta a foto embaixo e dos lados, e a cabeça sai do quadro por cima. Em volta ficam o "S." como selo, o anel, a barra, os pontos e o selo "Agenda aberta". Uma pessoa real no lugar de formas genéricas.
+- **Abertura:** título e texto à esquerda; à direita, a marca: o "S." da Storell num ladrilho escuro, centralizado sobre o quadrado em degradê vermelho do kit. Sem foto, sem círculo, pontinhos, risco, selo flutuante nem etiqueta de agenda (todos tirados a pedido do Saulo, por parecerem de IA). A foto recortada (`images/saulo-recorte.webp`) ficou sem uso.
 - **Botões:** vermelho com seta, contorno, claro (sobre o vermelho) e redondo com seta. Raio de 14px.
 - **Ícones:** traço de 1.75 em quadrado arredondado de 64px (Serviços). Nas camadas dos estudos, o número vai no lugar do ícone.
 - **Navbar:** pílula de vidro líquido flutuante (desfoque com saturação, véu claro, reflexo na borda de cima). No celular, ela se desdobra com os links.
 - **Tela de erro:** um modelo só (`404.html` + `errors.js`) para 400, 401, 403, 404, 408, 429, 500, 502, 503 e 504, em português ou inglês conforme o endereço (`/en/...`). A Vercel serve o 404; os outros códigos aparecem com `?codigo=500` e ficam prontos para outros projetos.
+- **Projetos:** só os de destaque (`featured: true` no `projects.js`: hoje DeMolay Piauí e Cairn) aparecem como cartão com foto. Os menores (`featured: false`) ficam numa lista de texto "+ Projetos" logo abaixo, sem foto, cada linha com link para a sua página de estudo de caso. Todos continuam tendo a página própria e entrando no sitemap.
 - **Banner de contato:** degradê do grafite ao vermelho com as diagonais do kit, e o logotipo com "SEU DESENVOLVEDOR".
 - Raios: 14px em botões e campos, 20px nas imagens, de 24px a 48px nos painéis. Sombra só no vidro e no selo "S." da abertura.
 

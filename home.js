@@ -1,5 +1,5 @@
 /* ============================================================
-   Página inicial: cards de projeto, pílula de vidro sobre eles
+   Página inicial: cards de projeto, lista "+ Projetos", pílula de vidro sobre eles
    e formulário de contato. Depende de common.js e projects.js.
    ============================================================ */
 
@@ -22,9 +22,26 @@ function caseCard(project) {
   `;
 }
 
+// "+ Projetos": uma linha de texto por projeto menor, sem foto, que também abre o estudo de caso.
+function moreRow(project) {
+  return `
+    <li class="more-row reveal">
+      <a href="${T.caseStudyPath}${escHtml(project.slug)}/">
+        <h4>${escHtml(project.name)}</h4>
+        <p>${escHtml(project.summary[LANG])}</p>
+        <ul class="tags">${project.stack.map((tech) => `<li>${escHtml(tech)}</li>`).join("")}</ul>
+        <span class="round-btn" aria-hidden="true">${icon("i-arrow")}</span>
+      </a>
+    </li>
+  `;
+}
+
 const workGrid = document.getElementById("work-grid");
-workGrid.innerHTML = PROJECTS.map(caseCard).join("");
+const moreList = document.getElementById("more-list");
+workGrid.innerHTML = PROJECTS.filter((project) => project.featured).map(caseCard).join("");
+moreList.innerHTML = PROJECTS.filter((project) => !project.featured).map(moreRow).join("");
 revealWithin(workGrid);
+revealWithin(moreList);
 
 /* ---------- Pílula de vidro que segue o cursor sobre os prints ---------- */
 // Persegue o cursor com atraso (lerp), para parecer um objeto com peso.

@@ -38,7 +38,7 @@ Site e blog do Saulo Storel (Teresina, PI). Leia este arquivo antes de escrever 
 
 - **Nada de fonte serifada, nunca.** Só Schibsted Grotesk e JetBrains Mono (nos rótulos e dados).
 - Ele já rejeitou vários redesenhos do site seguidos (tema claro, hero tipográfico, estilo 21st.dev, painel "Em resumo") e pediu para voltar ao original. **Não proponha redesenho por conta própria.** Mexa só no que ele apontar. Se ele pedir mudança de visual, pergunte o que incomoda ou peça uma referência, em vez de chutar.
-- Hoje o site está no visual original (escuro, com a foto dele no quadrado vermelho). O blog tem cabeçalho e rodapé próprios, e tema claro e escuro.
+- Hoje o site está no visual original (escuro), e no início, à direita, fica a marca "S." da Storell sobre o quadrado vermelho, sem foto e sem enfeites (ele pediu para tirar a foto e os enfeites por parecerem de IA). O blog tem cabeçalho e rodapé próprios, e tema claro e escuro.
 - Referências que ele já citou: 21st.dev (heros) e o blog do Akita (`akitaonrails.com`, para o formato da lista do blog).
 
 ## Trabalho

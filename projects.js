@@ -6,6 +6,7 @@
 //   repo    — URL pública do código, ou null quando o repositório é privado
 //   site    — URL do projeto no ar, ou null
 //   thumb   — imagem 40:21 usada nos cards e no topo do estudo de caso
+//   featured — true: aparece com foto na seção Projetos da home; false: só na lista "+ Projetos" (sem foto, com link para a página)
 //   year    — ano de referência, ou null quando não confirmado
 //   study   — estudo de caso por idioma; todo projeto tem um
 //
@@ -16,6 +17,7 @@
 const PROJECTS = [
   {
     slug: "demolay-piaui",
+    featured: true,
     name: "DeMolay Piauí",
     repo: null,
     site: "https://demolaypiaui.com",
@@ -145,6 +147,7 @@ const PROJECTS = [
   },
   {
     slug: "crn-cap",
+    featured: false,
     name: "CRN Cap",
     repo: null,
     site: "https://crncap.com.br",
@@ -236,6 +239,7 @@ const PROJECTS = [
   },
   {
     slug: "rhut",
+    featured: false,
     name: "rhut",
     repo: "https://github.com/SauloStorel/rhut",
     site: "https://rhut.storell.dev.br",
@@ -315,6 +319,7 @@ const PROJECTS = [
   },
   {
     slug: "xfria",
+    featured: false,
     name: "Xfria",
     repo: "https://github.com/SauloStorel/xfria",
     site: "https://xfria.storell.dev.br",
@@ -394,6 +399,7 @@ const PROJECTS = [
   },
   {
     slug: "cairn",
+    featured: true,
     name: "Cairn",
     repo: null,
     site: null,

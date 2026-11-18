@@ -8,7 +8,7 @@ Desenvolvedor Ruby on Rails. Estudante do último período de Análise e Desenvo
 
 ## Para quem
 
-Em primeiro lugar, quem pode contratar: donos de negócio, instituições e equipes que hoje controlam o trabalho em planilha, papel ou WhatsApp. A maioria abre pelo celular. Em segundo lugar, recrutadores e pessoas da comunidade, que chegam por LinkedIn ou GitHub.
+Em primeiro lugar, quem pode contratar: quem precisa de um site ou sistema. A maioria abre pelo celular. Em segundo lugar, recrutadores e pessoas da comunidade, que chegam por LinkedIn ou GitHub.
 
 ## O que a página precisa fazer
 
